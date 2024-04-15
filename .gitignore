@@ -1,1 +1,6 @@
+# external dependencies
 vendor/
+
+# compiled files
+*.o
+minishell
