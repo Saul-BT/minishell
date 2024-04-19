@@ -4,25 +4,33 @@ SRCS += commands/echo.c commands/cd.c commands/pwd.c commands/export.c commands/
 SRCS += utils/strcmp.c
 OBJS=$(SRCS:.c=.o)
 READLINE_PATH = vendor/readline
+LIBFT = ./libft
+LIBFT_NAME = libft.a
 
 # Compiler stuff
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-INCLUDES = -I $(READLINE_PATH)/include
-LNK = -L $(READLINE_PATH)/lib  -lreadline
+INCLUDES = -I $(LIBFT) -I $(READLINE_PATH)/include
+LNK = -L $(LIBFT) -L $(READLINE_PATH)/lib  -lreadline
 
-all: $(NAME)
+all: $(LIBFT_NAME) $(NAME)
 
 clean:
 	rm -f $(OBJS)
+	make clean -C $(LIBFT)
 
 fclean: clean
 	rm -f $(NAME)
+	make fclean -C $(LIBFT)
 
 re: fclean all
 
 %.o: %.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c $< -o $@
+
+# Libft include
+$(LIBFT_NAME):
+	make bonus -C $(LIBFT) $(LIBFT_NAME)
 
 $(NAME):  $(OBJS)
 	$(CC) $(CFLAGS) $(LNK) $(OBJS) -o $(NAME)
