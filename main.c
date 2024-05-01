@@ -21,11 +21,12 @@ int	main(int argc, char **argv)
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
 		return (1);
-	shell->input = NULL;
+	shell->cmds = NULL;
 
 	while (1)
 	{
-		shell->input = readline("> ");
+		// TODO: Modify when the parser works
+		shell->cmds = get_cmds(shell, readline("> "));
 		handle_builtin(shell);
 	}
 	return (0);

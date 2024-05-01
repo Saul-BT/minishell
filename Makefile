@@ -1,7 +1,7 @@
 NAME = minishell
 SRCS = main.c
 SRCS += commands/echo.c commands/cd.c commands/pwd.c commands/export.c commands/unset.c commands/env.c commands/exit.c commands/index.c
-SRCS += utils/strcmp.c
+SRCS += utils/strcmp.c utils/parser.c
 OBJS=$(SRCS:.c=.o)
 READLINE_PATH = vendor/readline
 LIBFT = ./libft

@@ -15,14 +15,25 @@
 
 # include <libft.h>
 # include <stdio.h>
+# include <errno.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
 typedef struct s_shell
 {
-	char	*input;
+	char	**envp;
+	t_cmd	**cmds;
+	int		cmd_count;
+	int		exit_code;
 }	t_shell;
+
+typedef struct s_cmd 
+{
+	char	*bin;
+	char	**args;
+}	t_cmd;
 
 // BUILTINS
 void	handle_builtin(t_shell *shell);
@@ -36,5 +47,6 @@ void	ft_unset(t_shell *shell);
 
 // UTILS
 int		ft_strcmp(const char *s1, const char *s2);
+char	***get_cmds(t_shell *cfg, char **argv);
 
 #endif
