@@ -49,6 +49,7 @@ void	ft_unset(t_shell *shell);
 // UTILS
 int		ft_strcmp(const char *s1, const char *s2);
 char	***get_cmds(t_shell *cfg, char **argv);
+char	**pipe_split(const char *str, size_t *pipe_count);
 bool	starts_with(char *str, char *prefix);
 void	free_strs(char **strs);
 bool	has_char(char *str, char c);
