@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 19:02:44 by sblanco-          #+#    #+#             */
-/*   Updated: 2023/03/14 23:26:17 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/07/25 10:52:06 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // Third party libs
 # include <stdlib.h>
 # include <stddef.h>
+# include <stdio.h>
 # include "unistd.h"
 
 // Declarations
@@ -31,7 +32,7 @@ int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 int		ft_isascii(int c);
 int		ft_isprint(int c);
-int		ft_strlen(const char *s);
+size_t		ft_strlen(const char *s);
 void	*ft_memset(void *s, int c, size_t n);
 void	ft_bzero(void *s, size_t n);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
