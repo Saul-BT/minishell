@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:47:20 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/07/25 10:45:33 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/07/25 16:09:17 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	free_cmds(char ***cmds, int cmd_count)
 	cmds = NULL;
 }
 
-bool	has_char(char *str, char c)
+bool	has_char(const char *str, char c)
 {
 	while (str && *str)
 	{
@@ -53,7 +53,7 @@ bool	has_char(char *str, char c)
 	return (false);
 }
 
-bool	starts_with(char *str, char *prefix)
+bool	starts_with(const char *str, const char *prefix)
 {
 	while (str && *prefix && *str)
 	{

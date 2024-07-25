@@ -6,16 +6,18 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 10:00:46 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/07/25 13:38:13 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/07/25 16:19:29 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-char	**pipe_split(const char *str)
+/**
+ * \param[out]	cmd_count
+ */
+char	**pipe_split(const char *str, int *cmd_count)
 {
-	size_t i;
+	int i;
 	char	*trimmed;
 	char	**result;
 
@@ -28,5 +30,6 @@ char	**pipe_split(const char *str)
 		result[i] = trimmed;
 		i++;
 	}
+	*cmd_count = i;
 	return (result);
 }

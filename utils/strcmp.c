@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   strcmp.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:40:08 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/04/14 22:44:22 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/07/25 16:42:56 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
-	while (*s1 && *s2 && *s1 == *s2)
+	while (s1 && s2 && *s1 && *s2 && *s1 == *s2)
 	{
 		s1++;
 		s2++;

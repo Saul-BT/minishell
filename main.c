@@ -3,31 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/04/14 22:46:50 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/07/25 17:26:16 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
-	t_shell	*shell;
+	t_shell	shell;
+	char *input;
 
 	(void)argc;
 	(void)argv;
-	shell = malloc(sizeof(t_shell));
-	if (!shell)
-		return (1);
-	shell->cmds = NULL;
+	(void)shell;
+	shell.cmds = NULL;
+	shell.envp = envp;
 
-	while (1)
+	while (true)
 	{
 		// TODO: Modify when the parser works
-		shell->cmds = get_cmds(shell, readline("> "));
-		handle_builtin(shell);
+		input = ft_strtrim(readline("> "), " \t\n\v\f\r");
+		
+		if (!*input)
+			continue;
+
+		shell.cmds = get_cmds(&shell, pipe_split(input, &shell.cmd_count));
+		handle_builtin(shell.cmds[0]);
 	}
 	return (0);
 }
