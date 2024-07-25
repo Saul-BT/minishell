@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/07/25 10:51:01 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/07/25 13:34:17 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_unset(t_shell *shell);
 // UTILS
 int		ft_strcmp(const char *s1, const char *s2);
 char	***get_cmds(t_shell *cfg, char **argv);
-char	**pipe_split(const char *str, size_t *pipe_count);
+char	**pipe_split(const char *str);
 bool	starts_with(char *str, char *prefix);
 void	free_strs(char **strs);
 bool	has_char(char *str, char c);
