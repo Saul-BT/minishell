@@ -3,4 +3,5 @@ vendor/
 
 # compiled files
 *.o
+*.a
 minishell
