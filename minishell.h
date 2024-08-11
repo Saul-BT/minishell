@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/07/25 17:11:25 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:33:49 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
+
+typedef enum e_quoted
+{
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE,
+	NOPE,
+}				t_quoted;
 
 typedef struct s_shell
 {
@@ -48,5 +55,6 @@ void			free_strs(char **strs);
 bool			has_char(const char *str, char c);
 char			*ft_join(const char **strs);
 char			**pipe_split(const char *str, int *cmd_count);
+bool			is_quoted(char c);
 
 #endif
