@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/08/26 17:53:02 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:36:55 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,16 @@
 //Caso 3: argumentos existentes a los que se les asigna un nuevo valor. Hay que chekear a la hora de introducir una nueva var si es que esta existe.
 
 
-void	free_env(char **env)
-{
-	int	i;
+// int	modifyval(t_shell *shell, char *var)
+// {
+// 	char	*name;
+// 	int		i;
 
-	i = -1;
-	while (env[++i])
-		free(env[i]);
-	free (env);	
-}
+// 	i = -1;
+// 	while (var[++i] && var[i] != '=')
+// 		name[i] = var[i];
+// 	if ()
+// }
 
 void	print_sorted_env(char **env, int n)
 {
@@ -83,7 +84,7 @@ char	**new_env(char **env, int n, int add, char *val)
 	return (cpy);
 }
 
-t_shell	modifyenv(t_shell shell, char **command, int n)
+void	modifyenv(t_shell *shell, char **command, int n)
 {
 	int		i;
 	char	**act_env;
@@ -93,41 +94,39 @@ t_shell	modifyenv(t_shell shell, char **command, int n)
 	act = 0;
 	while (command[++i])
 	{
-		printf("comando del export actual: %s\n", command[i]);
 		if (command[i][0] == '=')
 		{
 			printf("bash: export: %s : not a valid identifier\n", command[i]);
 			continue ;
 		}
-		act_env = new_env(shell.envp, n, 1, command[i]);
+		// else if (modifyval(shell, command[i]))
+		// 	continue;	
+		act_env = new_env(shell->envp, n, 1, command[i]);
 		if (act)
-			free(shell.envp);
-		shell.envp = act_env;
+			free(shell->envp);
+		shell->envp = act_env;
 		act = 1;
 		n++;
 	}
-	return (shell);
 }
 
 
-void	ft_export(t_shell shell)
+void	ft_export(t_shell *shell)
 {
 	char	**env_cpy;
 	int		n;
 
 	n = 0;
-	while (shell.envp[n])
+	while (shell->envp[n])
 		n++;
-	if (shell.cmds[0][1] == NULL)
+	if (shell->cmds[0][1] == NULL)
 	{
-		env_cpy = new_env(shell.envp, n, 0, NULL);
+		env_cpy = new_env(shell->envp, n, 0, NULL);
 		print_sorted_env(env_cpy, n);
 		free_env(env_cpy);
 	}
 	else
 	{
-		shell = modifyenv(shell, (char **)shell.cmds[0], n);
-		print_sorted_env(shell.envp, n);
+		modifyenv(shell, (char **)shell->cmds[0], n);
 	}
-	// printf("Implement export command\n");
 }

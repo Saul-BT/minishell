@@ -3,17 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/07/25 15:58:55 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/04 18:45:11 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_cd(const char **args)
+int	ft_cd_oldpwd(t_shell *shell)
 {
-	(void)args;
-	printf("Implement cd command\n");
+	return (chdir(ft_get_env_val(shell, "OLDPWD")));
+}
+
+void	ft_cd(t_shell *shell)
+{
+	int		ret;
+	char	*oldpath;
+
+	oldpath = getcwd(NULL, 0);
+	if (shell->cmds[0][1][0] == '-')
+		ret = ft_cd_oldpwd(shell);
+	else
+		ret = chdir(shell->cmds[0][1]);
+	if (!ret)
+		ft_set_env_val(shell, "OLDPWD", oldpath);
+	if (oldpath)
+		free(oldpath);
 }

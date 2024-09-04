@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:29:32 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/08/15 18:07:51 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:17:07 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 // }
 
 
-void	handle_builtin(t_shell shell)
+void	handle_builtin(t_shell *shell)
 {
 	int	i;
 	int	num_builtins;
@@ -46,13 +46,16 @@ void	handle_builtin(t_shell shell)
 		{"/usr/bin/env", &ft_env},
 		{"exit", &ft_exit},
 		{"export", &ft_export},
-		{"pwd", &ft_pwd},
+		{"/usr/bin/pwd", &ft_pwd},
 		{"unset", &ft_unset},
 	};
 	i = 0;
 	num_builtins = 7;
-	while (i < num_builtins && ft_strcmp(shell.cmds[0][0], map[i][0]) != 0)
+	// printf("entramos en: %s\n", shell.cmds[0][0]);
+	while (i < num_builtins && ft_strcmp(shell->cmds[0][0], map[i][0]) != 0)
 		i++;
 	if (i < num_builtins)
-		((void (*)(t_shell))map[i][1])(shell);
+	{
+		((void (*)(t_shell *))map[i][1])(shell);
+	}
 }
