@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/03 17:19:06 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/09/10 22:23:43 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ void	ft_echo(t_shell *shell)
 	const char	**args;
 
 	args = shell->cmds[0];
-	if (args && *args && !ft_strcmp(*args, "-n\0")) {
+	if (args && *args && !ft_strcmp(*args, "-n\0"))
+	{
 		printf("%s", ft_join(args + 1));
-		return;
+		return ;
 	}
 	printf("%s\n", ft_join(args));
 }

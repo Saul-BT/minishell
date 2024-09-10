@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/10 22:12:00 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/09/10 22:29:49 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 //Caso 2: argumentos nuevos con un igual (hay que mirar formato). Se genera un env con una nueva var tal que: hola="mundo"
 //Caso 3: argumentos existentes a los que se les asigna un nuevo valor. Hay que chekear a la hora de introducir una nueva var si es que esta existe.
 
-void	print_sorted_env(char **env, int n)
+void	print_sorted_env(t_shell *shell, char **env, int n)
 {
 	int			sorted;
 	char		*aux;
@@ -46,7 +46,8 @@ void	print_sorted_env(char **env, int n)
 	}
 	i = -1;
 	while (env[++i])
-		printf("declare -x %s\n", env[i]);
+		printf("declare -x %s=\"%s\"\n", ft_get_env_name(env[i]),
+			ft_get_env_val(shell, ft_get_env_name(env[i])));
 }
 
 
@@ -138,7 +139,7 @@ void	ft_export(t_shell *shell)
 	if (shell->cmds[0][1] == NULL)
 	{
 		env_cpy = new_env(shell->envp, n, 0, NULL);
-		print_sorted_env(env_cpy, n);
+		print_sorted_env(shell, env_cpy, n);
 		free_env(env_cpy);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/04 18:45:11 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/09/10 22:29:02 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	ft_cd(t_shell *shell)
 	else
 		ret = chdir(shell->cmds[0][1]);
 	if (!ret)
-		ft_set_env_val(shell, "OLDPWD", oldpath);
+		ft_set_env_val(shell, "OLDPWD", oldpath,
+			ft_get_env_pos(shell->envp, "OLDPWD"));
 	if (oldpath)
 		free(oldpath);
 }
