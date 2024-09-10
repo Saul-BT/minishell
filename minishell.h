@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/04 19:27:53 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/09/10 22:12:21 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,12 @@ char	**new_env(char **env, int n, int add, char *val);
 
 //utils de bultins
 char	*ft_get_env_val(t_shell *shell, char *var);
-void	ft_set_env_val(t_shell *shell, char *var, char *mod);
+void	ft_set_env_val(t_shell *shell, char *var, char *mod, int pos);
 void	free_env(char **env);
-int		ft_get_env_pos(t_shell *shell, char *var);
+int		ft_get_env_pos(char **env, char *var);
+char	*ft_envformat_converter(char *var);
+char	*ft_get_env_name(char *arg);
+
 
 
 #endif
