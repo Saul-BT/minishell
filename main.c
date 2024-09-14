@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 17:27:28 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/14 17:35:59 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,12 @@ t_shell	*initshell(char **env)
 	char	**alocated_env;
 	int		n;
 
+	// TODO: Remove this, allocate the main struct is not needed
 	ret = malloc(sizeof(t_shell));
 	n = 0;
 	while (env[n])
 		n++;
+	// TODO: We need to check if the env behaves correctly in child proccesses
 	alocated_env = new_env(env, n, 0, NULL);
 	ret->envp = alocated_env;
 	ret->cmds = NULL;
