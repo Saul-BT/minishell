@@ -6,12 +6,15 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 17:40:26 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/14 19:51:48 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define READ_END 0
+# define WRITE_END 1
 
 # include <errno.h>
 # include <libft.h>
@@ -21,6 +24,7 @@
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
 
 typedef enum e_quoted
 {
@@ -76,6 +80,7 @@ int		ft_get_env_pos(char **env, char *var);
 char	*ft_envformat_converter(char *var);
 char	*ft_get_env_name(char *arg);
 
-
+// PIPES
+void	ft_piped_exec(t_shell *shell);
 
 #endif
