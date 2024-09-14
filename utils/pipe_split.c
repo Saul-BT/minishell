@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 10:00:46 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/08/11 13:11:09 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/14 16:42:16 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ char	**pipe_split(const char *str, int *cmd_count)
 	char **result;
 
 	*cmd_count = count_pipes(str) + 1;
+	if (is_quoted('?'))
+		return (NULL);
 	result = ft_calloc(*cmd_count, sizeof(char *));
 	if (*cmd_count == 1)
 	{

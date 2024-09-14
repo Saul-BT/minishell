@@ -6,27 +6,11 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/07/25 16:24:16 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/14 16:43:54 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static char	**get_bin_paths(char **envp)
-{
-	char	**bin_paths;
-
-	while (envp && *envp)
-	{
-		if (starts_with(*envp, "PATH="))
-		{
-			bin_paths = ft_split(*envp + 5, ':');
-			return (bin_paths);
-		}
-		envp++;
-	}
-	return (NULL);
-}
 
 static const char	*get_check_cmd(const char *cmd, t_shell *cfg)
 {
@@ -81,7 +65,8 @@ const char	***get_cmds(t_shell *cfg, char **argv)
 
 	i = 0;
 	cmds = malloc(cfg->cmd_count * sizeof(char **));
-	bin_paths = get_bin_paths(cfg->envp);
+	// TODO: Maybe need to check if there is a PATH before
+	bin_paths = ft_split(getenv("PATH"), ':');
 	while (i < cfg->cmd_count)
 	{
 		cmd_with_args = (const char **)ft_split(argv[i], ' ');
