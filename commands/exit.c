@@ -6,14 +6,14 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:37:07 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/07/25 15:59:04 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/14 17:39:36 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_exit(const char **args)
+void	ft_exit(t_shell *shell)
 {
-	(void)args;
+	(void)shell;
 	printf("Implement exit command\n");
 }

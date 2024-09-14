@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 17:23:16 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/14 17:40:26 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void			ft_cd(t_shell *shell);
 void			ft_echo(t_shell *shell);
 // void			ft_env(const char **args);
 void			ft_env(t_shell *shell);
-void			ft_exit(const char **args);
+void			ft_exit(t_shell *shell);
 // void			ft_export(const char **args);
 void			ft_export(t_shell *shell);
 // void			ft_pwd(const char **args);
