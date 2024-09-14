@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 10:00:46 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 16:42:16 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/14 16:53:51 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ bool	is_quoted(char c)
 	else if (is_double_quote(c))
 		quote = DOUBLE_QUOTE;
 	return (false);
+}
+
+void	close_quote()
+{
+	is_quoted('"');
+	if (is_quoted('?'))
+		is_quoted('\'');
 }
 
 static int	count_pipes(const char *str)

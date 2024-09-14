@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/08/10 20:33:49 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/14 16:53:48 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,6 @@ bool			has_char(const char *str, char c);
 char			*ft_join(const char **strs);
 char			**pipe_split(const char *str, int *cmd_count);
 bool			is_quoted(char c);
+void			close_quote();
 
 #endif
