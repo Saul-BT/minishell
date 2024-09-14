@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 16:53:48 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/14 17:23:16 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,21 @@ typedef struct s_shell
 }				t_shell;
 
 // BUILTINS
-void			handle_builtin(const char **cmd);
-void			ft_cd(const char **args);
-void			ft_echo(const char **args);
-void			ft_env(const char **args);
+// void			handle_builtin(const char **cmd);
+void			handle_builtin(t_shell *shell);
+// void			ft_cd(const char **args);
+void			ft_cd(t_shell *shell);
+// void			ft_echo(const char **args);
+void			ft_echo(t_shell *shell);
+// void			ft_env(const char **args);
+void			ft_env(t_shell *shell);
 void			ft_exit(const char **args);
-void			ft_export(const char **args);
-void			ft_pwd(const char **args);
-void			ft_unset(const char **args);
+// void			ft_export(const char **args);
+void			ft_export(t_shell *shell);
+// void			ft_pwd(const char **args);
+void			ft_pwd(t_shell *shell);
+// void			ft_unset(const char **args);
+void			ft_unset(t_shell *shell);
 
 // UTILS
 int				ft_strcmp(const char *s1, const char *s2);
@@ -57,5 +64,18 @@ char			*ft_join(const char **strs);
 char			**pipe_split(const char *str, int *cmd_count);
 bool			is_quoted(char c);
 void			close_quote();
+
+//esta en export
+char	**new_env(char **env, int n, int add, char *val);
+
+//utils de bultins
+char	*ft_get_env_val(t_shell *shell, char *var);
+void	ft_set_env_val(t_shell *shell, char *var, char *mod, int pos);
+void	free_env(char **env);
+int		ft_get_env_pos(char **env, char *var);
+char	*ft_envformat_converter(char *var);
+char	*ft_get_env_name(char *arg);
+
+
 
 #endif

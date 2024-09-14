@@ -3,17 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/07/25 15:59:02 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:18:50 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_env(const char **args)
+void	ft_env(t_shell *shell)
 {
-	(void)args;
-	printf("Implement env command\n");
+	int 	j;
+	char	**env;
+
+	env = shell->envp;
+	j = 0;
+	while (env[j])
+	{
+		printf("%s\n", env[j]);
+		j++;
+	}
+	// printf("Implement env command\n");
 }
