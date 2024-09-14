@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 10:00:46 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 16:53:51 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/14 21:14:57 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	count_pipes(const char *str)
 	return (count);
 }
 
-static void	get_piped_cmds(const char *str, char ***cmds)
+static void	get_piped_cmds(const char *str, char ***cmds, int cmd_count)
 {
 	size_t	i;
 	int		j;
@@ -106,8 +106,12 @@ static void	get_piped_cmds(const char *str, char ***cmds)
 			cmd_start_index = i;
 		if (ispipe || !str[i])
 		{
-			(*cmds)[j++] = ft_substr(str, cmd_start_index, wb_index
+			if (j == cmd_count - 1)
+				(*cmds)[j++] = ft_substr(str, cmd_start_index, ft_strlen(str)
 					- cmd_start_index);
+			else
+				(*cmds)[j++] = ft_substr(str, cmd_start_index, wb_index
+						- cmd_start_index);
 			cmd_start_index = 0;
 		}
 		i++;
@@ -127,6 +131,6 @@ char	**pipe_split(const char *str, int *cmd_count)
 		result[0] = ft_strdup(str);
 		return (result);
 	}
-	get_piped_cmds(str, &result);
+	get_piped_cmds(str, &result, *cmd_count);
 	return (result);
 }
