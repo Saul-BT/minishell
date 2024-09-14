@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 19:51:48 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/14 23:08:59 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 
 typedef enum e_quoted
 {
@@ -68,6 +70,7 @@ char			*ft_join(const char **strs);
 char			**pipe_split(const char *str, int *cmd_count);
 bool			is_quoted(char c);
 void			close_quote();
+void			print_error(char *msg);
 
 //esta en export
 char	**new_env(char **env, int n, int add, char *val);
