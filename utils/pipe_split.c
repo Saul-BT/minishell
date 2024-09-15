@@ -6,75 +6,29 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 10:00:46 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 21:14:57 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/15 16:34:50 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static inline bool	is_space(char c)
-{
-	return ((c >= '\t' && c <= '\r') || (c == ' '));
-}
-
-static inline bool	is_single_quote(char c)
-{
-	return (c == '\'');
-}
-
-static inline bool	is_double_quote(char c)
-{
-	return (c == '"');
-}
-
-static bool	is_pipe(char c)
+static inline bool	is_pipe(char c)
 {
 	return (c == '|');
 }
 
-static inline bool	is_word_boundary(char a, char b)
-{
-	return (!is_space(a) && is_space(b));
-}
-
-bool	is_quoted(char c)
-{
-	static t_quoted	quote = NOPE;
-
-	if (quote != NOPE)
-	{
-		if (is_single_quote(c) && quote == SINGLE_QUOTE)
-			quote = NOPE;
-		else if (is_double_quote(c) && quote == DOUBLE_QUOTE)
-			quote = NOPE;
-		return (true);
-	}
-	if (is_single_quote(c))
-		quote = SINGLE_QUOTE;
-	else if (is_double_quote(c))
-		quote = DOUBLE_QUOTE;
-	return (false);
-}
-
-void	close_quote()
-{
-	is_quoted('"');
-	if (is_quoted('?'))
-		is_quoted('\'');
-}
-
 static int	count_pipes(const char *str)
 {
-	size_t	i;
 	int		count;
 
-	i = 0;
 	count = 0;
-	while (i < ft_strlen(str))
+	if (!str)
+		return (0);
+	while (*str)
 	{
-		if (!is_quoted(str[i]) && is_pipe(str[i]))
+		if (!is_quoted(*str) && is_pipe(*str))
 			count++;
-		i++;
+		str++;
 	}
 	return (count);
 }
@@ -108,7 +62,7 @@ static void	get_piped_cmds(const char *str, char ***cmds, int cmd_count)
 		{
 			if (j == cmd_count - 1)
 				(*cmds)[j++] = ft_substr(str, cmd_start_index, ft_strlen(str)
-					- cmd_start_index);
+						- cmd_start_index);
 			else
 				(*cmds)[j++] = ft_substr(str, cmd_start_index, wb_index
 						- cmd_start_index);

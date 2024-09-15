@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 23:08:59 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/15 16:40:51 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define WRITE_END 1
 
 # include <errno.h>
+# include <fcntl.h>
 # include <libft.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -24,9 +25,8 @@
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
 # include <sys/wait.h>
+# include <unistd.h>
 
 typedef enum e_quoted
 {
@@ -69,21 +69,25 @@ bool			has_char(const char *str, char c);
 char			*ft_join(const char **strs);
 char			**pipe_split(const char *str, int *cmd_count);
 bool			is_quoted(char c);
-void			close_quote();
+void			close_quote(void);
 void			print_error(char *msg);
+bool			is_space(char c);
+bool			is_word_boundary(char a, char b);
 
-//esta en export
-char	**new_env(char **env, int n, int add, char *val);
+// esta en export
+char			**new_env(char **env, int n, int add, char *val);
 
-//utils de bultins
-char	*ft_get_env_val(t_shell *shell, char *var);
-void	ft_set_env_val(t_shell *shell, char *var, char *mod, int pos);
-void	free_env(char **env);
-int		ft_get_env_pos(char **env, char *var);
-char	*ft_envformat_converter(char *var);
-char	*ft_get_env_name(char *arg);
+// utils de bultins
+char			*ft_get_env_val(t_shell *shell, char *var);
+void			ft_set_env_val(t_shell *shell, char *var, char *mod, int pos);
+void			free_env(char **env);
+int				ft_get_env_pos(char **env, char *var);
+char			*ft_envformat_converter(char *var);
+char			*ft_get_env_name(char *arg);
 
 // PIPES
-void	ft_piped_exec(t_shell *shell);
+void			ft_piped_exec(t_shell *shell);
+
+void			test(const char *str);
 
 #endif

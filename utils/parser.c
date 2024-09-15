@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 16:43:54 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/15 14:19:15 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ const char	***get_cmds(t_shell *cfg, char **argv)
 	bin_paths = ft_split(getenv("PATH"), ':');
 	while (i < cfg->cmd_count)
 	{
+		test(argv[i]);
 		cmd_with_args = (const char **)ft_split(argv[i], ' ');
 		cfg->exit_code = 0;
 		cmd_with_args[0] = get_bin_path(cmd_with_args[0], bin_paths, cfg);
