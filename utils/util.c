@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:47:20 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/07/25 16:09:17 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/15 10:28:39 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	free_cmds(char ***cmds, int cmd_count)
 	while (cmds && i < cmd_count)
 	{
 		free_strs(cmds[i]);
-		cmds[i] = NULL;
 		i++;
 	}
 	free(cmds);
