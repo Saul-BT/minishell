@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/10 22:29:49 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/09/16 18:03:55 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	print_sorted_env(t_shell *shell, char **env, int n)
 	int			i;
 
 	sorted = 0;
-
 	while (!sorted)
 	{
 		i = -1;
@@ -46,8 +45,11 @@ void	print_sorted_env(t_shell *shell, char **env, int n)
 	}
 	i = -1;
 	while (env[++i])
-		printf("declare -x %s=\"%s\"\n", ft_get_env_name(env[i]),
-			ft_get_env_val(shell, ft_get_env_name(env[i])));
+	{
+		aux = ft_get_env_name(env[i]);
+		printf("declare -x %s=\"%s\"\n", aux, ft_get_env_val(shell, aux));
+		free(aux);
+	}
 }
 
 
