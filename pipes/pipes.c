@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 23:10:11 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/15 10:17:04 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ void	ft_piped_exec(t_shell *shell)
 				close(p[READ_END]);
 				dup2(p[WRITE_END], STDOUT_FILENO);
 				close(p[WRITE_END]);
+			}
+			if (is_builtin(shell->cmds[i][0]))
+			{
+				handle_builtin(shell);
+				exit(0);
 			}
 			execve(shell->cmds[i][0], (char *const *)shell->cmds[i],
 				shell->envp);

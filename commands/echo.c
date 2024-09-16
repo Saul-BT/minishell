@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 21:11:55 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/15 09:58:20 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,17 @@
 void	ft_echo(t_shell *shell)
 {
 	const char	**args;
+	char *joined;
 
 	args = shell->cmds[0];
 	if (args && *args && !ft_strncmp(*args, "-n", 2))
 	{
-		printf("%s", ft_join(args + 2));
+		joined = ft_join(args + 2);
+		printf("%s", joined);
+		free(joined);
 		return ;
 	}
-	printf("%s\n", ft_join(args + 1));
+	joined = ft_join(args + 1);
+	printf("%s\n", joined);
+	free(joined);
 }

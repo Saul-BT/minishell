@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 22:16:52 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/15 10:42:40 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,16 +102,18 @@ int	main(int argc, char **argv, char **envp)
 		if (is_quoted('?'))
 		{
 			printf("pipex: unclosed quote\n");
-			close_quote();	
+			close_quote();
+			free_strs(splited);
 		}
-		if (splited)
+		else if (splited)
 		{
 			shell->cmds = get_cmds(shell, splited);
-			//print_cmds(shell->cmds, shell->cmd_count);
+			// print_cmds(shell->cmds, shell->cmd_count);
 			ft_piped_exec(shell);
-			//handle_builtin(shell);
+			// handle_builtin(shell);
 		}
+		free_cmds((char ***)shell->cmds, shell->cmd_count);
+		free(input);
 	}
 	return (0);
 }
-
