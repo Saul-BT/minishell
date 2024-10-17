@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/15 10:42:40 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/10/16 18:17:20 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ t_shell	*initshell(char **env)
 	alocated_env = new_env(env, n, 0, NULL);
 	ret->envp = alocated_env;
 	ret->cmds = NULL;
+	// init_signals();
 	return (ret);
 }
 
@@ -91,10 +92,15 @@ int	main(int argc, char **argv, char **envp)
 	shell = initshell(envp);
 	(void)argc;
 	(void)argv;
+	signal(SIGINT, sig_manage);
+	signal(SIGQUIT, sig_manage);
 	while (true)
 	{
 		// TODO: Modify when the parser works
 		input = readline("> ");
+		//REVISAR ESTA LINEA PARA SABER QUE EXIT EMPLEAR
+		if (!input)
+			exit(1);
 		if (!*input)
 			continue ;
 		add_history(input);
@@ -109,8 +115,10 @@ int	main(int argc, char **argv, char **envp)
 		{
 			shell->cmds = get_cmds(shell, splited);
 			// print_cmds(shell->cmds, shell->cmd_count);
-			ft_piped_exec(shell);
-			// handle_builtin(shell);
+			if (shell->cmd_count == 1 && is_builtin(shell->cmds[0][0]))
+				handle_builtin(shell);
+			else
+				ft_piped_exec(shell);
 		}
 		free_cmds((char ***)shell->cmds, shell->cmd_count);
 		free(input);

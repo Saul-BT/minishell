@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/15 10:45:12 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/10/15 18:09:48 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static const char	*get_check_cmd(const char *cmd, t_shell *cfg)
 {
+	if (is_builtin(cmd))
+		return (cmd);
 	if (access(cmd, F_OK) != 0 || !has_char(cmd, '/'))
 	{
 		printf("pipex: %s: command not found\n", cmd);

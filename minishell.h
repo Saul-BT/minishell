@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/15 10:45:29 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/09/30 19:07:40 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,15 @@
 # include <libft.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+// int	g_exit_num;
 
 typedef enum e_quoted
 {
@@ -37,6 +40,7 @@ typedef enum e_quoted
 
 typedef struct s_shell
 {
+	int			interactive;
 	char		**envp;
 	const char	***cmds;
 	int			cmd_count;
@@ -87,5 +91,9 @@ char			*ft_get_env_name(char *arg);
 
 // PIPES
 void			ft_piped_exec(t_shell *shell);
+
+//	SIGNALS
+void			sig_manage(int signum);
+
 
 #endif
