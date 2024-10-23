@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/16 18:17:20 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:32:07 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 		splited = pipe_split(input, &shell->cmd_count);
 		if (is_quoted('?'))
 		{
-			printf("pipex: unclosed quote\n");
+			printf("pipex: u	nclosed quote\n");
 			close_quote();
 			free_strs(splited);
 		}
@@ -116,7 +116,7 @@ int	main(int argc, char **argv, char **envp)
 			shell->cmds = get_cmds(shell, splited);
 			// print_cmds(shell->cmds, shell->cmd_count);
 			if (shell->cmd_count == 1 && is_builtin(shell->cmds[0][0]))
-				handle_builtin(shell);
+				handle_builtin(shell, 0);
 			else
 				ft_piped_exec(shell);
 		}

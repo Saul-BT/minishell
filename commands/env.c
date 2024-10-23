@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/16 18:15:04 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:35:10 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 
 void	ft_env(t_shell *shell)
 {
-	int 	j;
+	int		j;
 	char	**env;
 
 	env = shell->envp;

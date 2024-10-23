@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/30 19:07:40 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/10/22 18:34:53 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,14 @@ typedef struct s_shell
 
 // BUILTINS
 bool			is_builtin(const char *cmd);
-// void			handle_builtin(const char **cmd);
-void			handle_builtin(t_shell *shell);
-// void			ft_cd(const char **args);
-void			ft_cd(t_shell *shell);
-// void			ft_echo(const char **args);
-void			ft_echo(t_shell *shell);
-// void			ft_env(const char **args);
+void			handle_builtin(t_shell *shell, int argnum);
+void			ft_cd(t_shell *shell, int argnum);
+void			ft_echo(t_shell *shell, int argnum);
 void			ft_env(t_shell *shell);
 void			ft_exit(t_shell *shell);
-// void			ft_export(const char **args);
-void			ft_export(t_shell *shell);
-// void			ft_pwd(const char **args);
+void			ft_export(t_shell *shell, int argnum);
 void			ft_pwd(t_shell *shell);
-// void			ft_unset(const char **args);
-void			ft_unset(t_shell *shell);
+void			ft_unset(t_shell *shell, int argnum);
 
 // UTILS
 int				ft_strcmp(const char *s1, const char *s2);
