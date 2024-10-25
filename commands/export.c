@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/16 18:03:55 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:33:21 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	modifyenv(t_shell *shell, char **command, int n)
 }
 
 
-void	ft_export(t_shell *shell)
+void	ft_export(t_shell *shell, int argnum)
 {
 	char	**env_cpy;
 	int		n;
@@ -138,12 +138,13 @@ void	ft_export(t_shell *shell)
 	n = 0;
 	while (shell->envp[n])
 		n++;
-	if (shell->cmds[0][1] == NULL)
+	// printf("-----ARGNUM = %i\n", argnum);
+	if (shell->cmds[argnum][1] == NULL)
 	{
 		env_cpy = new_env(shell->envp, n, 0, NULL);
 		print_sorted_env(shell, env_cpy, n);
 		free_env(env_cpy);
 	}
 	else
-		modifyenv(shell, (char **)shell->cmds[0], n);
+		modifyenv(shell, (char **)shell->cmds[argnum], n);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_split.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 10:00:46 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 21:14:57 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/10/09 19:44:20 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static void	get_piped_cmds(const char *str, char ***cmds, int cmd_count)
 		{
 			if (j == cmd_count - 1)
 				(*cmds)[j++] = ft_substr(str, cmd_start_index, ft_strlen(str)
-					- cmd_start_index);
+						- cmd_start_index);
 			else
 				(*cmds)[j++] = ft_substr(str, cmd_start_index, wb_index
 						- cmd_start_index);

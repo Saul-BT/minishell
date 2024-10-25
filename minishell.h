@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/15 10:45:29 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/10/23 17:12:45 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,15 @@
 # include <libft.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+// int	g_exit_num;
 
 typedef enum e_quoted
 {
@@ -37,6 +40,7 @@ typedef enum e_quoted
 
 typedef struct s_shell
 {
+	int			interactive;
 	char		**envp;
 	const char	***cmds;
 	int			cmd_count;
@@ -45,21 +49,14 @@ typedef struct s_shell
 
 // BUILTINS
 bool			is_builtin(const char *cmd);
-// void			handle_builtin(const char **cmd);
-void			handle_builtin(t_shell *shell);
-// void			ft_cd(const char **args);
-void			ft_cd(t_shell *shell);
-// void			ft_echo(const char **args);
-void			ft_echo(t_shell *shell);
-// void			ft_env(const char **args);
+void			handle_builtin(t_shell *shell, int argnum);
+void			ft_cd(t_shell *shell, int argnum);
+void			ft_echo(t_shell *shell, int argnum);
 void			ft_env(t_shell *shell);
 void			ft_exit(t_shell *shell);
-// void			ft_export(const char **args);
-void			ft_export(t_shell *shell);
-// void			ft_pwd(const char **args);
+void			ft_export(t_shell *shell, int argnum);
 void			ft_pwd(t_shell *shell);
-// void			ft_unset(const char **args);
-void			ft_unset(t_shell *shell);
+void			ft_unset(t_shell *shell, int argnum);
 
 // UTILS
 int				ft_strcmp(const char *s1, const char *s2);
@@ -73,9 +70,14 @@ char			**pipe_split(const char *str, int *cmd_count);
 bool			is_quoted(char c);
 void			close_quote(void);
 void			print_error(char *msg);
+//a borrar
+void			printmat(char **m);
 
 // esta en export
 char			**new_env(char **env, int n, int add, char *val);
+
+//EXPANSOR
+char			**expand(t_shell *shell, char **args);
 
 // utils de bultins
 char			*ft_get_env_val(t_shell *shell, char *var);
@@ -87,5 +89,9 @@ char			*ft_get_env_name(char *arg);
 
 // PIPES
 void			ft_piped_exec(t_shell *shell);
+
+//	SIGNALS
+void			sig_manage(int signum);
+
 
 #endif

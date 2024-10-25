@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/15 09:58:20 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:55:47 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@
 // }
 
 // TODO: Remove the tricky ft_join
-void	ft_echo(t_shell *shell)
+
+void	ft_echo(t_shell *shell, int argnum)
 {
 	const char	**args;
 	char *joined;
-
-	args = shell->cmds[0];
+	
+	// printf("en echo:\n---argnum = %i\n+++%s\n\n",argnum, shell->cmds[argnum][1]);
+	args = shell->cmds[argnum];
 	if (args && *args && !ft_strncmp(*args, "-n", 2))
 	{
 		joined = ft_join(args + 2);
