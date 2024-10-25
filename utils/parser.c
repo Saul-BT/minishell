@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/15 18:09:48 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:15:07 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ const char	***get_cmds(t_shell *cfg, char **argv)
 		cmd_with_args = (const char **)ft_split(argv[i], ' ');
 		free(argv[i]);
 		cfg->exit_code = 0;
+		// printmat((char **)cmd_with_args);
 		cmd_with_args[0] = get_bin_path(cmd_with_args[0], bin_paths, cfg);
-		cmds[i] = cmd_with_args;
+		cmds[i] = (const char **)expand(cfg, (char **)cmd_with_args);
+		// cmds[i] = cmd_with_args;
 		i++;
 	}
 	free_strs(bin_paths);

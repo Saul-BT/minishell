@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:47:20 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/15 10:28:39 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/10/23 16:52:19 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	printmat(char **m)
+{
+	int	i;
+
+	while (m[i])
+	{
+		printf("%s\n", m[i]);
+		i++;
+	}
+}
 
 void	free_strs(char **strs)
 {

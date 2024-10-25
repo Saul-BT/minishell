@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/22 18:34:53 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/10/23 17:12:45 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,14 @@ char			**pipe_split(const char *str, int *cmd_count);
 bool			is_quoted(char c);
 void			close_quote(void);
 void			print_error(char *msg);
+//a borrar
+void			printmat(char **m);
 
 // esta en export
 char			**new_env(char **env, int n, int add, char *val);
+
+//EXPANSOR
+char			**expand(t_shell *shell, char **args);
 
 // utils de bultins
 char			*ft_get_env_val(t_shell *shell, char *var);
