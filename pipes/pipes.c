@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 20:49:48 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 21:04:30 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,20 @@
 
 void	ft_piped_exec(t_shell *shell)
 {
-	int	p[2];
-	int	i;
-	int	pid;
-	int	pipe_read;
-	int status;
+	int		p[2];
+	int		i;
+	int		pid;
+	int		pipe_read;
+	int		status;
+	t_node	*cmd_node;
+	t_cmd	*cmd;
 
 	i = 0;
 	pipe_read = -1;
-	while (i < shell->cmd_count)
+	cmd_node = shell->cmds;
+	while (i < shell->cmd_count && cmd_node)
 	{
+		cmd = (t_cmd *) cmd_node->content;
 		if (i < shell->cmd_count - 1 && pipe(p) == -1)
 			print_error("pipe");
 			//signal(SIGINT, mng_hijos);
@@ -99,13 +103,12 @@ void	ft_piped_exec(t_shell *shell)
 				dup2(p[WRITE_END], STDOUT_FILENO);
 				close(p[WRITE_END]);
 			}
-			if (is_builtin(shell->cmds[i][0]))
+			if (is_builtin(cmd->bin))
 			{
-				g_exit_num = handle_builtin(shell, i);
+				g_exit_num = handle_builtin(shell, cmd);
 				exit(g_exit_num);
 			}
-			g_exit_num = execve(shell->cmds[i][0],
-					(char *const *)shell->cmds[i], shell->envp);
+			g_exit_num = execve(cmd->bin, cmd->args,	shell->envp);
 			//si e intenta ejecutar una carpeta tiene que emitir error 126
 			print_error("execve");
 		}
@@ -119,6 +122,7 @@ void	ft_piped_exec(t_shell *shell)
 				pipe_read = p[READ_END];
 			}
 		}
+		cmd_node = cmd_node->next;
 		i++;
 	}
 	while (waitpid(-1, &status, 0) > 0)

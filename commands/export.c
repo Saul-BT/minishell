@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 20:49:07 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 21:00:42 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,57 +100,62 @@ char	*get_new_val(char *var)
 	return (newval);
 }
 
-int	modifyenv(t_shell *shell, char **command, int n)
+int	modifyenv(t_shell *shell, t_node *args, int n)
 {
-	int		i;
 	char	**act_env;
 	char	*newval;
 	int		ret;
+	t_node	*arg_node;
+	char	*arg_val;
 
-	i = 0;
+	arg_node = args;
 	ret = 0;
-	while (command[++i])
+	while (arg_node)
 	{
-		if (command[i][0] == '=' || ft_isdigit(command[i][0]))
+		arg_val = (char *) arg_node->content;
+		if (arg_val[0] == '=' || ft_isdigit(arg_val[0]))
 		{
-			printf("bash: export: %s : not a valid identifier\n", command[i]);
+			printf("bash: export: %s : not a valid identifier\n", arg_val);
 			ret = 1;
 			continue ;
 		}
-		else if (ft_get_env_pos(shell->envp, command[i]) >= 0)
+		else if (ft_get_env_pos(shell->envp, arg_val) >= 0)
 		{
-			newval = get_new_val(command[i]);
-			ft_set_env_val(shell, command[i], get_new_val(command[i]),
-				ft_get_env_pos(shell->envp, command[i]));
+			newval = get_new_val(arg_val);
+			ft_set_env_val(shell, arg_val, get_new_val(arg_val),
+				ft_get_env_pos(shell->envp, arg_val));
 			if (newval)
 				free(newval);
 			continue ;
 		}
-		act_env = new_env(shell->envp, n++, 1, (command[i]));
+		act_env = new_env(shell->envp, n++, 1, (arg_val));
 		free(shell->envp);
 		shell->envp = act_env;
+		arg_node = arg_node->next;
 	}
 	return (ret);
 }
 
 
-int	ft_export(t_shell *shell, int argnum)
+int	ft_export(t_cmd *cmd, t_shell *shell)
 {
 	char	**env_cpy;
 	int		n;
-	
+	t_node	*nd_arg_node;
+
 	n = 0;
 	if (!shell->envp)
 		return (1);
-	if (shell->cmds[argnum][1] && shell->cmds[argnum][1][0] == '-')
+	nd_arg_node = cmd->args->next;
+	if (nd_arg_node && nd_arg_node->content && ((char *)nd_arg_node->content)[0] == '-')
 	{
-		printf("bash: export: %s: invalid option\n", shell->cmds[argnum][1]);
+		printf("bash: export: %s: invalid option\n", (char *)nd_arg_node->content);
 		return (2);
 	}
 	while (shell->envp[n])
 		n++;
 	// printf("-----ARGNUM = %i\n", argnum);
-	if (shell->cmds[argnum][1] == NULL)
+	if (nd_arg_node == NULL)
 	{
 		env_cpy = new_env(shell->envp, n, 0, NULL);
 		print_sorted_env(shell, env_cpy, n);
@@ -158,7 +163,7 @@ int	ft_export(t_shell *shell, int argnum)
 	}
 	else
 	{
-		return (modifyenv(shell, (char **)shell->cmds[argnum], n));
+		return (modifyenv(shell, nd_arg_node, n));
 	}
 	return (0);
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/23 18:15:07 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/09 23:27:19 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static const char	*get_check_cmd(const char *cmd, t_shell *cfg)
+static char	*get_check_cmd(char *cmd, t_shell *cfg)
 {
 	if (is_builtin(cmd))
 		return (cmd);
@@ -29,7 +29,7 @@ static const char	*get_check_cmd(const char *cmd, t_shell *cfg)
 	return (cmd);
 }
 
-const char	*get_bin_path(const char *cmd, char **bin_paths, t_shell *cfg)
+char	*get_bin_path(char *cmd, char **bin_paths, t_shell *cfg)
 {
 	char	*temp;
 	char	*bin_path;
@@ -58,27 +58,27 @@ const char	*get_bin_path(const char *cmd, char **bin_paths, t_shell *cfg)
 	return (get_check_cmd(cmd, cfg));
 }
 
-const char	***get_cmds(t_shell *cfg, char **argv)
+t_node	*get_cmds(t_shell *cfg, char **argv)
 {
-	int			i;
-	char		**bin_paths;
-	const char	***cmds;
-	const char	**cmd_with_args;
+	int		i;
+	char	**bin_paths;
+	t_node	*cmds;
+	t_cmd	*cmd;
 
 	i = 0;
-	cmds = malloc(cfg->cmd_count * sizeof(char **));
 	// TODO: Maybe need to check if there is a PATH before
 	bin_paths = ft_split(getenv("PATH"), ':');
+	cmds = ft_lstnew(NULL);
 	while (i < cfg->cmd_count)
 	{
 		// TODO: Add check for the returned value (it can be NULL)
-		cmd_with_args = (const char **)ft_split(argv[i], ' ');
+		cmd = tokenize(argv[i], cfg);
 		free(argv[i]);
 		cfg->exit_code = 0;
 		// printmat((char **)cmd_with_args);
-		cmd_with_args[0] = get_bin_path(cmd_with_args[0], bin_paths, cfg);
-		cmds[i] = (const char **)expand(cfg, (char **)cmd_with_args);
+		cmd->bin = get_bin_path(cmd->bin, bin_paths, cfg);
 		// cmds[i] = cmd_with_args;
+		ft_lstadd_back(&cmds, ft_lstnew(cmd));
 		i++;
 	}
 	free_strs(bin_paths);

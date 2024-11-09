@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:29:32 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 20:49:13 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 21:01:44 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,22 @@ bool	is_builtin(const char *cmd)
 	return (i < num_builtins);
 }
 
-int	handle_builtin(t_shell *shell, int argnum)
+int	handle_builtin(t_shell *shell, t_cmd *cmd)
 {
-	if (!ft_strcmp((shell->cmds[argnum][0]), "cd"))
-		return (ft_cd(shell, argnum));
-	else if (!ft_strcmp((shell->cmds[argnum][0]), "/usr/bin/echo"))
-		return (ft_echo(shell, argnum));
-	else if (!ft_strcmp((shell->cmds[argnum][0]), "/usr/bin/env"))
+	if (!ft_strcmp(cmd->bin, "cd"))
+		return (ft_cd(cmd, shell));
+	else if (!ft_strcmp(cmd->bin, "/usr/bin/echo"))
+		return (ft_echo(cmd));
+	else if (!ft_strcmp(cmd->bin, "/usr/bin/env"))
 		return (ft_env(shell));
-	else if (!ft_strcmp((shell->cmds[argnum][0]), "exit"))
-		return (ft_exit(shell, argnum));
-	else if (!ft_strcmp((shell->cmds[argnum][0]), "export"))
-		return (ft_export(shell, argnum));
-	else if (!ft_strcmp((shell->cmds[argnum][0]), "/usr/bin/pwd"))
-		return (ft_pwd(shell));
-	else if (!ft_strcmp((shell->cmds[argnum][0]), "unset"))
-		return (ft_unset(shell, argnum));
+	else if (!ft_strcmp(cmd->bin, "exit"))
+		return (ft_exit(shell));
+	else if (!ft_strcmp(cmd->bin, "export"))
+		return (ft_export(cmd, shell));
+	else if (!ft_strcmp(cmd->bin, "/usr/bin/pwd"))
+		return (ft_pwd());
+	else if (!ft_strcmp(cmd->bin, "unset"))
+		return (ft_unset(cmd, shell));
 	//99?
 	return (99);
 }

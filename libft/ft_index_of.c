@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_index_of.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/23 14:03:01 by saul.blanco      ###   ########.fr       */
+/*   Created: 2024/11/09 20:32:28 by sblanco-          #+#    #+#             */
+/*   Updated: 2024/11/09 20:32:57 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	ft_pwd()
+size_t	ft_index_of(char *str, char c)
 {
-	char	*curr_dir;
-	int		ret;
+	size_t	i;
 
-	ret = 1;
-	curr_dir = getcwd(NULL, 0);
-	if (curr_dir)
+	i = 0;
+	while (str && str[i])
 	{
-		printf("%s\n", curr_dir);
-		ret = 0;
+		if (str[i] == c)
+			return (i);
+		i++;
 	}
-	free(curr_dir);
-	return (ret);
+	return (-1);
 }

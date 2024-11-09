@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 20:48:35 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 20:56:38 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,27 @@ typedef enum e_quoted
 	SINGLE_QUOTE,
 	DOUBLE_QUOTE,
 	NOPE,
-}				t_quoted;
+}			t_quoted;
+
+typedef struct s_parsed_token
+{
+	char	*parsed;
+	int		skip;
+}			t_parsed_token;
+
+typedef struct s_cmd
+{
+	char	*bin;
+	t_node	*args;
+	int		fd_in;
+	int		fd_out;
+}				t_cmd;
 
 typedef struct s_shell
 {
 	int			interactive;
 	char		**envp;
-	const char	***cmds;
+	t_node		*cmds;
 	int			cmd_count;
 	int			exit_code;
 }				t_shell;
@@ -50,18 +64,18 @@ typedef struct s_shell
 extern int			g_exit_num;
 // BUILTINS
 bool			is_builtin(const char *cmd);
-int				handle_builtin(t_shell *shell, int argnum);
-int				ft_cd(t_shell *shell, int argnum);
-int				ft_echo(t_shell *shell, int argnum);
+int				handle_builtin(t_shell *shell, t_cmd *cmd);
+int				ft_cd(t_cmd *cmd, t_shell *shell);
+int				ft_echo(t_cmd *cmd);
 int				ft_env(t_shell *shell);
-int				ft_exit(t_shell *shell, int argnum);
-int				ft_export(t_shell *shell, int argnum);
-int				ft_pwd(t_shell *shell);
-int				ft_unset(t_shell *shell, int argnum);
+int				ft_exit(t_shell *shell);
+int				ft_export(t_cmd *cmd, t_shell *shell);
+int				ft_pwd();
+int				ft_unset(t_cmd *cmd, t_shell *shell);
 
 // UTILS
 int				ft_strcmp(const char *s1, const char *s2);
-const char		***get_cmds(t_shell *cfg, char **argv);
+t_node			*get_cmds(t_shell *cfg, char **argv);
 bool			starts_with(const char *str, const char *prefix);
 void			free_strs(char **strs);
 void			free_cmds(char ***cmds, int cmd_count);
@@ -79,6 +93,7 @@ char			**new_env(char **env, int n, int add, char *val);
 
 //EXPANSOR
 char			**expand(t_shell *shell, char **args);
+char			*expand_super(char *str, t_shell *cfg);
 
 // utils de bultins
 char			*ft_get_env_val(t_shell *shell, char *var);
@@ -94,5 +109,9 @@ void			ft_piped_exec(t_shell *shell);
 //	SIGNALS
 void			sig_manage(t_shell *shell, int interactive);
 void			write_signals(t_shell *shell, int write_signal);
+
+// TOKENIZER
+t_cmd			*tokenize(char *cmd_line, t_shell *cfg);
+
 
 #endif

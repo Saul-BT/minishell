@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 20:48:51 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 20:56:45 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,21 @@ int	ft_cd_oldpwd(t_shell *shell)
 	return (chdir(ft_get_env_val(shell, "OLDPWD")));
 }
 
-int	ft_cd(t_shell *shell, int argnum)
+int	ft_cd(t_cmd *cmd, t_shell *shell)
 {
 	int		ret;
 	char	*oldpath;
+	char	*nd_arg;
 
 	oldpath = getcwd(NULL, 0);
-	if (!shell->cmds[argnum][1])
+	nd_arg = (char *) cmd->args->next->next->content;
+	// printf("en cd:\n---argnum = %i\n+++%s\n\n",argnum, shell->cmds[argnum][1]);
+	if (!nd_arg)
 		ret = chdir(ft_get_env_val(shell, "HOME"));
-	else if (shell->cmds[argnum][1][0] == '-')
+	else if (nd_arg[0] == '-')
 		ret = ft_cd_oldpwd(shell);
 	else
-		ret = chdir(shell->cmds[argnum][1]);
+		ret = chdir(nd_arg);
 	if (!ret)
 	{
 		ft_set_env_val(shell, "OLDPWD", oldpath,
