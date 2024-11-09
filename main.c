@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/23 12:46:09 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/11/23 12:52:55 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			shell->cmds = get_cmds(shell, splited);
 			// print_cmds(shell->cmds, shell->cmd_count);
-			if (shell->cmd_count == 1 && is_builtin(shell->cmds[0][0]))
+			if (shell->cmd_count == 1 && is_builtin(((t_cmd *)shell->cmds->content)->bin))
 				g_exit_num = handle_builtin(shell, 0);
 			else
 				ft_piped_exec(shell);

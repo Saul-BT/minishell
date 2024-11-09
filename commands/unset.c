@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/23 12:47:27 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/11/23 14:03:32 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ char	**ft_delete_env_var(t_shell *shell, char **env, char *var)
 	return (new_env);
 }
 
-int	ft_unset(t_shell *shell, int argnum)
+int	ft_unset(t_cmd *cmd, t_shell *shell)
 {
 	char	**env;
 
-	env = ft_delete_env_var(shell, shell->envp, (char *)shell->cmds[argnum][1]);
+	env = ft_delete_env_var(shell, shell->envp, (char *)cmd->args->next->content);
 	if (env)
 	{
 		free(shell->envp);
