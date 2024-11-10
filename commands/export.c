@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/23 13:13:29 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/11/23 14:21:25 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char	*get_new_val(char *var)
 	return (newval);
 }
 
-int	modifyenv(t_shell *shell, t_node *args, int n)
+int	modifyenv(t_shell *shell, t_node *arg, int n)
 {
 	char	**act_env;
 	char	*newval;
@@ -108,7 +108,7 @@ int	modifyenv(t_shell *shell, t_node *args, int n)
 	t_node	*arg_node;
 	char	*arg_val;
 
-	arg_node = args;
+	arg_node = arg;
 	ret = 0;
 	while (arg_node)
 	{
@@ -146,7 +146,7 @@ int	ft_export(t_cmd *cmd, t_shell *shell)
 	n = 0;
 	if (!shell->envp)
 		return (1);
-	nd_arg_node = cmd->args->next->next;
+	nd_arg_node = cmd->args->next;
 	while (shell->envp[n])
 		n++;
 	// printf("-----ARGNUM = %i\n", argnum);

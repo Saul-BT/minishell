@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2024/11/23 14:03:40 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/11/23 14:23:10 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static char	*str_exange(t_shell *shell, char *args)
 {
+	printf("---------%s\n", args);
 	if (args[1] == '?')
 		return (ft_itoa(g_exit_num));
 	else if (!args[1])
@@ -46,23 +47,23 @@ char	**expand(t_shell *shell, char **args)
 	return (args);
 }
 
+// "text $var pepe"
+//  0123456789
 char	*expand_super(char *str, t_shell *cfg)
 {
-	size_t	i, j, dollar_idx, after_var_idx;
-	char	*tmp;
+	int		dollar_idx, after_var_idx;
 	char	*before_expanded;
 	char	*expanded;
-	char	*after_expanded;
-	
 
-	i = 0;
 	// TODO: Should handle any whitespace character
-	dollar_idx = ft_index_of(str, ' ');	
+	dollar_idx = ft_index_of(str, '$'); // -> 5
 
 	if (dollar_idx == -1)
-		return (NULL);
-	before_expanded = ft_substr(str, 0, dollar_idx);
-	after_var_idx = dollar_idx + ft_index_of(str + dollar_idx + 1, ' ') + 1;
+		return (str);
+	before_expanded = ft_substr(str, 0, dollar_idx); // -> "text "
+	after_var_idx = ft_index_of(str + dollar_idx + 1, ' '); // -> 8
+	// TODO: index_of cannot return size_t
+	after_var_idx = after_var_idx == -1 ? (int)ft_strlen(str) : after_var_idx + dollar_idx + 1;
 	expanded = str_exange(cfg, ft_substr(str + dollar_idx + 1, 0, after_var_idx - dollar_idx));
 	expanded = ft_strjoin(before_expanded, expanded);
 	expanded = ft_strjoin(expanded, expand_super(str + after_var_idx, cfg));
