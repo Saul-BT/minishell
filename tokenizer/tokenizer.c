@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/10 11:46:14 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/11/10 15:09:23 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static inline bool	is_space(char c)
 
 t_parsed_token	*handle_dquote(char *token, t_shell *cfg)
 {
-	int				next_dquote_idx;
+	size_t			next_dquote_idx;
 	t_parsed_token	*result;
 	
 	next_dquote_idx = ft_index_of(token + 1, '"');
@@ -32,7 +32,7 @@ t_parsed_token	*handle_dquote(char *token, t_shell *cfg)
 
 t_parsed_token	*handle_quote(char *token)
 {
-	int				next_quote_idx;
+	size_t			next_quote_idx;
 	t_parsed_token	*result;
 	
 	next_quote_idx = ft_index_of(token + 1, '\'');
@@ -45,17 +45,17 @@ t_parsed_token	*handle_quote(char *token)
 
 t_parsed_token	*handle_other(char *token, t_shell *cfg)
 {
-	int				next_space_idx;
+	size_t			next_space_idx;
 	t_parsed_token	*result;
 	
-	next_space_idx = ft_index_of(token + 1, ' ');
-	if (next_space_idx == -1)
-		next_space_idx = ft_strlen(token) - 1;
 	result = malloc(sizeof(t_parsed_token));
-	result->parsed = expand_super(ft_substr(token, 0, next_space_idx + 1), cfg);
 	result->skip = 0;
-	if (next_space_idx != -1)
-		result->skip = next_space_idx;
+	next_space_idx = ft_index_of(token + 1, ' ');
+	if (next_space_idx == (size_t)-1)
+		next_space_idx = ft_strlen(token) - 1;
+
+	result->skip = next_space_idx;
+	result->parsed = expand_super(ft_substr(token, 0, next_space_idx + 1), cfg);
 
 	return (result);
 }
@@ -90,10 +90,24 @@ t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 	return (handle_other(token, cfg));
 }
 
+void print_arg(char *arg)
+{
+	printf("  -> %s\n", arg);
+}
+
+void print_tokenized(t_cmd *cmd)
+{
+	printf("=====================\n");
+	printf("bin: %s\n", cmd->bin);
+	printf("arg_count: %d\n", cmd->arg_count);
+	ft_lstiter(cmd->args, (void (*)(void *))print_arg);
+	printf("=====================\n");
+}
+
 t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 {
-	int				i;
-	int				len;
+	size_t			i;
+	size_t			len;
 	t_cmd			*cmd;
 	t_parsed_token	*presult;
 	bool			first_parsed;
@@ -125,8 +139,10 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 			ft_lstadd_back(&cmd->args, ft_lstnew(presult->parsed));
 			cmd->arg_count++;
 		}
-		i += presult->skip + 1; // TODO: +1?
+		i += presult->skip + 1;
 	}
+
+	print_tokenized(cmd);
 
 	return (cmd);
 }
