@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:47:20 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/23 14:23:49 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/11/23 14:24:53 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	free_strs(char **strs)
 	strs = NULL;
 }
 
-void	free_args(t_node *cmd_node)
+void	free_args(t_cmd *cmd)
 {
-	ft_lstclear(&((t_cmd *)cmd_node->content)->args, free);
+	ft_lstclear(&(cmd->args), free);
 }
 
 void	free_cmds(t_node *cmds)

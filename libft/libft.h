@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 19:02:44 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/10 14:21:13 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/11/10 16:57:35 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <stddef.h>
 # include <stdio.h>
+# include <stdbool.h>
 # include "unistd.h"
 
 // Declarations
@@ -67,6 +68,7 @@ void	ft_putnbr_fd(int n, int fd);
 
 // Extended
 size_t	ft_index_of(char *str, char c);
+bool	ft_isspace(char c);
 
 // Bonus
 t_node	*ft_lstnew(void *content);
