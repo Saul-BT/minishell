@@ -6,15 +6,15 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 20:32:28 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/09 20:32:57 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/11/10 09:29:48 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_index_of(char *str, char c)
+int	ft_index_of(char *str, char c)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (str && str[i])

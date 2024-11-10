@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 20:56:38 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 21:04:47 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_cmd
 {
 	char	*bin;
 	t_node	*args;
+	int		arg_count;
 	int		fd_in;
 	int		fd_out;
 }				t_cmd;
@@ -78,7 +79,7 @@ int				ft_strcmp(const char *s1, const char *s2);
 t_node			*get_cmds(t_shell *cfg, char **argv);
 bool			starts_with(const char *str, const char *prefix);
 void			free_strs(char **strs);
-void			free_cmds(char ***cmds, int cmd_count);
+void			free_cmds(t_node *cmds);
 bool			has_char(const char *str, char c);
 char			*ft_join(const char **strs);
 char			**pipe_split(const char *str, int *cmd_count);

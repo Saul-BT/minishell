@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 19:02:44 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/09 20:33:27 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/11/10 09:30:06 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
 // Extended
-size_t	ft_index_of(char *str, char c);
+int		ft_index_of(char *str, char c);
 
 // Bonus
 t_node	*ft_lstnew(void *content);

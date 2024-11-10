@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/09 23:27:19 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/11/10 11:15:19 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_node	*get_cmds(t_shell *cfg, char **argv)
 	i = 0;
 	// TODO: Maybe need to check if there is a PATH before
 	bin_paths = ft_split(getenv("PATH"), ':');
-	cmds = ft_lstnew(NULL);
+	cmds = NULL;
 	while (i < cfg->cmd_count)
 	{
 		// TODO: Add check for the returned value (it can be NULL)
@@ -76,7 +76,12 @@ t_node	*get_cmds(t_shell *cfg, char **argv)
 		free(argv[i]);
 		cfg->exit_code = 0;
 		// printmat((char **)cmd_with_args);
-		cmd->bin = get_bin_path(cmd->bin, bin_paths, cfg);
+		// TODO: Don't chage when is builtin
+		if (!is_builtin(cmd->bin))
+		{
+			cmd->bin = get_bin_path(cmd->bin, bin_paths, cfg);
+			cmd->args->content = cmd->bin;
+		}
 		// cmds[i] = cmd_with_args;
 		ft_lstadd_back(&cmds, ft_lstnew(cmd));
 		i++;

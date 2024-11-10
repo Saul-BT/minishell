@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 21:00:42 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 21:05:13 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ char	*get_new_val(char *var)
 	return (newval);
 }
 
-int	modifyenv(t_shell *shell, t_node *args, int n)
+int	modifyenv(t_shell *shell, t_node *arg, int n)
 {
 	char	**act_env;
 	char	*newval;
@@ -108,7 +108,7 @@ int	modifyenv(t_shell *shell, t_node *args, int n)
 	t_node	*arg_node;
 	char	*arg_val;
 
-	arg_node = args;
+	arg_node = arg;
 	ret = 0;
 	while (arg_node)
 	{

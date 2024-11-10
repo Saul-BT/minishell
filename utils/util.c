@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:47:20 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/23 12:47:59 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/11/23 14:23:49 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,15 @@ void	free_strs(char **strs)
 	strs = NULL;
 }
 
-void	free_cmds(char ***cmds, int cmd_count)
+void	free_args(t_node *cmd_node)
 {
-	int	i;
+	ft_lstclear(&((t_cmd *)cmd_node->content)->args, free);
+}
 
-	i = 0;
-	while (cmds && i < cmd_count)
-	{
-		free_strs(cmds[i]);
-		i++;
-	}
-	free(cmds);
-	cmds = NULL;
+void	free_cmds(t_node *cmds)
+{
+	ft_lstiter(cmds, (void (*)(void *))free_args);
+	ft_lstclear(&cmds, free);
 }
 
 bool	has_char(const char *str, char c)
