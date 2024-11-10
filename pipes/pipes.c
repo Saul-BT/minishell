@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 21:05:52 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 21:06:18 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	**arg_nodes_to_arg_array(t_cmd *cmd)
 
 	i = 0;
 	arg_node = cmd->args;
-	result = ft_calloc(cmd->arg_count - 1, sizeof(char *));
+	result = ft_calloc(cmd->arg_count + 1, sizeof(char *));
 	while (i < cmd->arg_count && arg_node)
 	{
 		result[i] = (char *)arg_node->content;
@@ -112,13 +112,13 @@ void	ft_piped_exec(t_shell *shell)
 		{
 			if (i > 0)
 			{
-				dup2(pipe_read, STDIN_FILENO);
+				dup2(pipe_read, cmd->fd_in);
 				close(pipe_read);
 			}
 			if (i < shell->cmd_count - 1)
 			{
 				close(p[READ_END]);
-				dup2(p[WRITE_END], STDOUT_FILENO);
+				dup2(p[WRITE_END], cmd->fd_out);
 				close(p[WRITE_END]);
 			}
 			if (is_builtin(cmd->bin))

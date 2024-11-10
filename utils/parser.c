@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/10 11:15:19 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/11/10 15:48:03 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ t_node	*get_cmds(t_shell *cfg, char **argv)
 		free(argv[i]);
 		cfg->exit_code = 0;
 		// printmat((char **)cmd_with_args);
-		// TODO: Don't chage when is builtin
 		if (!is_builtin(cmd->bin))
 		{
 			cmd->bin = get_bin_path(cmd->bin, bin_paths, cfg);

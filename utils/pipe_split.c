@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_split.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 10:00:46 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/09 19:44:20 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/10 16:57:59 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static inline bool	is_space(char c)
-{
-	return ((c >= '\t' && c <= '\r') || (c == ' '));
-}
 
 static inline bool	is_single_quote(char c)
 {
@@ -34,7 +29,7 @@ static bool	is_pipe(char c)
 
 static inline bool	is_word_boundary(char a, char b)
 {
-	return (!is_space(a) && is_space(b));
+	return (!ft_isspace(a) && ft_isspace(b));
 }
 
 bool	is_quoted(char c)
@@ -92,7 +87,7 @@ static void	get_piped_cmds(const char *str, char ***cmds, int cmd_count)
 	ispipe = false;
 	wb_index = 0;
 	cmd_start_index = 0;
-	while (is_space(str[i]))
+	while (ft_isspace(str[i]))
 		i++;
 	while (i <= ft_strlen(str))
 	{
