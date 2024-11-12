@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/23 13:33:21 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/08 18:57:42 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,18 +100,21 @@ char	*get_new_val(char *var)
 	return (newval);
 }
 
-void	modifyenv(t_shell *shell, char **command, int n)
+int	modifyenv(t_shell *shell, char **command, int n)
 {
 	int		i;
 	char	**act_env;
 	char	*newval;
+	int		ret;
 
 	i = 0;
+	ret = 0;
 	while (command[++i])
 	{
-		if (command[i][0] == '=')
+		if (command[i][0] == '=' || ft_isdigit(command[i][0]))
 		{
 			printf("bash: export: %s : not a valid identifier\n", command[i]);
+			ret = 1;
 			continue ;
 		}
 		else if (ft_get_env_pos(shell->envp, command[i]) >= 0)
@@ -127,15 +130,18 @@ void	modifyenv(t_shell *shell, char **command, int n)
 		free(shell->envp);
 		shell->envp = act_env;
 	}
+	return (ret);
 }
 
 
-void	ft_export(t_shell *shell, int argnum)
+int	ft_export(t_shell *shell, int argnum)
 {
 	char	**env_cpy;
 	int		n;
-
+	
 	n = 0;
+	if (!shell->envp)
+		return (1);
 	while (shell->envp[n])
 		n++;
 	// printf("-----ARGNUM = %i\n", argnum);
@@ -146,5 +152,8 @@ void	ft_export(t_shell *shell, int argnum)
 		free_env(env_cpy);
 	}
 	else
-		modifyenv(shell, (char **)shell->cmds[argnum], n);
+	{
+		return (modifyenv(shell, (char **)shell->cmds[argnum], n));
+	}
+	return (0);
 }

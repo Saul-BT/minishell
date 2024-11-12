@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/22 18:33:05 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/09 18:40:43 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**ft_delete_env_var(t_shell *shell, char **env, char *var)
 	return (new_env);
 }
 
-void	ft_unset(t_shell *shell, int argnum)
+int	ft_unset(t_shell *shell, int argnum)
 {
 	char	**env;
 
@@ -47,5 +47,7 @@ void	ft_unset(t_shell *shell, int argnum)
 	{
 		free(shell->envp);
 		shell->envp = env;
+		return (0);
 	}
+	return (1);
 }
