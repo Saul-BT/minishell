@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2024/10/23 18:16:14 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/23 12:47:36 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 static char	*str_exange(t_shell *shell, char *args)
 {
 	if (args[1] == '?')
-		return (ft_strdup("salida de error por rellenar"));
+		return (ft_itoa(g_exit_num));
 	else if (!args[1])
 		return (ft_strdup("$"));
 	else
 	{
-		// printf("---------%s\n", args + 1);
 		if (ft_get_env_pos(shell->envp, args + 1) < 0)
 			return (ft_strdup(""));
 		return (ft_strdup(ft_get_env_val(shell, args + 1)));
@@ -32,7 +31,7 @@ char	**expand(t_shell *shell, char **args)
 {
 	int		i;
 	char	*substitute;
-	
+
 	i = 0;
 	while (args[i])
 	{

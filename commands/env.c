@@ -3,49 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/23 13:35:10 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/23 12:47:01 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// void	ft_print_special(char *str)
-// {
-// 	size_t	len;
+//codigos de error comprobados
 
-// 	len = ft_strlen(str);
-// 	write(1, str, len);
-// 	write(1, "\n", 1);
-// }
-
-// void	ft_env(t_shell *shell)
-// {
-// 	int		j;
-// 	char	**env;
-
-// 	env = shell->envp;
-// 	j = 0;
-// 	while (env[j])
-// 	{
-// 		ft_print_special(env[j]);
-// 		j++;
-// 	}
-// }
-
-void	ft_env(t_shell *shell)
+int	ft_env(t_shell *shell)
 {
 	int		j;
 	char	**env;
 
 	env = shell->envp;
 	j = 0;
+	if (!env)
+		return (1);
 	while (env[j])
 	{
 		printf("%s\n", env[j]);
 		j++;
 	}
+	return (0);
 }
 

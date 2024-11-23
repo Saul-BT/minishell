@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/22 18:33:05 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/23 12:47:27 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**ft_delete_env_var(t_shell *shell, char **env, char *var)
 	return (new_env);
 }
 
-void	ft_unset(t_shell *shell, int argnum)
+int	ft_unset(t_shell *shell, int argnum)
 {
 	char	**env;
 
@@ -47,5 +47,7 @@ void	ft_unset(t_shell *shell, int argnum)
 	{
 		free(shell->envp);
 		shell->envp = env;
+		return (0);
 	}
+	return (1);
 }

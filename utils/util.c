@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:47:20 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/23 16:52:19 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/23 12:47:59 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	printmat(char **m)
 {
 	int	i;
 
+	i = 0;
 	while (m[i])
 	{
 		printf("%s\n", m[i]);

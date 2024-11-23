@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/23 13:55:47 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/23 12:46:55 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,28 @@
 
 // TODO: Remove the tricky ft_join
 
-void	ft_echo(t_shell *shell, int argnum)
+//codigos de error comprobados
+
+int	ft_echo(t_shell *shell, int argnum)
 {
 	const char	**args;
-	char *joined;
-	
-	// printf("en echo:\n---argnum = %i\n+++%s\n\n",argnum, shell->cmds[argnum][1]);
+	char		*joined;
+
 	args = shell->cmds[argnum];
-	if (args && *args && !ft_strncmp(*args, "-n", 2))
+	if (!*args[1])
+	{
+		printf("\n");
+		return (0);
+	}
+	if (args && *args && !ft_strncmp(args[1], "-n", 3))
 	{
 		joined = ft_join(args + 2);
 		printf("%s", joined);
 		free(joined);
-		return ;
+		return (0);
 	}
 	joined = ft_join(args + 1);
 	printf("%s\n", joined);
 	free(joined);
+	return (0);
 }

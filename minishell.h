@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/23 17:12:45 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/23 12:46:27 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <termios.h>
 
-// int	g_exit_num;
 
 typedef enum e_quoted
 {
@@ -37,6 +37,7 @@ typedef enum e_quoted
 	DOUBLE_QUOTE,
 	NOPE,
 }				t_quoted;
+
 
 typedef struct s_shell
 {
@@ -47,16 +48,17 @@ typedef struct s_shell
 	int			exit_code;
 }				t_shell;
 
+extern int			g_exit_num;
 // BUILTINS
 bool			is_builtin(const char *cmd);
-void			handle_builtin(t_shell *shell, int argnum);
-void			ft_cd(t_shell *shell, int argnum);
-void			ft_echo(t_shell *shell, int argnum);
-void			ft_env(t_shell *shell);
-void			ft_exit(t_shell *shell);
-void			ft_export(t_shell *shell, int argnum);
-void			ft_pwd(t_shell *shell);
-void			ft_unset(t_shell *shell, int argnum);
+int				handle_builtin(t_shell *shell, int argnum);
+int				ft_cd(t_shell *shell, int argnum);
+int				ft_echo(t_shell *shell, int argnum);
+int				ft_env(t_shell *shell);
+int				ft_exit(t_shell *shell);
+int				ft_export(t_shell *shell, int argnum);
+int				ft_pwd(t_shell *shell);
+int				ft_unset(t_shell *shell, int argnum);
 
 // UTILS
 int				ft_strcmp(const char *s1, const char *s2);
@@ -91,7 +93,8 @@ char			*ft_get_env_name(char *arg);
 void			ft_piped_exec(t_shell *shell);
 
 //	SIGNALS
-void			sig_manage(int signum);
+void			sig_manage(t_shell *shell, int interactive);
+void			write_signals(t_shell *shell, int write_signal);
 
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/10/23 13:49:51 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/23 12:47:53 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ void	ft_piped_exec(t_shell *shell)
 	int	i;
 	int	pid;
 	int	pipe_read;
-
+	int status;
+	
 	i = 0;
 	pipe_read = -1;
 	while (i < shell->cmd_count)
@@ -100,11 +101,11 @@ void	ft_piped_exec(t_shell *shell)
 			}
 			if (is_builtin(shell->cmds[i][0]))
 			{
-				handle_builtin(shell, i);
-				exit(0);
+				g_exit_num = handle_builtin(shell, i);
+				exit(g_exit_num);
 			}
-			execve(shell->cmds[i][0], (char *const *)shell->cmds[i],
-				shell->envp);
+			g_exit_num = execve(shell->cmds[i][0],
+					(char *const *)shell->cmds[i], shell->envp);
 			print_error("execve");
 		}
 		else
@@ -119,6 +120,9 @@ void	ft_piped_exec(t_shell *shell)
 		}
 		i++;
 	}
-	while (wait(NULL) > 0)
-		;
+	while (waitpid(-1, &status, 0) > 0)
+	{
+		if (WIFEXITED(status))
+			g_exit_num = WEXITSTATUS(status);
+	}
 }
