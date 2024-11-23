@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/23 14:24:27 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/11/23 14:26:04 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_echo(t_cmd *cmd)
 	if (!arg_node->next)
 	{
 		printf("\n");
-		return ;
+		return (0);
 	}
 	new_line = ft_strncmp((char *) arg_node->next->content, "-n", 2);
 	if (new_line)
