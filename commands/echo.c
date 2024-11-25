@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 21:06:31 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 21:07:23 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,14 @@ int	ft_echo(t_cmd *cmd)
 	bool	new_line;
 	
 	i = 0;
-	arg_node = cmd->args;
-	if (!arg_node->next)
+	new_line = true;
+	arg_node = cmd->args->next;
+	while (arg_node && !ft_strncmp((char *) arg_node->content, "-n", 2))
 	{
-		printf("\n");
-		return (0);
-	}
-	new_line = ft_strncmp((char *) arg_node->next->content, "-n", 2);
-	if (new_line)
+		new_line = false;
 		arg_node = arg_node->next;
-	while (i < cmd->arg_count && arg_node)
+	}
+	while (arg_node)
 	{
 		if (i > 0)
 			printf(" ");
