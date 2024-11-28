@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/23 12:46:09 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 20:48:05 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,27 @@ void	print_cmds(const char ***cmds, int count)
 	}
 }
 
+void	check_shlvl( int n, t_shell *shell)
+{
+	int	lvl;
+	int	pos;
+
+	lvl = 0;
+	pos = ft_get_env_pos(shell->envp, "SHLVL");
+	if (pos > 0)
+	{
+		lvl = ft_atoi(ft_get_env_val(shell, "SHLVL"));
+		lvl++;
+		ft_set_env_val(shell, "SHLVL", ft_itoa(lvl), pos);
+	}
+	else
+	{
+		new_env(shell->envp, n + 1, 1, "SHLVL");
+		ft_set_env_val(shell, "SHLVL", "1",
+			ft_get_env_pos(shell->envp, "SHLVL"));
+	}
+}
+
 t_shell	*initshell(char **env)
 {
 	t_shell	*ret;
@@ -45,8 +66,13 @@ t_shell	*initshell(char **env)
 	while (env[n])
 		n++;
 	// TODO: We need to check if the env behaves correctly in child proccesses
-	alocated_env = new_env(env, n, 0, NULL);
-	ret->envp = alocated_env;
+	if (*env)
+	{
+		alocated_env = new_env(env, n, 0, NULL);
+		ret->envp = alocated_env;
+		check_shlvl(n, ret);
+	}
+
 	ret->cmds = NULL;
 	ret->exit_code = 0;
 	// init_signals();
@@ -65,7 +91,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	// signal(SIGINT, sig_manage);
 	// signal(SIGQUIT, sig_manage);
-	while (true)
+	while (!shell->exit_code)
 	{
 		sig_manage(shell, 1);
 		// write_signals(shell, false);
@@ -98,5 +124,5 @@ int	main(int argc, char **argv, char **envp)
 		free_cmds((char ***)shell->cmds, shell->cmd_count);
 		free(input);
 	}
-	return (0);
+	return (g_exit_num);
 }

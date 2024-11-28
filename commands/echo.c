@@ -6,24 +6,13 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/23 12:46:55 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 20:48:58 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// void	ft_echo(const char **args)
-// {
-// 	if (args && *args && !ft_strcmp(*args, "-n\0")) {
-// 		printf("%s", ft_join(args + 1));
-// 		return;
-// 	}
-// 	printf("%s\n", ft_join(args));
-// }
-
-// TODO: Remove the tricky ft_join
-
-//codigos de error comprobados
+//GESTIONAR -nnnnnnnn y -n -n -n -n
 
 int	ft_echo(t_shell *shell, int argnum)
 {

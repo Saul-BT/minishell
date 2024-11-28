@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:50:46 by mmartine          #+#    #+#             */
-/*   Updated: 2024/11/23 12:46:45 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 20:48:44 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	sig_interactive(int signum)
 	if (signum == SIGINT)
 	{
 		printf("> ^C\n");
-		rl_replace_line("", 1);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		g_exit_num = 130;
@@ -59,7 +59,6 @@ void	sig_non_interactive(int signum)
 	else if (signum == SIGQUIT)
 	{
 		write(1, "\n", 1);
-		// printf("Quit (core dumped)\n");
 		g_exit_num = 131;
 	}
 }

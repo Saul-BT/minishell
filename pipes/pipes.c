@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/23 12:47:53 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 20:49:48 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	ft_piped_exec(t_shell *shell)
 	int	pid;
 	int	pipe_read;
 	int status;
-	
+
 	i = 0;
 	pipe_read = -1;
 	while (i < shell->cmd_count)
@@ -106,6 +106,7 @@ void	ft_piped_exec(t_shell *shell)
 			}
 			g_exit_num = execve(shell->cmds[i][0],
 					(char *const *)shell->cmds[i], shell->envp);
+			//si e intenta ejecutar una carpeta tiene que emitir error 126
 			print_error("execve");
 		}
 		else
