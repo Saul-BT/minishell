@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/12 20:06:23 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:21:45 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_piped_exec(t_shell *shell)
 	int	pid;
 	int	pipe_read;
 	int status;
-	
+
 	i = 0;
 	pipe_read = -1;
 	while (i < shell->cmd_count)
@@ -49,6 +49,7 @@ void	ft_piped_exec(t_shell *shell)
 			}
 			g_exit_num = execve(shell->cmds[i][0],
 					(char *const *)shell->cmds[i], shell->envp);
+			//si e intenta ejecutar una carpeta tiene que emitir error 126
 			print_error("execve");
 		}
 		else

@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/08 18:57:42 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/15 18:26:31 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,11 @@ int	ft_export(t_shell *shell, int argnum)
 	n = 0;
 	if (!shell->envp)
 		return (1);
+	if (shell->cmds[argnum][1] && shell->cmds[argnum][1][0] == '-')
+	{
+		printf("bash: export: %s: invalid option\n", shell->cmds[argnum][1]);
+		return (2);
+	}
 	while (shell->envp[n])
 		n++;
 	// printf("-----ARGNUM = %i\n", argnum);

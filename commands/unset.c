@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/09 18:40:43 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/15 18:19:41 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,16 @@ char	**ft_delete_env_var(t_shell *shell, char **env, char *var)
 	return (new_env);
 }
 
-int	ft_unset(t_shell *shell, int argnum)
+int	ft_unset(t_shell *shell, int argn)
 {
 	char	**env;
 
-	env = ft_delete_env_var(shell, shell->envp, (char *)shell->cmds[argnum][1]);
+	if (shell->cmds[argn][1][0] == '-')
+	{
+		printf("bash: unset: %s: invalid option\n", shell->cmds[argn][1]);
+		return (2);
+	}
+	env = ft_delete_env_var(shell, shell->envp, (char *)shell->cmds[argn][1]);
 	if (env)
 	{
 		free(shell->envp);

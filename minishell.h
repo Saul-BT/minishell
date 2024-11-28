@@ -6,16 +6,17 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/12 20:51:59 by mmartine         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:04:20 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
+# ifndef ECHOCTL
+#  define ECHOCTL 0x00000040
+# endif
 # define READ_END 0
 # define WRITE_END 1
-
 # include <errno.h>
 # include <fcntl.h>
 # include <libft.h>
@@ -30,14 +31,12 @@
 # include <unistd.h>
 # include <termios.h>
 
-
 typedef enum e_quoted
 {
 	SINGLE_QUOTE,
 	DOUBLE_QUOTE,
 	NOPE,
 }				t_quoted;
-
 
 typedef struct s_shell
 {
@@ -55,7 +54,7 @@ int				handle_builtin(t_shell *shell, int argnum);
 int				ft_cd(t_shell *shell, int argnum);
 int				ft_echo(t_shell *shell, int argnum);
 int				ft_env(t_shell *shell);
-int				ft_exit(t_shell *shell);
+int				ft_exit(t_shell *shell, int argnum);
 int				ft_export(t_shell *shell, int argnum);
 int				ft_pwd(t_shell *shell);
 int				ft_unset(t_shell *shell, int argnum);
@@ -95,6 +94,5 @@ void			ft_piped_exec(t_shell *shell);
 //	SIGNALS
 void			sig_manage(t_shell *shell, int interactive);
 void			write_signals(t_shell *shell, int write_signal);
-
 
 #endif
