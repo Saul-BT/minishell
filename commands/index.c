@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:29:32 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 21:05:27 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 21:20:21 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	handle_builtin(t_shell *shell, t_cmd *cmd)
 	else if (!ft_strcmp(cmd->bin, "env"))
 		return (ft_env(shell));
 	else if (!ft_strcmp(cmd->bin, "exit"))
-		return (ft_exit(shell));
+		return (ft_exit(shell, cmd));
 	else if (!ft_strcmp(cmd->bin, "export"))
 		return (ft_export(cmd, shell));
 	else if (!ft_strcmp(cmd->bin, "pwd"))

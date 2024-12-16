@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:37:07 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 20:57:40 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 21:20:00 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,30 @@
 
 //GESTIONAR MAX LONG LONG Y MIN LONG LONG
 
-int	valid_exit(char **args)
+int	valid_exit(t_node *args, int arg_count)
 {
 	int	i;
 
 	i = 0;
-	if (!args[1])
+	if (!args || !args->next)
 		return (0);
-	while (args[1][i])
+	while (((char *)args->next->content)[i])
 	{
-		if (!ft_isdigit(args[1][i]))
+		if (!ft_isdigit(((char *)args->next->content)[i]))
 			return (2);
 		i++;
 	}
-	i = 0;
-	while (args[i])
-		i++;
-	if (i > 2)
+	if (arg_count > 2)
 		return (1);
 	return (0);
 }
 
-int	ft_exit(t_shell *shell, int argnum)
+int	ft_exit(t_shell *shell, t_cmd *cmd)
 {
 	int	error;
 
 
-	error = valid_exit((char **)shell->cmds[argnum]);
+	error = valid_exit(cmd->args, cmd->arg_count);
 	printf("exit\n");
 	if (error == 1)
 	{
@@ -50,11 +47,10 @@ int	ft_exit(t_shell *shell, int argnum)
 	shell->exit_code = 1;
 	if (error == 2)
 	{
-		printf("bash: exit: %s: numeric argument required\n",
-			shell->cmds[argnum][1]);
+		printf("bash: exit: %s: numeric argument required\n", cmd->bin);
 		return (2);
 	}
-	else if (shell->cmds[argnum][1])
-		return (ft_atoi(shell->cmds[argnum][1]));
+	else if (cmd->args && cmd->args->next)
+		return (ft_atoi((char *)cmd->args->next->content));
 	return (0);
 }

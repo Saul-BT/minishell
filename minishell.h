@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 21:04:47 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/16 21:20:33 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int				handle_builtin(t_shell *shell, t_cmd *cmd);
 int				ft_cd(t_cmd *cmd, t_shell *shell);
 int				ft_echo(t_cmd *cmd);
 int				ft_env(t_shell *shell);
-int				ft_exit(t_shell *shell);
+int				ft_exit(t_shell *shell, t_cmd *cmd);
 int				ft_export(t_cmd *cmd, t_shell *shell);
 int				ft_pwd();
 int				ft_unset(t_cmd *cmd, t_shell *shell);
