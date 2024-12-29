@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/10 17:06:15 by sblanco-         ###   ########.fr       */
+/*   Updated: 2024/12/23 19:27:45 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_parsed_token	*handle_quote(char *token)
 {
 	size_t			next_quote_idx;
 	t_parsed_token	*result;
-	
+
 	next_quote_idx = ft_index_of(token + 1, '\'');
 	result = malloc(sizeof(t_parsed_token));
 	result->parsed = ft_substr(token + 1, 0, next_quote_idx);
@@ -42,7 +42,7 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 {
 	size_t			next_space_idx;
 	t_parsed_token	*result;
-	
+
 	result = malloc(sizeof(t_parsed_token));
 	result->skip = 0;
 	next_space_idx = ft_index_of(token + 1, ' ');
@@ -60,7 +60,7 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd)
 	size_t			skip;
 	size_t			next_space_idx;
 	t_parsed_token	*result;
-	
+
 	skip = 1;
 	result = malloc(sizeof(t_parsed_token));
 	result->skip = 0;

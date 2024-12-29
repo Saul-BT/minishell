@@ -3,27 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 21:07:23 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/20 20:06:35 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//GESTIONAR -nnnnnnnn y -n -n -n -n
+int	check_flag(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (!(arg[i] == '-'))
+		return (0);
+	while (arg[++i])
+	{
+		if (arg[i] != 'n')
+			return (0);
+	}
+	return (1);
+}
 
 int	ft_echo(t_cmd *cmd)
 {
 	int		i;
 	t_node	*arg_node;
 	bool	new_line;
-	
+
 	i = 0;
 	new_line = true;
 	arg_node = cmd->args->next;
-	while (arg_node && !ft_strncmp((char *) arg_node->content, "-n", 2))
+	while (arg_node && check_flag((char *) arg_node->content))
 	{
 		new_line = false;
 		arg_node = arg_node->next;

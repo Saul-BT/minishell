@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 21:20:33 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/29 18:51:51 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int				ft_echo(t_cmd *cmd);
 int				ft_env(t_shell *shell);
 int				ft_exit(t_shell *shell, t_cmd *cmd);
 int				ft_export(t_cmd *cmd, t_shell *shell);
-int				ft_pwd();
+int				ft_pwd(t_shell *shell);
 int				ft_unset(t_cmd *cmd, t_shell *shell);
 
 // UTILS

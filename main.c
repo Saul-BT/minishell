@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 21:04:43 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/20 20:27:49 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ void	print_cmds(const char ***cmds, int count)
 
 void	check_shlvl( int n, t_shell *shell)
 {
-	int	lvl;
-	int	pos;
+	int		lvl;
+	int		pos;
+	char	*aux;
 
 	lvl = 0;
 	pos = ft_get_env_pos(shell->envp, "SHLVL");
@@ -44,7 +45,9 @@ void	check_shlvl( int n, t_shell *shell)
 	{
 		lvl = ft_atoi(ft_get_env_val(shell, "SHLVL"));
 		lvl++;
-		ft_set_env_val(shell, "SHLVL", ft_itoa(lvl), pos);
+		aux = ft_itoa(lvl);
+		ft_set_env_val(shell, "SHLVL", aux, pos);
+		free(aux);
 	}
 	else
 	{

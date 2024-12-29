@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 21:06:04 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2024/12/29 18:48:05 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,13 @@ int	ft_cd(t_cmd *cmd, t_shell *shell)
 	int		ret;
 	char	*oldpath;
 	char	*nd_arg;
-
+	char	*curr_loc;
+	char	*aux;
+	
 	oldpath = getcwd(NULL, 0);
+	if (!oldpath)
+		oldpath = ft_get_env_val(shell, "PWD");
 	nd_arg = (char *) cmd->args->next->content;
-	// printf("en cd:\n---argnum = %i\n+++%s\n\n",argnum, shell->cmds[argnum][1]);
 	if (!nd_arg)
 		ret = chdir(ft_get_env_val(shell, "HOME"));
 	else if (nd_arg[0] == '-')
@@ -34,13 +37,23 @@ int	ft_cd(t_cmd *cmd, t_shell *shell)
 		ret = chdir(nd_arg);
 	if (!ret)
 	{
+		curr_loc = getcwd(NULL, 0);
+		if (!curr_loc)
+		{
+			aux = ft_strjoin(oldpath, "/");
+			curr_loc = ft_strjoin(aux, nd_arg);
+			free(aux);
+		}
 		ft_set_env_val(shell, "OLDPWD", oldpath,
 			ft_get_env_pos(shell->envp, "OLDPWD"));
+		ft_set_env_val(shell, "PWD", curr_loc,
+			ft_get_env_pos(shell->envp, "PWD"));
 		return (0);
 	}
 	else
 	{
-		printf("el cd ha ido mal(MENSAJE DE EJEMPLO)\n");
+		printf("bash: cd: %s: No such file or directory\n",
+			(char *)cmd->args->next->content);
 		return (1);	
 	}
 	if (oldpath)
