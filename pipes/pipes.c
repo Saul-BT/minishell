@@ -6,7 +6,7 @@
 /*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/06 18:33:43 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/01/06 20:10:21 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,15 @@ void	ft_piped_exec(t_shell *shell)
 				close(p[WRITE_END]);
 			}
 			if (cmd->fd_in != STDIN_FILENO)
-				close(cmd->fd_in);
-			if (cmd->fd_out != STDOUT_FILENO)
-				close(cmd->fd_out);
+            {
+                dup2(cmd->fd_in, STDIN_FILENO);
+                close(cmd->fd_in);
+            }
+            if (cmd->fd_out != STDOUT_FILENO)
+            {
+                dup2(cmd->fd_out, STDOUT_FILENO);
+                close(cmd->fd_out);
+            }
 			if (is_builtin(cmd->bin))
 			{
 				g_exit_num = handle_builtin(shell, cmd);
