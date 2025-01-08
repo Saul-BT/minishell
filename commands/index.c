@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:29:32 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/29 18:50:04 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/08 19:30:21 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ int	handle_builtin(t_shell *shell, t_cmd *cmd)
 	else if (!ft_strcmp(cmd->bin, "echo"))
 		return (ft_echo(cmd));
 	else if (!ft_strcmp(cmd->bin, "env"))
-		return (ft_env(shell));
+		return (ft_env(cmd, shell));
 	else if (!ft_strcmp(cmd->bin, "exit"))
 		return (ft_exit(shell, cmd));
 	else if (!ft_strcmp(cmd->bin, "export"))
 		return (ft_export(cmd, shell));
 	else if (!ft_strcmp(cmd->bin, "pwd"))
-		return (ft_pwd(shell));
+		return (ft_pwd(cmd, shell));
 	else if (!ft_strcmp(cmd->bin, "unset"))
 		return (ft_unset(cmd, shell));
 	//99?

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/16 21:05:13 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/01/06 21:24:30 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 //Caso 2: argumentos nuevos con un igual (hay que mirar formato). Se genera un env con una nueva var tal que: hola="mundo"
 //Caso 3: argumentos existentes a los que se les asigna un nuevo valor. Hay que chekear a la hora de introducir una nueva var si es que esta existe.
 
-void	print_sorted_env(t_shell *shell, char **env, int n)
+void	print_sorted_env(t_shell *shell, char **env, int n, t_cmd *cmd)
 {
 	int			sorted;
 	char		*aux;
@@ -47,7 +47,12 @@ void	print_sorted_env(t_shell *shell, char **env, int n)
 	while (env[++i])
 	{
 		aux = ft_get_env_name(env[i]);
-		printf("declare -x %s=\"%s\"\n", aux, ft_get_env_val(shell, aux));
+		ft_putstr_fd("declare -x ", cmd->fd_out);
+		ft_putstr_fd(aux, cmd->fd_out);
+		ft_putstr_fd("=\"", cmd->fd_out);
+		ft_putstr_fd(ft_get_env_val(shell, aux), cmd->fd_out);
+		ft_putstr_fd("\"\n", cmd->fd_out);
+		// printf("declare -x %s=\"%s\"\n", aux, ft_get_env_val(shell, aux));
 		free(aux);
 	}
 }
@@ -154,11 +159,10 @@ int	ft_export(t_cmd *cmd, t_shell *shell)
 	}
 	while (shell->envp[n])
 		n++;
-	// printf("-----ARGNUM = %i\n", argnum);
 	if (nd_arg_node == NULL)
 	{
 		env_cpy = new_env(shell->envp, n, 0, NULL);
-		print_sorted_env(shell, env_cpy, n);
+		print_sorted_env(shell, env_cpy, n, cmd);
 		free_env(env_cpy);
 	}
 	else

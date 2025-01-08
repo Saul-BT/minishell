@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/29 18:51:51 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/08 19:30:33 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ bool			is_builtin(const char *cmd);
 int				handle_builtin(t_shell *shell, t_cmd *cmd);
 int				ft_cd(t_cmd *cmd, t_shell *shell);
 int				ft_echo(t_cmd *cmd);
-int				ft_env(t_shell *shell);
+int				ft_env(t_cmd *cmd, t_shell *shell);
 int				ft_exit(t_shell *shell, t_cmd *cmd);
 int				ft_export(t_cmd *cmd, t_shell *shell);
-int				ft_pwd(t_shell *shell);
+int				ft_pwd(t_cmd *cmd, t_shell *shell);
 int				ft_unset(t_cmd *cmd, t_shell *shell);
 
 // UTILS

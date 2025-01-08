@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/29 18:48:05 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/06 20:53:00 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_cd(t_cmd *cmd, t_shell *shell)
 	char	*nd_arg;
 	char	*curr_loc;
 	char	*aux;
-	
+
 	oldpath = getcwd(NULL, 0);
 	if (!oldpath)
 		oldpath = ft_get_env_val(shell, "PWD");

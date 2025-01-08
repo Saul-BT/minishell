@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/20 20:06:35 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/06 20:47:43 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,23 @@ int	ft_echo(t_cmd *cmd)
 		new_line = false;
 		arg_node = arg_node->next;
 	}
+	// while (arg_node) 
+	// {
+	// 	if (i > 0)
+	// 		printf(" ");
+	// 	printf("%s", (char *)arg_node->content);
+	// 	arg_node = arg_node->next;
+	// 	i++;
+	// }
 	while (arg_node)
 	{
 		if (i > 0)
-			printf(" ");
-		printf("%s", (char *)arg_node->content);
+			ft_putchar_fd(' ', cmd->fd_out);
+		ft_putstr_fd((char *)arg_node->content, cmd->fd_out);
 		arg_node = arg_node->next;
 		i++;
 	}
 	if (new_line)
-		printf("\n");
+		ft_putchar_fd('\n', cmd->fd_out);
 	return (0);
 }
