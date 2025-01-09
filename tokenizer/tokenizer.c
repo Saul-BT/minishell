@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/23 19:27:45 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/09 08:36:10 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 	return (result);
 }
 
-t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd)
+t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 {
 	size_t			skip;
 	size_t			next_space_idx;
@@ -68,24 +68,63 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd)
 
 	token++;
 	int mode = O_WRONLY | O_CREAT | O_TRUNC;
-	if (token[1] == '>') {
-		mode = O_WRONLY | O_CREAT | O_APPEND;
+	if (token[0] == '>') {
+		mode = O_RDWR | O_CREAT | O_APPEND;
 		skip++;
 		token++;
 	}
 
 	while (ft_isspace(*token))
+	{
 		token++;
+		skip++;
+	}
 		
 	if (*token)
 	{
 		next_space_idx = ft_index_of(token, ' ');
 		if (next_space_idx == (size_t)-1)
 			next_space_idx = ft_strlen(token);
-		int fd = open(ft_substr(token, 0, next_space_idx), mode, 0644);
+		int fd = open(expand_super(ft_substr(token, 0, next_space_idx), cfg), mode, 0644);
 		// if (fd == -1)
 		// TODO: Handle error
 		cmd->fd_out = fd;
+		skip += next_space_idx;
+	}
+	result->skip = skip;
+	return (result);
+		
+}
+
+// TODO: Unify with handle_out_redirect -> handle_redirect
+t_parsed_token *handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
+{
+	size_t			skip;
+	size_t			next_space_idx;
+	t_parsed_token	*result;
+
+	skip = 1;
+	result = malloc(sizeof(t_parsed_token));
+	result->skip = 0;
+	result->parsed = NULL;
+
+	token++;
+	while (ft_isspace(*token))
+	{
+		token++;
+		skip++;
+	}
+		
+	if (*token)
+	{
+		next_space_idx = ft_index_of(token, ' ');
+		if (next_space_idx == (size_t)-1)
+			next_space_idx = ft_strlen(token);
+		printf("Opening file: %s\n", ft_substr(token, 0, next_space_idx));
+		int fd = open(expand_super(ft_substr(token, 0, next_space_idx), cfg), O_RDONLY);
+		// if (fd == -1)
+		// TODO: Handle error
+		cmd->fd_in = fd;
 		skip += next_space_idx;
 	}
 	result->skip = skip;
@@ -110,12 +149,14 @@ t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 	if (token[0] == '<')
 	{
 		if (token[1] == '<') {
-			
+			// TODO: handle heredoc
+			return (NULL);
 		}
+		return (handle_in_redirect(token, cmd, cfg));
 	}
 	if (token[0] == '>')
 	{
-		return (handle_out_redirect(token, cmd));
+		return (handle_out_redirect(token, cmd, cfg));
 	}
 
 	return (handle_other(token, cfg));
