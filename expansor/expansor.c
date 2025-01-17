@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2024/11/23 14:24:06 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/01/10 17:53:25 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,5 @@ char	*expand_super(char *str, t_shell *cfg)
 	expanded = ft_strjoin(before_expanded, expanded);
 	expanded = ft_strjoin(expanded, expand_super(str + after_var_idx, cfg));
 	free(str);
-	
 	return (expanded);
 }

@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/08 19:30:33 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/14 03:33:04 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int				ft_exit(t_shell *shell, t_cmd *cmd);
 int				ft_export(t_cmd *cmd, t_shell *shell);
 int				ft_pwd(t_cmd *cmd, t_shell *shell);
 int				ft_unset(t_cmd *cmd, t_shell *shell);
+void			print_sorted_env(t_shell *shell, char **env, int n, t_cmd *cmd);
+char			**new_env(char **env, int n, int add, char *val);
 
 // UTILS
 int				ft_strcmp(const char *s1, const char *s2);

@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:29:32 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/08 19:30:21 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/10 17:51:49 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,17 @@
 
 bool	is_builtin(const char *cmd)
 {
-	int	i;
-	int	num_builtins;
+	int			i;
+	int			num_builtins;
+	static void	*builtins[7];
 
-	static void *builtins[7] = {
-		"cd",
-		"echo",
-		"env",
-		"exit",
-		"export",
-		"pwd",
-		"unset",
-	};
+	builtins[0] = "cd";
+	builtins[1] = "echo";
+	builtins[2] = "env";
+	builtins[3] = "exit";
+	builtins[4] = "export";
+	builtins[5] = "pwd";
+	builtins[6] = "unset";
 	i = 0;
 	num_builtins = 7;
 	while (i < num_builtins && ft_strcmp(cmd, builtins[i]) != 0)

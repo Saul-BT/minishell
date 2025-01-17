@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:37:07 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/08 19:35:13 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/17 01:46:59 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	ft_exit(t_shell *shell, t_cmd *cmd)
 {
 	int	error;
 
-
 	error = valid_exit(cmd->args, cmd->arg_count);
 	printf("exit\n");
 	if (error == 1)
@@ -44,7 +43,7 @@ int	ft_exit(t_shell *shell, t_cmd *cmd)
 		printf("bash: exit: too many arguments\n");
 		return (1);
 	}
-	shell->exit_code = 1;
+	shell->exit_code = -1;
 	if (error == 2)
 	{
 		printf("bash: exit: %s: numeric argument required\n", cmd->bin);

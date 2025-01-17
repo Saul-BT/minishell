@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/12/20 20:27:49 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/17 04:17:35 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,8 @@ t_shell	*initshell(char **env)
 		ret->envp = alocated_env;
 		check_shlvl(n, ret);
 	}
-
 	ret->cmds = NULL;
 	ret->exit_code = 0;
-	// init_signals();
 	g_exit_num = 0;
 	return (ret);
 }
@@ -92,13 +90,9 @@ int	main(int argc, char **argv, char **envp)
 	shell = initshell(envp);
 	(void)argc;
 	(void)argv;
-	// signal(SIGINT, sig_manage);
-	// signal(SIGQUIT, sig_manage);
-	while (!shell->exit_code)
+	while (shell->exit_code > -1)
 	{
 		sig_manage(shell, 1);
-		// write_signals(shell, false);
-		// TODO: Modify when the parser works
 		input = readline("> ");
 		sig_manage(shell, 0);
 		// write_signals(shell, true);
@@ -118,7 +112,6 @@ int	main(int argc, char **argv, char **envp)
 		else if (splited)
 		{
 			shell->cmds = get_cmds(shell, splited);
-			// print_cmds(shell->cmds, shell->cmd_count);
 			if (shell->cmd_count == 1 && is_builtin(((t_cmd *)shell->cmds->content)->bin))
 				g_exit_num = handle_builtin(shell, (t_cmd *)shell->cmds->content);
 			else
@@ -127,5 +120,7 @@ int	main(int argc, char **argv, char **envp)
 		free_cmds(shell->cmds);
 		free(input);
 	}
+	free_env(shell->envp);
+	free(shell);
 	return (g_exit_num);
 }

@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:10:29 by mmartine          #+#    #+#             */
-/*   Updated: 2024/09/10 22:19:53 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/17 02:21:22 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,20 @@ int	ft_get_env_pos(char **env, char *var)
 {
 	int		i;
 	char	*name;
+	char	*aux;
 
 	i = 0;
 	name = ft_get_env_name(var);
 	while (env[i])
 	{
-		if (!ft_strncmp(name, env[i], ft_strlen(ft_get_env_name(env[i]))))
+		aux = ft_get_env_name(env[i]);
+		if (!ft_strncmp(name, env[i], ft_strlen(aux)))
 		{
+			free(aux);
 			free(name);
 			return (i);
 		}
+		free(aux);
 		i++;
 	}
 	free(name);
@@ -85,6 +89,7 @@ void	ft_set_env_val(t_shell *shell, char *var, char *mod, int pos)
 	new = ft_strjoin(name, "=");
 	free(name);
 	name = ft_strjoin(new, mod);
+	// free(mod);
 	free(new);
 	free(shell->envp[pos]);
 	shell->envp[pos] = name;
