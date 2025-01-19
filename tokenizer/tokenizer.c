@@ -12,11 +12,11 @@
 
 #include "../minishell.h"
 
-t_parsed_token	*handle_dquote(char *token, t_shell *cfg)
+t_parsed_token *handle_dquote(char *token, t_shell *cfg)
 {
-	size_t			next_dquote_idx;
-	t_parsed_token	*result;
-	
+	size_t next_dquote_idx;
+	t_parsed_token *result;
+
 	next_dquote_idx = ft_index_of(token + 1, '"');
 	result = malloc(sizeof(t_parsed_token));
 	result->parsed = expand_super(ft_substr(token + 1, 0, next_dquote_idx), cfg);
@@ -25,10 +25,10 @@ t_parsed_token	*handle_dquote(char *token, t_shell *cfg)
 	return (result);
 }
 
-t_parsed_token	*handle_quote(char *token)
+t_parsed_token *handle_quote(char *token)
 {
-	size_t			next_quote_idx;
-	t_parsed_token	*result;
+	size_t next_quote_idx;
+	t_parsed_token *result;
 
 	next_quote_idx = ft_index_of(token + 1, '\'');
 	result = malloc(sizeof(t_parsed_token));
@@ -38,10 +38,10 @@ t_parsed_token	*handle_quote(char *token)
 	return (result);
 }
 
-t_parsed_token	*handle_other(char *token, t_shell *cfg)
+t_parsed_token *handle_other(char *token, t_shell *cfg)
 {
-	size_t			next_space_idx;
-	t_parsed_token	*result;
+	size_t next_space_idx;
+	t_parsed_token *result;
 
 	result = malloc(sizeof(t_parsed_token));
 	result->skip = 0;
@@ -55,11 +55,11 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 	return (result);
 }
 
-t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
+t_parsed_token *handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 {
-	size_t			skip;
-	size_t			next_space_idx;
-	t_parsed_token	*result;
+	size_t skip;
+	size_t next_space_idx;
+	t_parsed_token *result;
 
 	skip = 1;
 	result = malloc(sizeof(t_parsed_token));
@@ -68,7 +68,8 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 
 	token++;
 	int mode = O_WRONLY | O_CREAT | O_TRUNC;
-	if (token[0] == '>') {
+	if (token[0] == '>')
+	{
 		mode = O_RDWR | O_CREAT | O_APPEND;
 		skip++;
 		token++;
@@ -79,7 +80,7 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		token++;
 		skip++;
 	}
-		
+
 	if (*token)
 	{
 		next_space_idx = ft_index_of(token, ' ');
@@ -93,15 +94,14 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	}
 	result->skip = skip;
 	return (result);
-		
 }
 
 // TODO: Unify with handle_out_redirect -> handle_redirect
 t_parsed_token *handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 {
-	size_t			skip;
-	size_t			next_space_idx;
-	t_parsed_token	*result;
+	size_t skip;
+	size_t next_space_idx;
+	t_parsed_token *result;
 
 	skip = 1;
 	result = malloc(sizeof(t_parsed_token));
@@ -114,7 +114,7 @@ t_parsed_token *handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		token++;
 		skip++;
 	}
-		
+
 	if (*token)
 	{
 		next_space_idx = ft_index_of(token, ' ');
@@ -129,12 +129,63 @@ t_parsed_token *handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	}
 	result->skip = skip;
 	return (result);
-		
 }
 
-t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
+t_parsed_token *handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 {
-	(void) cmd;
+	size_t skip;
+	size_t next_space_idx;
+	t_parsed_token *result;
+	char *delimiter;
+	char *line;
+	int pipe_fd[2];
+
+	skip = 2; // Skip '<<'
+	result = malloc(sizeof(t_parsed_token));
+	result->skip = 0;
+	result->parsed = NULL;
+
+	token += 2;
+	while (ft_isspace(*token))
+	{
+		token++;
+		skip++;
+	}
+
+	if (*token)
+	{
+		next_space_idx = ft_index_of(token, ' ');
+		if (next_space_idx == (size_t)-1)
+			next_space_idx = ft_strlen(token);
+		delimiter = expand_super(ft_substr(token, 0, next_space_idx), cfg);
+
+		if (pipe(pipe_fd) == -1)
+			return (NULL); // TODO: Handle error
+
+		while (1)
+		{
+			line = readline("heredoc> ");
+			if (!line || ft_strcmp(line, delimiter) == 0)
+			{
+				free(line);
+				break;
+			}
+			write(pipe_fd[1], line, ft_strlen(line));
+			write(pipe_fd[1], "\n", 1);
+			free(line);
+		}
+		close(pipe_fd[1]);
+		cmd->fd_in = pipe_fd[0];
+		skip += next_space_idx;
+		free(delimiter);
+	}
+	result->skip = skip;
+	return (result);
+}
+
+t_parsed_token *handle_token(char *token, t_cmd *cmd, t_shell *cfg)
+{
+	(void)cmd;
 	// TODO: nullcheck?
 	if (token[0] == '"')
 	{
@@ -148,9 +199,9 @@ t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 	}
 	if (token[0] == '<')
 	{
-		if (token[1] == '<') {
-			// TODO: handle heredoc
-			return (NULL);
+		if (token[1] == '<')
+		{
+			return (handle_heredoc(token, cmd, cfg));
 		}
 		return (handle_in_redirect(token, cmd, cfg));
 	}
@@ -176,13 +227,13 @@ void print_tokenized(t_cmd *cmd)
 	printf("=====================\033[0m\n");
 }
 
-t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
+t_cmd *tokenize(char *cmd_line, t_shell *cfg)
 {
-	size_t			i;
-	size_t			len;
-	t_cmd			*cmd;
-	t_parsed_token	*presult;
-	bool			first_parsed;
+	size_t i;
+	size_t len;
+	t_cmd *cmd;
+	t_parsed_token *presult;
+	bool first_parsed;
 
 	i = 0;
 	len = ft_strlen(cmd_line);
@@ -200,9 +251,9 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 			i++;
 			continue;
 		}
-		
+
 		presult = handle_token(&cmd_line[i], cmd, cfg);
-		
+
 		if (presult->parsed != NULL)
 		{
 			if (first_parsed)
