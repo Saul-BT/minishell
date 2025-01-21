@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <sblanco-@student.42madrid.    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/09 08:36:10 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/01/21 02:50:04 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,27 +40,67 @@ t_parsed_token *handle_quote(char *token)
 
 t_parsed_token *handle_other(char *token, t_shell *cfg)
 {
-	size_t next_space_idx;
-	t_parsed_token *result;
+	size_t 			next_space_idx;
+	t_parsed_token	*result;
 
 	result = malloc(sizeof(t_parsed_token));
 	result->skip = 0;
 	next_space_idx = ft_index_of(token + 1, ' ');
 	if (next_space_idx == (size_t)-1)
 		next_space_idx = ft_strlen(token) - 1;
-
 	result->skip = next_space_idx;
 	result->parsed = expand_super(ft_substr(token, 0, next_space_idx + 1), cfg);
-
 	return (result);
 }
+
+// t_parsed_token *handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
+// {
+// 	size_t skip;
+// 	size_t next_space_idx;
+// 	t_parsed_token *result;
+
+// 	skip = 1;
+// 	result = malloc(sizeof(t_parsed_token));
+// 	result->skip = 0;
+// 	result->parsed = NULL;
+
+// 	token++;
+// 	int mode = O_WRONLY | O_CREAT | O_TRUNC;
+// 	if (token[0] == '>')
+// 	{
+// 		mode = O_RDWR | O_CREAT | O_APPEND;
+// 		skip++;
+// 		token++;
+// 	}
+
+// 	while (ft_isspace(*token))
+// 	{
+// 		token++;
+// 		skip++;
+// 	}
+
+// 	if (*token)
+// 	{
+// 		next_space_idx = ft_index_of(token, ' ');
+// 		if (next_space_idx == (size_t)-1)
+// 			next_space_idx = ft_strlen(token);
+// 		int fd = open(expand_super(ft_substr(token, 0, next_space_idx), cfg), mode, 0644);
+// 		// if (fd == -1)
+// 		// TODO: Handle error
+// 		cmd->fd_out = fd;
+// 		skip += next_space_idx;
+// 	}
+// 	result->skip = skip;
+// 	return (result);
+// }
 
 t_parsed_token *handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 {
 	size_t skip;
 	size_t next_space_idx;
 	t_parsed_token *result;
-
+	char	*aux;
+	
 	skip = 1;
 	result = malloc(sizeof(t_parsed_token));
 	result->skip = 0;
@@ -86,7 +126,10 @@ t_parsed_token *handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		next_space_idx = ft_index_of(token, ' ');
 		if (next_space_idx == (size_t)-1)
 			next_space_idx = ft_strlen(token);
-		int fd = open(expand_super(ft_substr(token, 0, next_space_idx), cfg), mode, 0644);
+		//vvar auxiliar para liberar la memoria que aloja el substring
+		aux = ft_substr(token, 0, next_space_idx);
+		int fd = open(expand_super(aux, cfg), mode, 0644);
+		free(aux);
 		// if (fd == -1)
 		// TODO: Handle error
 		cmd->fd_out = fd;
@@ -253,7 +296,6 @@ t_cmd *tokenize(char *cmd_line, t_shell *cfg)
 		}
 
 		presult = handle_token(&cmd_line[i], cmd, cfg);
-
 		if (presult->parsed != NULL)
 		{
 			if (first_parsed)
@@ -265,6 +307,8 @@ t_cmd *tokenize(char *cmd_line, t_shell *cfg)
 			cmd->arg_count++;
 		}
 		i += presult->skip + 1;
+		//algunos leaks se arreglan con la linea de debajo de esta. No se si rompo algo.
+		free(presult);
 	}
 
 	print_tokenized(cmd);
