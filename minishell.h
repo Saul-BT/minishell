@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/14 03:33:04 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/22 05:07:02 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,5 @@ void			write_signals(t_shell *shell, int write_signal);
 
 // TOKENIZER
 t_cmd			*tokenize(char *cmd_line, t_shell *cfg);
-
 
 #endif

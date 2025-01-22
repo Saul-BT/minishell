@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 18:49:39 by mmartine          #+#    #+#             */
-/*   Updated: 2025/01/17 01:35:38 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:42:42 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,5 @@ char	**new_env(char **env, int n, int add, char *val)
 	}
 	while (++i < n)
 		cpy[i] = ft_strdup(env[i]);
-	// if (add && val)
-	// 	free_env(env);
 	return (cpy);
 }

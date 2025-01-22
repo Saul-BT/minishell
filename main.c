@@ -6,13 +6,13 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/21 02:36:23 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:44:46 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_exit_num;
+int	g_exit_num;
 
 void	print_cmds(const char ***cmds, int count)
 {
@@ -63,12 +63,10 @@ t_shell	*initshell(char **env)
 	char	**alocated_env;
 	int		n;
 
-	// TODO: Remove this, allocate the main struct is not needed
 	ret = malloc(sizeof(t_shell));
 	n = 0;
 	while (env[n])
 		n++;
-	// TODO: We need to check if the env behaves correctly in child proccesses
 	if (*env)
 	{
 		alocated_env = new_env(env, n, 0, NULL);
@@ -81,12 +79,36 @@ t_shell	*initshell(char **env)
 	return (ret);
 }
 
+static void	mini_main(char *input, t_shell *shell)
+{
+	char	**splited;
+
+	add_history(input);
+	splited = pipe_split(input, &shell->cmd_count);
+	if (is_quoted('?'))
+	{
+		printf("pipex: unclosed quote\n");
+		close_quote();
+		free_strs(splited);
+	}
+	else if (splited)
+	{
+		shell->cmds = get_cmds(shell, splited);
+		if (shell->cmd_count == 1
+			&& is_builtin(((t_cmd *)shell->cmds->content)->bin))
+			g_exit_num = handle_builtin(shell, (t_cmd *)shell->cmds->content);
+		else
+			ft_piped_exec(shell);
+	}
+	free_cmds(shell->cmds);
+	free(input);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 	char	*input;
-	char	**splited;
-	
+
 	shell = initshell(envp);
 	(void)argc;
 	(void)argv;
@@ -101,24 +123,7 @@ int	main(int argc, char **argv, char **envp)
 			exit(1);
 		if (!*input)
 			continue ;
-		add_history(input);
-		splited = pipe_split(input, &shell->cmd_count);
-		if (is_quoted('?'))
-		{
-			printf("pipex: unclosed quote\n");
-			close_quote();
-			free_strs(splited);
-		}
-		else if (splited)
-		{
-			shell->cmds = get_cmds(shell, splited);
-			if (shell->cmd_count == 1 && is_builtin(((t_cmd *)shell->cmds->content)->bin))
-				g_exit_num = handle_builtin(shell, (t_cmd *)shell->cmds->content);
-			else
-				ft_piped_exec(shell);
-		}
-		free_cmds(shell->cmds);
-		free(input);
+		mini_main(input, shell);
 	}
 	free_env(shell->envp);
 	free(shell);

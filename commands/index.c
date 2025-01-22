@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:29:32 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/10 17:51:49 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:43:11 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,5 @@ int	handle_builtin(t_shell *shell, t_cmd *cmd)
 		return (ft_pwd(cmd, shell));
 	else if (!ft_strcmp(cmd->bin, "unset"))
 		return (ft_unset(cmd, shell));
-	//99?
 	return (99);
 }

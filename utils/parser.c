@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/11/10 15:48:03 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/01/22 05:09:54 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,11 @@ t_node	*get_cmds(t_shell *cfg, char **argv)
 		cmd = tokenize(argv[i], cfg);
 		free(argv[i]);
 		cfg->exit_code = 0;
-		// printmat((char **)cmd_with_args);
 		if (!is_builtin(cmd->bin))
 		{
 			cmd->bin = get_bin_path(cmd->bin, bin_paths, cfg);
 			cmd->args->content = cmd->bin;
 		}
-		// cmds[i] = cmd_with_args;
 		ft_lstadd_back(&cmds, ft_lstnew(cmd));
 		i++;
 	}

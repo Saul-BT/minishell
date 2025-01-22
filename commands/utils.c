@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:10:29 by mmartine          #+#    #+#             */
-/*   Updated: 2025/01/17 02:21:22 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:42:27 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	ft_set_env_val(t_shell *shell, char *var, char *mod, int pos)
 	new = ft_strjoin(name, "=");
 	free(name);
 	name = ft_strjoin(new, mod);
-	// free(mod);
 	free(new);
 	free(shell->envp[pos]);
 	shell->envp[pos] = name;
