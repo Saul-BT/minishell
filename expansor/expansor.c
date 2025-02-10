@@ -69,7 +69,7 @@ char	*expand_super(char *str, t_shell *cfg)
 	if (after_var_idx == (size_t)-1)
 		after_var_idx = ft_strlen(str);
 	else
-		after_var_idx += dollar_idx;
+		after_var_idx += dollar_idx + 1;
 	aux = ft_substr(str + dollar_idx, 0, after_var_idx - dollar_idx);
 	expanded = str_exange(cfg, aux);
 	free(aux);

@@ -165,7 +165,7 @@ t_parsed_token *handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 		next_space_idx = ft_index_of(token, ' ');
 		if (next_space_idx == (size_t)-1)
 			next_space_idx = ft_strlen(token);
-		delimiter = expand_super(ft_substr(token, 0, next_space_idx), cfg);
+		delimiter = ft_substr(token, 0, next_space_idx);
 
 		if (pipe(pipe_fd) == -1)
 			return (NULL); // TODO: Handle error
@@ -178,6 +178,7 @@ t_parsed_token *handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 				free(line);
 				break;
 			}
+			line = expand_super(line, cfg);
 			write(pipe_fd[1], line, ft_strlen(line));
 			write(pipe_fd[1], "\n", 1);
 			free(line);
