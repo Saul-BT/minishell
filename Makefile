@@ -1,7 +1,7 @@
 NAME = minishell
 SRCS = main.c signals.c
 SRCS += commands/echo.c commands/utils.c commands/cd.c commands/pwd.c commands/export.c commands/unset.c commands/env.c commands/exit.c commands/index.c commands/utils2.c
-SRCS += utils/strcmp.c utils/parser.c utils/pipe_split.c utils/util.c utils/ft_join.c pipes/pipes.c pipes/utils.c utils/error.c tokenizer/tokenizer.c
+SRCS += utils/strcmp.c utils/parser.c utils/pipe_split.c utils/pipe_split_utils.c utils/util.c utils/ft_join.c pipes/pipes.c pipes/utils.c utils/error.c tokenizer/tokenizer.c
 SRCS += expansor/expansor.c
 OBJS=$(SRCS:.c=.o)
 READLINE_PATH = vendor/readline

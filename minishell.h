@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/02/11 00:58:42 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/02/12 22:47:01 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,11 @@ void		print_sorted_env(t_shell *shell, char **env, int n, t_cmd *cmd);
 char		**new_env(char **env, int n, int add, char *val);
 
 // UTILS
+bool		is_quoted(char c);
+bool		is_symbol(char c, char symbol);
+bool		is_word_boundary(char a, char b);
+void		close_quote(void);
+int			count_pipes(const char *str);
 int			ft_strcmp(const char *s1, const char *s2);
 t_node		*get_cmds(t_shell *cfg, char **argv);
 bool		starts_with(const char *str, const char *prefix);
