@@ -6,7 +6,7 @@
 /*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/02/16 18:56:09 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/02/16 20:07:03 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,27 @@ size_t	ft_index_of_symbol(char *str)
 	return ((size_t)-1);
 }
 
-t_parsed_token	*handle_dquote(char *token, t_shell *cfg)
-{
-	size_t			next_dquote_idx;
-	t_parsed_token	*result;
-
-	next_dquote_idx = ft_index_of(token + 1, '"');
-	result = malloc(sizeof(t_parsed_token));
-	result->parsed = expand_super(ft_substr(token + 1, 0, next_dquote_idx),
-			cfg);
-	result->skip = next_dquote_idx + 1;
-	return (result);
-}
-
-t_parsed_token	*handle_quote(char *token)
+t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 {
 	size_t			next_quote_idx;
 	t_parsed_token	*result;
+	t_parsed_token	*aux;
 
-	next_quote_idx = ft_index_of(token + 1, '\'');
+	next_quote_idx = ft_index_of(token, quote);
 	result = malloc(sizeof(t_parsed_token));
-	result->parsed = ft_substr(token + 1, 0, next_quote_idx);
+	if (quote == '"')
+		result->parsed = expand_super(ft_substr(token, 0, next_quote_idx), cfg);
+	else
+		result->parsed = ft_substr(token, 0, next_quote_idx);
 	result->skip = next_quote_idx + 1;
+	if (token[next_quote_idx + 1] == '\'' || token[next_quote_idx + 1] == '"')
+	{
+		aux = handle_quote(token + next_quote_idx + 2,
+				token[next_quote_idx + 1], cfg);
+		result->parsed = ft_strjoin(result->parsed, aux->parsed);
+		result->skip += aux->skip + 1;
+		free(aux);
+	}
 	return (result);
 }
 
@@ -63,7 +62,8 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 	if (next_symbol_idx == (size_t)-1)
 		next_symbol_idx = ft_strlen(token) - 1;
 	result->skip = next_symbol_idx;
-	result->parsed = expand_super(ft_substr(token, 0, next_symbol_idx + 1), cfg);
+	result->parsed = expand_super(ft_substr(token, 0, next_symbol_idx + 1),
+			cfg);
 	return (result);
 }
 
@@ -190,15 +190,10 @@ t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 {
 	(void)cmd;
 	// TODO: nullcheck?
-	if (token[0] == '"')
-	{
-		// handle double quotes, also when there is no space after
-		return (handle_dquote(token, cfg));
-	}
-	if (token[0] == '\'')
+	if (token[0] == '"' || token[0] == '\'')
 	{
 		// handle sigle quotes, also when there is no space after
-		return (handle_quote(token));
+		return (handle_quote(token + 1, token[0], cfg));
 	}
 	if (token[0] == '<')
 	{
