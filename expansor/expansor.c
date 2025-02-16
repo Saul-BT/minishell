@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2025/01/21 16:44:17 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/02/16 20:27:59 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@ char	**expand(t_shell *shell, char **args)
 		{
 			substitute = ft_strdup(args[i]);
 			free(args[i]);
+			// TODO: Check the following:
+			// $ export test="test"
+			// $ echo $test
+			// "test" <- wrong output, maybe we should call handle_quote (?)
 			args[i] = str_exange(shell, substitute);
 		}
 		i++;

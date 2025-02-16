@@ -6,7 +6,7 @@
 /*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/02/16 20:07:03 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/02/16 20:29:52 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,23 @@ size_t	ft_index_of_symbol(char *str)
 
 t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 {
-	size_t			next_quote_idx;
+	size_t			next_q_idx;
 	t_parsed_token	*result;
-	t_parsed_token	*aux;
+	t_parsed_token	*other;
 
-	next_quote_idx = ft_index_of(token, quote);
+	next_q_idx = ft_index_of(token, quote);
 	result = malloc(sizeof(t_parsed_token));
+	result->parsed = ft_substr(token, 0, next_q_idx);
 	if (quote == '"')
-		result->parsed = expand_super(ft_substr(token, 0, next_quote_idx), cfg);
-	else
-		result->parsed = ft_substr(token, 0, next_quote_idx);
-	result->skip = next_quote_idx + 1;
-	if (token[next_quote_idx + 1] == '\'' || token[next_quote_idx + 1] == '"')
+		result->parsed = expand_super(result->parsed, cfg); // TODO: Check leak
+	result->skip = next_q_idx + 1;
+	if (token[next_q_idx + 1] == '\'' || token[next_q_idx + 1] == '"')
 	{
-		aux = handle_quote(token + next_quote_idx + 2,
-				token[next_quote_idx + 1], cfg);
-		result->parsed = ft_strjoin(result->parsed, aux->parsed);
-		result->skip += aux->skip + 1;
-		free(aux);
+		other = handle_quote(token + next_q_idx + 2, token[next_q_idx + 1],
+				cfg);
+		result->parsed = ft_strjoin(result->parsed, other->parsed);
+		result->skip += other->skip + 1;
+		free(other);
 	}
 	return (result);
 }
