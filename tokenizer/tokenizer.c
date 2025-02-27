@@ -6,7 +6,7 @@
 /*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/02/16 20:29:52 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/02/18 19:31:02 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,31 @@ t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 	size_t			next_q_idx;
 	t_parsed_token	*result;
 	t_parsed_token	*other;
+	char			*aux;
 
 	next_q_idx = ft_index_of(token, quote);
 	result = malloc(sizeof(t_parsed_token));
 	result->parsed = ft_substr(token, 0, next_q_idx);
 	if (quote == '"')
-		result->parsed = expand_super(result->parsed, cfg); // TODO: Check leak
+		result->parsed = expand_super(result->parsed, cfg);
 	result->skip = next_q_idx + 1;
 	if (token[next_q_idx + 1] == '\'' || token[next_q_idx + 1] == '"')
 	{
 		other = handle_quote(token + next_q_idx + 2, token[next_q_idx + 1],
 				cfg);
-		result->parsed = ft_strjoin(result->parsed, other->parsed);
+		aux = result->parsed;
+		result->parsed = ft_strjoin(aux, other->parsed);
+		free(aux);
 		result->skip += other->skip + 1;
+		free(other->parsed);
 		free(other);
+	}
+	else if (token[next_q_idx + 1] && !ft_isspace(token[next_q_idx + 1]))
+	{
+		aux = result->parsed;
+		result->parsed = ft_strjoin(aux, token + next_q_idx + 1);
+		free(aux);
+		result->skip = ft_strlen(token);
 	}
 	return (result);
 }
@@ -54,6 +65,8 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 {
 	size_t			next_symbol_idx;
 	t_parsed_token	*result;
+	char			*aux;
+	char			*expanded;
 
 	result = malloc(sizeof(t_parsed_token));
 	result->skip = 0;
@@ -61,8 +74,11 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 	if (next_symbol_idx == (size_t)-1)
 		next_symbol_idx = ft_strlen(token) - 1;
 	result->skip = next_symbol_idx;
-	result->parsed = expand_super(ft_substr(token, 0, next_symbol_idx + 1),
-			cfg);
+	aux = ft_substr(token, 0, next_symbol_idx + 1);
+	expanded = expand_super(aux, cfg);
+	result->parsed = ft_strdup(expanded);
+	free(expanded);
+	free(aux);
 	return (result);
 }
 
@@ -185,28 +201,91 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 	return (result);
 }
 
+static char	*remove_quotes(char *str)
+{
+	char	*p;
+	char	*end;
+	char	quote;
+	char	*result;
+
+	result = ft_strdup(str);
+	p = result;
+	while (*p)
+	{
+		if (*p == '"' || *p == '\'')
+		{
+			quote = *p;
+			end = ft_strchr(p + 1, quote);
+			if (end)
+			{
+				ft_memmove(p, p + 1, end - p - 1);
+				ft_memmove(end - 1, end + 1, ft_strlen(end));
+				p = end - 2;
+			}
+		}
+		if (p)
+			p++;
+	}
+	return (result);
+}
+
+static char	*get_command_name(char *str)
+{
+	char	*temp;
+	char	*space;
+	char	*result;
+
+	temp = ft_strtrim(str, "\"'");
+	space = ft_strchr(temp, ' ');
+	if (space)
+		*space = '\0';
+	result = ft_strdup(temp);
+	free(temp);
+	return (result);
+}
+
 t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 {
+	t_parsed_token	*result;
+	char			*temp;
+	char			*expanded;
+	size_t			symbol_idx;
+
 	(void)cmd;
-	// TODO: nullcheck?
 	if (token[0] == '"' || token[0] == '\'')
 	{
-		// handle sigle quotes, also when there is no space after
-		return (handle_quote(token + 1, token[0], cfg));
+		temp = ft_substr(token, 1, ft_strlen(token) - 2);
+		result = malloc(sizeof(t_parsed_token));
+		if (token[0] == '"')
+		{
+			expanded = expand_super(temp, cfg);
+			result->parsed = ft_strdup(expanded);
+			free(expanded);
+		}
+		else
+			result->parsed = ft_strdup(temp);
+		result->skip = ft_strlen(token) - 1;
+		free(temp);
+		return (result);
 	}
 	if (token[0] == '<')
 	{
 		if (token[1] == '<')
-		{
 			return (handle_heredoc(token, cmd, cfg));
-		}
 		return (handle_in_redirect(token, cmd, cfg));
 	}
 	if (token[0] == '>')
-	{
 		return (handle_out_redirect(token, cmd, cfg));
-	}
-	return (handle_other(token, cfg));
+	temp = remove_quotes(token);
+	result = malloc(sizeof(t_parsed_token));
+	expanded = expand_super(temp, cfg);
+	result->parsed = ft_strdup(expanded);
+	symbol_idx = ft_index_of_symbol(token);
+	result->skip = (symbol_idx == (size_t)-1) ? ft_strlen(token)
+		- 1 : symbol_idx;
+	free(expanded);
+	free(temp);
+	return (result);
 }
 
 void	print_arg(char *arg)
@@ -244,7 +323,6 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 	cmd->fd_out = STDOUT_FILENO;
 	while (i < len && cmd_line && cmd_line[i])
 	{
-		// If is space -> skip
 		if (ft_isspace(cmd_line[i]))
 		{
 			i++;
@@ -255,14 +333,17 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 		{
 			if (first_parsed)
 			{
-				cmd->bin = presult->parsed;
+				cmd->bin = get_command_name(presult->parsed);
+				ft_lstadd_back(&cmd->args, ft_lstnew(ft_strdup(cmd->bin)));
 				first_parsed = false;
 			}
-			ft_lstadd_back(&cmd->args, ft_lstnew(presult->parsed));
+			else
+				ft_lstadd_back(&cmd->args,
+					ft_lstnew(ft_strdup(presult->parsed)));
 			cmd->arg_count++;
 		}
 		i += presult->skip + 1;
-		// algunos leaks se arreglan con la linea de debajo de esta. No se si rompo algo.
+		free(presult->parsed);
 		free(presult);
 	}
 	print_tokenized(cmd);

@@ -6,7 +6,7 @@
 /*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2025/02/16 20:27:59 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/02/18 19:22:39 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 static char	*str_exange(t_shell *shell, char *args)
 {
+	char	*value;
+	char	*result;
+
 	if (args[1] == '?')
 		return (ft_itoa(g_exit_num));
 	else if (!args[1])
@@ -22,7 +25,9 @@ static char	*str_exange(t_shell *shell, char *args)
 	{
 		if (ft_get_env_pos(shell->envp, args + 1) < 0)
 			return (ft_strdup(""));
-		return (ft_strdup(ft_get_env_val(shell, args + 1)));
+		value = ft_get_env_val(shell, args + 1);
+		result = ft_strdup(value);
+		return (result);
 	}
 	free(args);
 }
@@ -50,13 +55,6 @@ char	**expand(t_shell *shell, char **args)
 	return (args);
 }
 
-static void	free_expand_vars(char *before_expanded, char *str, char *aux)
-{
-	free(before_expanded);
-	free(str);
-	free(aux);
-}
-
 char	*expand_super(char *str, t_shell *cfg)
 {
 	size_t	dollar_idx;
@@ -64,10 +62,11 @@ char	*expand_super(char *str, t_shell *cfg)
 	char	*before_expanded;
 	char	*expanded;
 	char	*aux;
+	char	*result;
 
 	dollar_idx = ft_index_of(str, '$');
 	if (dollar_idx == (size_t)-1)
-		return (str);
+		return (ft_strdup(str));
 	before_expanded = ft_substr(str, 0, dollar_idx);
 	after_var_idx = ft_index_of(str + dollar_idx + 1, ' ');
 	if (after_var_idx == (size_t)-1)
@@ -78,8 +77,9 @@ char	*expand_super(char *str, t_shell *cfg)
 	expanded = str_exange(cfg, aux);
 	free(aux);
 	aux = ft_strjoin(before_expanded, expanded);
+	free(before_expanded);
 	free(expanded);
-	expanded = ft_strjoin(aux, expand_super(str + after_var_idx, cfg));
-	free_expand_vars(before_expanded, str, aux);
-	return (expanded);
+	result = ft_strjoin(aux, expand_super(str + after_var_idx, cfg));
+	free(aux);
+	return (result);
 }
