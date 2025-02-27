@@ -3,28 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2025/02/18 19:22:39 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/02/27 20:30:31 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*str_exange(t_shell *shell, char *args)
+static char	*str_exange(t_shell *shell, char *args, int pos)
 {
 	char	*value;
 	char	*result;
 
 	if (args[1] == '?')
 		return (ft_itoa(g_exit_num));
-	else if (!args[1])
-		return (ft_strdup("$"));
+	// else if (!args[1])
+	// 	return (ft_strdup("$"));
 	else
 	{
+		if ((size_t)pos == ft_strlen(args) - 1)
+			return (ft_strdup("$"));
 		if (ft_get_env_pos(shell->envp, args + 1) < 0)
-			return (ft_strdup(""));
+			return (ft_strdup(args + pos + 2));
 		value = ft_get_env_val(shell, args + 1);
 		result = ft_strdup(value);
 		return (result);
@@ -48,7 +50,7 @@ char	**expand(t_shell *shell, char **args)
 			// $ export test="test"
 			// $ echo $test
 			// "test" <- wrong output, maybe we should call handle_quote (?)
-			args[i] = str_exange(shell, substitute);
+			args[i] = str_exange(shell, substitute, i);
 		}
 		i++;
 	}
@@ -74,7 +76,7 @@ char	*expand_super(char *str, t_shell *cfg)
 	else
 		after_var_idx += dollar_idx + 1;
 	aux = ft_substr(str + dollar_idx, 0, after_var_idx - dollar_idx);
-	expanded = str_exange(cfg, aux);
+	expanded = str_exange(cfg, aux, (int)dollar_idx);
 	free(aux);
 	aux = ft_strjoin(before_expanded, expanded);
 	free(before_expanded);
