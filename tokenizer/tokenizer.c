@@ -6,15 +6,22 @@
 /*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/02/16 20:29:52 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/03/04 00:51:01 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+t_parsed_token		*handle_other(char *token, t_shell *cfg);
+
+static inline bool	isquote(char c)
+{
+	return (c == '"' || c == '\'');
+}
+
 size_t	ft_index_of_symbol(char *str)
 {
-	static char	*symbols = " <>;";
+	static char	*symbols = " <>;'\"";
 	size_t		i;
 
 	i = 0;
@@ -39,10 +46,17 @@ t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 	if (quote == '"')
 		result->parsed = expand_super(result->parsed, cfg); // TODO: Check leak
 	result->skip = next_q_idx + 1;
-	if (token[next_q_idx + 1] == '\'' || token[next_q_idx + 1] == '"')
+	if (isquote(token[next_q_idx + 1]))
 	{
 		other = handle_quote(token + next_q_idx + 2, token[next_q_idx + 1],
 				cfg);
+		result->parsed = ft_strjoin(result->parsed, other->parsed);
+		result->skip += other->skip + 1;
+		free(other);
+	}
+	else if (!isspace(token[next_q_idx + 1]))
+	{
+		other = handle_other(token + next_q_idx + 1, cfg);
 		result->parsed = ft_strjoin(result->parsed, other->parsed);
 		result->skip += other->skip + 1;
 		free(other);
@@ -54,6 +68,7 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 {
 	size_t			next_symbol_idx;
 	t_parsed_token	*result;
+	t_parsed_token	*other;
 
 	result = malloc(sizeof(t_parsed_token));
 	result->skip = 0;
@@ -63,6 +78,14 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 	result->skip = next_symbol_idx;
 	result->parsed = expand_super(ft_substr(token, 0, next_symbol_idx + 1),
 			cfg);
+	if (isquote(token[next_symbol_idx + 1]))
+	{
+		other = handle_quote(token + next_symbol_idx + 2, token[next_symbol_idx
+				+ 1], cfg);
+		result->parsed = ft_strjoin(result->parsed, other->parsed);
+		result->skip += other->skip + 1;
+		free(other);
+	}
 	return (result);
 }
 
