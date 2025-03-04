@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/04 00:51:01 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/03/04 20:02:36 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 		result->skip += other->skip + 1;
 		free(other);
 	}
-	else if (!isspace(token[next_q_idx + 1]))
+	else if (token[next_q_idx + 1] && !isspace(token[next_q_idx + 1]))
 	{
 		other = handle_other(token + next_q_idx + 1, cfg);
 		result->parsed = ft_strjoin(result->parsed, other->parsed);

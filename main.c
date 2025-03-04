@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/21 16:44:46 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:12:00 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 	char	*input;
+	char	*aux;
 
 	shell = initshell(envp);
 	(void)argc;
@@ -121,8 +122,13 @@ int	main(int argc, char **argv, char **envp)
 		//REVISAR ESTA LINEA PARA SABER QUE EXIT EMPLEAR
 		if (!input)
 			exit(1);
-		if (!*input)
+		//no me da leaks pero me da la sensacion de que si que deberia cuando !*aux no se cumple (atentos a esto)
+		aux = ft_strtrim(input, " \t\r");
+		if (!*aux)
+		{
+			free(aux);
 			continue ;
+		}
 		mini_main(input, shell);
 	}
 	free_env(shell->envp);
