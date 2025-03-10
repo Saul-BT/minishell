@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/04 20:02:36 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/10 19:55:06 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 {
 	size_t			next_q_idx;
 	t_parsed_token	*result;
-	t_parsed_token	*other;
+	t_parsed_token	*othe;
 
 	next_q_idx = ft_index_of(token, quote);
 	result = malloc(sizeof(t_parsed_token));
@@ -48,18 +48,17 @@ t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 	result->skip = next_q_idx + 1;
 	if (isquote(token[next_q_idx + 1]))
 	{
-		other = handle_quote(token + next_q_idx + 2, token[next_q_idx + 1],
-				cfg);
-		result->parsed = ft_strjoin(result->parsed, other->parsed);
-		result->skip += other->skip + 1;
-		free(other);
+		othe = handle_quote(token + next_q_idx + 2, token[next_q_idx + 1], cfg);
+		result->parsed = ft_strjoin(result->parsed, othe->parsed);
+		result->skip += othe->skip + 1;
+		free(othe);
 	}
 	else if (token[next_q_idx + 1] && !isspace(token[next_q_idx + 1]))
 	{
-		other = handle_other(token + next_q_idx + 1, cfg);
-		result->parsed = ft_strjoin(result->parsed, other->parsed);
-		result->skip += other->skip + 1;
-		free(other);
+		othe = handle_other(token + next_q_idx + 1, cfg);
+		result->parsed = ft_strjoin(result->parsed, othe->parsed);
+		result->skip += othe->skip + 1;
+		free(othe);
 	}
 	return (result);
 }
@@ -112,9 +111,8 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	if (*token)
 	{
 		next_space_idx = ft_index_of(token, ' ');
-		if (next_space_idx == (size_t)-1)
+		if (next_space_idx == (size_t) - 1)
 			next_space_idx = ft_strlen(token);
-		// vvar auxiliar para liberar la memoria que aloja el substring
 		aux = ft_substr(token, 0, next_space_idx);
 		fd = open(expand_super(aux, cfg), mode, 0644);
 		free(aux);
@@ -153,6 +151,7 @@ t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		free(aux);
 		// if (fd == -1)
 		// TODO: Handle error
+		dprintf(2, "pene %d\n", fd);
 		cmd->fd_in = fd;
 		result->skip += next_space_idx;
 	}
@@ -208,6 +207,31 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 	return (result);
 }
 
+// t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
+// {
+// 	char	*ret;
+// 	(void)cmd;
+// 	// TODO: nullcheck?
+// 	if (token[0] == '"' || token[0] == '\'')
+// 	{
+// 		// handle sigle quotes, also when there is no space after
+// 		return (handle_quote(token + 1, token[0], cfg));
+// 	}
+// 	if (token[0] == '<')
+// 	{
+// 		if (token[1] == '<')
+// 		{
+// 			return (handle_heredoc(token, cmd, cfg));
+// 		}
+// 		return (handle_in_redirect(token, cmd, cfg));
+// 	}
+// 	if (token[0] == '>')
+// 	{
+// 		return (handle_out_redirect(token, cmd, cfg));
+// 	}
+// 	return (handle_other(token, cfg));
+// }
+
 t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 {
 	(void)cmd;
@@ -231,6 +255,7 @@ t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 	}
 	return (handle_other(token, cfg));
 }
+
 
 void	print_arg(char *arg)
 {
@@ -259,15 +284,10 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 
 	i = 0;
 	len = ft_strlen(cmd_line);
-	cmd = malloc(sizeof(t_cmd));
 	first_parsed = true;
-	cmd->args = NULL;
-	cmd->arg_count = 0;
-	cmd->fd_in = STDIN_FILENO;
-	cmd->fd_out = STDOUT_FILENO;
+	cmd = init_tokenizer();
 	while (i < len && cmd_line && cmd_line[i])
 	{
-		// If is space -> skip
 		if (ft_isspace(cmd_line[i]))
 		{
 			i++;
@@ -285,7 +305,6 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 			cmd->arg_count++;
 		}
 		i += presult->skip + 1;
-		// algunos leaks se arreglan con la linea de debajo de esta. No se si rompo algo.
 		free(presult);
 	}
 	print_tokenized(cmd);

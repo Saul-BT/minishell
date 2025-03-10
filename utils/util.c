@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:47:20 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/04 19:01:39 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/10 19:56:30 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ void	free_strs(char **strs)
 
 void	free_args(t_cmd *cmd)
 {
+	if (cmd->fd_in > 2)
+		close(cmd->fd_in);
+	if (cmd->fd_out > 2)
+		close(cmd->fd_out);
 	ft_lstclear(&(cmd->args), free);
 }
 

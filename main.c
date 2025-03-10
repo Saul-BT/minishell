@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/04 20:12:00 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:58:37 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,23 @@ static void	mini_main(char *input, t_shell *shell)
 	free(input);
 }
 
+static int	is_empty_arg(char *str)
+{
+	char	*aux;
+	int		ret;
+
+	ret = 0;
+	aux = ft_strtrim(str, " \t\r");
+	if (!*aux)
+		ret = 1;
+	free(aux);
+	return (ret);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 	char	*input;
-	char	*aux;
 
 	shell = initshell(envp);
 	(void)argc;
@@ -118,17 +130,11 @@ int	main(int argc, char **argv, char **envp)
 		sig_manage(shell, 1);
 		input = readline("> ");
 		sig_manage(shell, 0);
-		// write_signals(shell, true);
 		//REVISAR ESTA LINEA PARA SABER QUE EXIT EMPLEAR
 		if (!input)
 			exit(1);
-		//no me da leaks pero me da la sensacion de que si que deberia cuando !*aux no se cumple (atentos a esto)
-		aux = ft_strtrim(input, " \t\r");
-		if (!*aux)
-		{
-			free(aux);
+		else if (is_empty_arg(input))
 			continue ;
-		}
 		mini_main(input, shell);
 	}
 	free_env(shell->envp);

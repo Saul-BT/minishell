@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/02/11 00:58:45 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/03/10 19:59:18 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ static void	execute_command(t_cmd *cmd, t_pipe_ctx *ctx)
 		setup_child_pipes(cmd, ctx);
 		aux_pipex(cmd, ctx->shell);
 	}
-	else if (ctx->cmd_index < ctx->shell->cmd_count - 1)
+	// else if (ctx->cmd_index < ctx->shell->cmd_count - 1)
+	// 	handle_parent_pipes(cmd, ctx);
+	if (ctx->cmd_index < ctx->shell->cmd_count - 1)
 		handle_parent_pipes(cmd, ctx);
 }
 
@@ -69,5 +71,7 @@ void	ft_piped_exec(t_shell *shell)
 		cmd_node = cmd_node->next;
 		ctx.cmd_index++;
 	}
+	if (ctx.pipe_read > 2)
+		close(ctx.pipe_read);
 	exit_status_transmisor();
 }
