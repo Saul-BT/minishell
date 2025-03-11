@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/10 19:55:06 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:14:43 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	{
 		mode = O_RDWR | O_CREAT | O_APPEND;
 		result->skip++;
-		token += 2;
+		token ++;
 	}
 	while (ft_isspace(*++token))
 		result->skip++;
@@ -151,7 +151,6 @@ t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		free(aux);
 		// if (fd == -1)
 		// TODO: Handle error
-		dprintf(2, "pene %d\n", fd);
 		cmd->fd_in = fd;
 		result->skip += next_space_idx;
 	}
