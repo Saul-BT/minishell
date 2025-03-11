@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/11 16:14:43 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/11 19:52:20 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,31 +205,6 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 	result->skip = skip;
 	return (result);
 }
-
-// t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
-// {
-// 	char	*ret;
-// 	(void)cmd;
-// 	// TODO: nullcheck?
-// 	if (token[0] == '"' || token[0] == '\'')
-// 	{
-// 		// handle sigle quotes, also when there is no space after
-// 		return (handle_quote(token + 1, token[0], cfg));
-// 	}
-// 	if (token[0] == '<')
-// 	{
-// 		if (token[1] == '<')
-// 		{
-// 			return (handle_heredoc(token, cmd, cfg));
-// 		}
-// 		return (handle_in_redirect(token, cmd, cfg));
-// 	}
-// 	if (token[0] == '>')
-// 	{
-// 		return (handle_out_redirect(token, cmd, cfg));
-// 	}
-// 	return (handle_other(token, cfg));
-// }
 
 t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 {

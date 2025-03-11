@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 10:00:46 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/02/12 22:47:52 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:04:29 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static bool	realpipe(const char *str, size_t i)
 	ispipe = is_symbol(str[(i)], '|');
 	if (str[(i)] && is_quoted(str[(i)]))
 		ispipe = false;
+	dprintf(2, "++++%i++++\n", ispipe);
 	return (ispipe);
 }
 
@@ -41,15 +42,19 @@ static void	get_piped_cmds(const char *str, char ***cmds,
 	j = 0;
 	wb_index = 0;
 	st_ind = 0;
+	dprintf(2, "-----%i-----\n", cmd_count);
 	while (*i <= ft_strlen(str))
 	{
 		ispipe = realpipe(str, *i);
-		if (*i > 0 && is_word_boundary(str[(*i) - 1], str[(*i)]))
+		//solucionado (temporalmente) con el ispipe para el caso ls| wc
+		if ((*i > 0 && is_word_boundary(str[(*i) - 1], str[(*i)]))
+			|| (ispipe))
 			wb_index = *i;
 		if (st_ind == 0)
 			st_ind = st_ind_value(j, ispipe, str, *i);
 		if (ispipe || !str[*i])
 		{
+			dprintf(2,"-------Punto de comienzo:%li en %s con tamaño %li-----\n", st_ind, str,  wb_index - st_ind);
 			if (j == cmd_count - 1)
 				(*cmds)[j++] = ft_substr(str, st_ind, ft_strlen(str) - st_ind);
 			else
