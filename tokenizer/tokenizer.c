@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/11 19:52:20 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/13 21:17:47 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 	size_t			next_symbol_idx;
 	t_parsed_token	*result;
 	t_parsed_token	*other;
+	char			*aux;
 
 	result = malloc(sizeof(t_parsed_token));
 	result->skip = 0;
@@ -75,8 +76,9 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 	if (next_symbol_idx == (size_t)-1)
 		next_symbol_idx = ft_strlen(token) - 1;
 	result->skip = next_symbol_idx;
-	result->parsed = expand_super(ft_substr(token, 0, next_symbol_idx + 1),
-			cfg);
+	aux = ft_substr(token, 0, next_symbol_idx + 1);
+	result->parsed = expand_super(aux, cfg);
+	free(aux);
 	if (isquote(token[next_symbol_idx + 1]))
 	{
 		other = handle_quote(token + next_symbol_idx + 2, token[next_symbol_idx

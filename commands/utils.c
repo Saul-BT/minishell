@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:10:29 by mmartine          #+#    #+#             */
-/*   Updated: 2025/01/21 16:42:27 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/13 21:44:09 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_get_env_pos(char **env, char *var)
 	while (env[i])
 	{
 		aux = ft_get_env_name(env[i]);
-		if (!ft_strncmp(name, env[i], ft_strlen(aux)))
+		if (!ft_strncmp(name, env[i], ft_strlen(name)))
 		{
 			free(aux);
 			free(name);
