@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_split.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 10:00:46 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/11 20:04:29 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/13 23:19:39 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ static void	get_piped_cmds(const char *str, char ***cmds,
 	{
 		ispipe = realpipe(str, *i);
 		//solucionado (temporalmente) con el ispipe para el caso ls| wc
-		if ((*i > 0 && is_word_boundary(str[(*i) - 1], str[(*i)]))
-			|| (ispipe))
+		if ((*i > 0 && is_word_boundary(str[(*i) - 1], str[(*i)])))
 			wb_index = *i;
 		if (st_ind == 0)
 			st_ind = st_ind_value(j, ispipe, str, *i);
