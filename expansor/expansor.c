@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/13 21:47:38 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/13 21:53:11 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ static char	*str_exange(t_shell *shell, char *args)
 	free(args);
 }
 
-static void	free_expand_vars(char *before_expanded, char *str, char *aux)
-{
-	free(before_expanded);
-	free(str);
-	free(aux);
-}
+// static void	free_expand_vars(char *before_expanded, char *str, char *aux)
+// {
+// 	free(before_expanded);
+// 	free(str);
+// 	free(aux);
+// }
 
 
 char	*expand_super(char *str, t_shell *cfg)
