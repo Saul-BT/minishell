@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/13 22:44:40 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/13 23:13:16 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 	result = malloc(sizeof(t_parsed_token));
 	result->parsed = ft_substr(token, 0, next_q_idx);
 	if (quote == '"')
-		result->parsed = expand_super(result->parsed, cfg); // TODO: Check leak
+		result->parsed = expand_super(result->parsed, cfg);
 	result->skip = next_q_idx + 1;
 	if (isquote(token[next_q_idx + 1]))
 	{
@@ -95,6 +95,7 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	size_t			next_space_idx;
 	t_parsed_token	*result;
 	char			*aux;
+	char			*free_open_var;
 	int				mode;
 	int				fd;
 
@@ -116,7 +117,9 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		if (next_space_idx == (size_t) - 1)
 			next_space_idx = ft_strlen(token);
 		aux = ft_substr(token, 0, next_space_idx);
-		fd = open(expand_super(aux, cfg), mode, 0644);
+		free_open_var = expand_super(aux, cfg);
+		fd = open(free_open_var, mode, 0644);
+		free(free_open_var);
 		free(aux);
 		// if (fd == -1)
 		// TODO: Handle error
@@ -132,6 +135,7 @@ t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	size_t			next_space_idx;
 	t_parsed_token	*result;
 	char			*aux;
+	char			*free_open_var;
 	int				fd;
 
 	result = malloc(sizeof(t_parsed_token));
@@ -142,14 +146,12 @@ t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	if (*token)
 	{
 		next_space_idx = ft_index_of(token, ' ');
-		if (next_space_idx == (size_t)-1)
+		if (next_space_idx == (size_t) - 1)
 			next_space_idx = ft_strlen(token);
-		// si es necesario este print (no es debug) hay que asignarle el substr a aux y liberar aux
 		aux = ft_substr(token, 0, next_space_idx);
-		printf("Opening file: %s\n", aux);
-		free(aux);
-		aux = ft_substr(token, 0, next_space_idx);
-		fd = open(expand_super(aux, cfg), O_RDONLY);
+		free_open_var = expand_super(aux, cfg);
+		fd = open(free_open_var, O_RDONLY);
+		free(free_open_var);
 		free(aux);
 		// if (fd == -1)
 		// TODO: Handle error
