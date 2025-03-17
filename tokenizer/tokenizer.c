@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/13 23:13:16 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/17 18:42:54 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,7 @@ t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 {
 	(void)cmd;
 	// TODO: nullcheck?
+	printf("*******************%s\n**********", token);
 	if (token[0] == '"' || token[0] == '\'')
 	{
 		// handle sigle quotes, also when there is no space after
@@ -285,6 +286,6 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 		i += presult->skip + 1;
 		free(presult);
 	}
-	print_tokenized(cmd);
+	// print_tokenized(cmd);
 	return (cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/10 16:58:37 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/17 18:23:57 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,10 @@ static int	is_empty_arg(char *str)
 	ret = 0;
 	aux = ft_strtrim(str, " \t\r");
 	if (!*aux)
+	{
 		ret = 1;
+		free(str);
+	}
 	free(aux);
 	return (ret);
 }
