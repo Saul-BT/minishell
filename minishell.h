@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/10 17:05:01 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/20 18:54:44 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
+# include <sys/ioctl.h>
+// # include <asm/termbits.h>
 # include <termios.h>
 # include <unistd.h>
 

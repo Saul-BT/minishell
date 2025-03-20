@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/17 18:42:54 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/20 19:48:53 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,13 +188,21 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 		delimiter = ft_substr(token, 0, next_space_idx);
 		if (pipe(pipe_fd) == -1)
 			return (NULL); // TODO: Handle error
+		g_exit_num = 0; 
 		while (1)
 		{
+			sig_manage(cfg, 2);
 			line = readline("heredoc> ");
-			if (!line || ft_strcmp(line, delimiter) == 0)
+			sig_manage(cfg, 1);
+			if (g_exit_num == 130 || !line || ft_strcmp(line, delimiter) == 0)
 			{
 				free(line);
 				break ;
+			}
+			if (!*line)
+			{
+				free (line);
+				continue ;
 			}
 			line = expand_super(line, cfg);
 			write(pipe_fd[1], line, ft_strlen(line));
@@ -213,11 +221,8 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 {
 	(void)cmd;
-	// TODO: nullcheck?
-	printf("*******************%s\n**********", token);
 	if (token[0] == '"' || token[0] == '\'')
 	{
-		// handle sigle quotes, also when there is no space after
 		return (handle_quote(token + 1, token[0], cfg));
 	}
 	if (token[0] == '<')

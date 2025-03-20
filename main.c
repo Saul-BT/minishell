@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/17 18:23:57 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/19 20:03:50 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,14 @@ void	print_cmds(const char ***cmds, int count)
 	}
 }
 
+
+
 void	check_shlvl( int n, t_shell *shell)
 {
 	int		lvl;
 	int		pos;
 	char	*aux;
+	char	**env;
 
 	lvl = 0;
 	pos = ft_get_env_pos(shell->envp, "SHLVL");
@@ -51,7 +54,9 @@ void	check_shlvl( int n, t_shell *shell)
 	}
 	else
 	{
-		new_env(shell->envp, n + 1, 1, "SHLVL");
+		env = new_env(shell->envp, n, 1, "SHLVL");
+		free_env(shell->envp);
+		shell->envp = env;
 		ft_set_env_val(shell, "SHLVL", "1",
 			ft_get_env_pos(shell->envp, "SHLVL"));
 	}
@@ -65,14 +70,13 @@ t_shell	*initshell(char **env)
 
 	ret = malloc(sizeof(t_shell));
 	n = 0;
-	while (env[n])
+	while (*env && env[n])
 		n++;
-	if (*env)
-	{
-		alocated_env = new_env(env, n, 0, NULL);
-		ret->envp = alocated_env;
-		check_shlvl(n, ret);
-	}
+	alocated_env = new_env(env, n, 0, NULL);
+	ret->envp = alocated_env;
+	if (n == 0)
+		n = 2;
+	check_shlvl(n, ret);
 	ret->cmds = NULL;
 	ret->exit_code = 0;
 	g_exit_num = 0;

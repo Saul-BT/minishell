@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/13 21:53:11 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/17 19:01:33 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,7 @@ char	*expand_super(char *str, t_shell *cfg)
 		after_var_idx = ft_strlen(str);
 	else
 		after_var_idx += dollar_idx + 1;
-	printf("-----AFTER_VAR_IDX = %li and DOLLAR_IDX = %li------\n", after_var_idx, dollar_idx);
 	aux = ft_substr(str + dollar_idx, 0, after_var_idx - dollar_idx);
-	printf("meh\n");
 	expanded = str_exange(cfg, aux);
 	free(aux);
 	aux = ft_strjoin(before_expanded, expanded);

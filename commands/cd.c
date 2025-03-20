@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/17 02:24:13 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/20 18:15:01 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	nonerror_cd(char *oldpath, char *nd_arg, t_shell *shell)
 	curr_loc = getcwd(NULL, 0);
 	if (!curr_loc)
 	{
+		printf("cd: error retrieving current directory: getcwd: cannot access"
+			"parent directories: No such file or directory\n");
 		aux = ft_strjoin(oldpath, "/");
 		curr_loc = ft_strjoin(aux, nd_arg);
 		free(aux);
@@ -33,9 +35,28 @@ int	nonerror_cd(char *oldpath, char *nd_arg, t_shell *shell)
 		ft_get_env_pos(shell->envp, "OLDPWD"));
 	ft_set_env_val(shell, "PWD", curr_loc,
 		ft_get_env_pos(shell->envp, "PWD"));
-	free(oldpath);
+	if (oldpath)
+		free(oldpath);
 	free(curr_loc);
 	return (0);
+}
+
+int	if_non_next(t_cmd *cmd, char *oldpath)
+{
+	if (cmd->args->next)
+		return (0);
+	free(oldpath);
+	return (1);
+}
+
+int	ret_error(t_cmd *cmd, char *oldpath)
+{
+	printf("bash: cd: %s: No such file or directory\n",
+		(char *)cmd->args->next->content);
+	if (oldpath)
+		free(oldpath);
+	return (1);
+
 }
 
 int	ft_cd(t_cmd *cmd, t_shell *shell)
@@ -46,7 +67,9 @@ int	ft_cd(t_cmd *cmd, t_shell *shell)
 
 	oldpath = getcwd(NULL, 0);
 	if (!oldpath)
-		oldpath = ft_get_env_val(shell, "PWD");
+		oldpath = ft_strdup(ft_get_env_val(shell, "PWD"));
+	if (if_non_next(cmd, oldpath))
+		return (2);
 	nd_arg = (char *) cmd->args->next->content;
 	if (!nd_arg)
 		ret = chdir(ft_get_env_val(shell, "HOME"));
@@ -57,11 +80,5 @@ int	ft_cd(t_cmd *cmd, t_shell *shell)
 	if (!ret)
 		return (nonerror_cd(oldpath, nd_arg, shell));
 	else
-	{
-		printf("bash: cd: %s: No such file or directory\n",
-			(char *)cmd->args->next->content);
-		if (oldpath)
-			free(oldpath);
-		return (1);
-	}
+		return (ret_error(cmd, oldpath));
 }

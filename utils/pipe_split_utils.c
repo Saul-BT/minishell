@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_split_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 22:43:44 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/13 23:22:43 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/17 18:58:53 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	is_word_boundary(char a, char b)
 {
-	return (!(ft_isspace(a)  || a == '|') && (ft_isspace(b) || b == '|'));
+	return (!(ft_isspace(a) || a == '|') && (ft_isspace(b) || b == '|'));
 }
 
 bool	is_symbol(char c, char symbol)
