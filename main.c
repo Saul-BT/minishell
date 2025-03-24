@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/19 20:03:50 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/24 17:42:20 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	print_cmds(const char ***cmds, int count)
 		i++;
 	}
 }
-
-
 
 void	check_shlvl( int n, t_shell *shell)
 {

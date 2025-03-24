@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/20 19:48:53 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/24 19:12:35 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,17 @@ t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 	size_t			next_q_idx;
 	t_parsed_token	*result;
 	t_parsed_token	*othe;
+	char			*aux;
 
 	next_q_idx = ft_index_of(token, quote);
 	result = malloc(sizeof(t_parsed_token));
 	result->parsed = ft_substr(token, 0, next_q_idx);
 	if (quote == '"')
-		result->parsed = expand_super(result->parsed, cfg);
+	{
+		aux = expand_super(result->parsed, cfg);
+		free(result->parsed);
+		result->parsed = aux;
+	}
 	result->skip = next_q_idx + 1;
 	if (isquote(token[next_q_idx + 1]))
 	{
@@ -116,11 +121,16 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		next_space_idx = ft_index_of(token, ' ');
 		if (next_space_idx == (size_t) - 1)
 			next_space_idx = ft_strlen(token);
+		// aux = ft_substr(token, 0, next_space_idx);
+		// free_open_var = expand_super(aux, cfg);
+		// fd = open(free_open_var, mode, 0644);
+		// free(aux);
+		// free(free_open_var);
 		aux = ft_substr(token, 0, next_space_idx);
 		free_open_var = expand_super(aux, cfg);
+		free(aux);
 		fd = open(free_open_var, mode, 0644);
 		free(free_open_var);
-		free(aux);
 		// if (fd == -1)
 		// TODO: Handle error
 		cmd->fd_out = fd;
