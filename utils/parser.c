@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/24 17:42:47 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:34:16 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,11 @@ t_node	*get_cmds(t_shell *cfg, char **argv)
 	while (i < cfg->cmd_count)
 	{
 		// TODO: Add check for the returned value (it can be NULL)
+		printf("-------'%s'-------\n", cmd->bin);
 		cmd = tokenize(argv[i], cfg);
 		free(argv[i]);
+		// if (ft_strcmp(cmd->bin, "") == 0)
+		// 	printf("saaaaaaaaaaaaaaaaaaaaaaaa\n");
 		cfg->exit_code = 0;
 		if (!is_builtin(cmd->bin))
 		{

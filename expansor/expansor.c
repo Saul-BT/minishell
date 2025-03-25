@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/17 19:01:33 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/25 18:32:06 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,25 @@ static char	*str_exange(t_shell *shell, char *args)
 	free(args);
 }
 
-// static void	free_expand_vars(char *before_expanded, char *str, char *aux)
-// {
-// 	free(before_expanded);
-// 	free(str);
-// 	free(aux);
-// }
+size_t	expand_reach(char *str, size_t dollar_idx)
+{
+	size_t	to_dollar;
+	size_t	to_space;
 
+	to_dollar = ft_index_of(str + dollar_idx + 1, '$');
+	to_space = ft_index_of(str + dollar_idx + 1, ' ');
+	if (to_dollar == (size_t)-1 && to_space == (size_t)-1)
+		return (-1);
+	else if (to_dollar == (size_t)-1)
+		return (to_space);
+	else if (to_space == (size_t)-1)
+		return (to_dollar);
+	else if (to_dollar > to_space)
+		return (to_space);
+	else if (to_dollar < to_space)
+		return (to_dollar);
+	return (0);
+}
 
 char	*expand_super(char *str, t_shell *cfg)
 {
@@ -43,10 +55,10 @@ char	*expand_super(char *str, t_shell *cfg)
 	char	*result;
 
 	dollar_idx = ft_index_of(str, '$');
-	if (dollar_idx == (size_t)-1 || dollar_idx == ft_strlen(str) - 1)
+	if (dollar_idx == (size_t) - 1 || dollar_idx == ft_strlen(str) - 1)
 		return (ft_strdup(str));
 	before_expanded = ft_substr(str, 0, dollar_idx);
-	after_var_idx = ft_index_of(str + dollar_idx + 1, ' ');
+	after_var_idx = expand_reach(str, dollar_idx);
 	if (after_var_idx == (size_t)-1)
 		after_var_idx = ft_strlen(str);
 	else

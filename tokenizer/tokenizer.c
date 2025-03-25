@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/24 19:12:35 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/25 18:29:55 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 	{
 		other = handle_quote(token + next_symbol_idx + 2, token[next_symbol_idx
 				+ 1], cfg);
-		result->parsed = ft_strjoin(result->parsed, other->parsed);
+		aux = ft_strjoin(result->parsed, other->parsed);
+		free(other->parsed);
+		free(result->parsed);
+		result->parsed = aux;
 		result->skip += other->skip + 1;
 		free(other);
 	}
@@ -129,8 +132,7 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		aux = ft_substr(token, 0, next_space_idx);
 		free_open_var = expand_super(aux, cfg);
 		free(aux);
-		fd = open(free_open_var, mode, 0644);
-		free(free_open_var);
+		fd = open(file_name_non_quoted(free_open_var), mode, 0644);
 		// if (fd == -1)
 		// TODO: Handle error
 		cmd->fd_out = fd;

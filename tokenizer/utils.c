@@ -6,16 +6,25 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/24 19:37:49 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/25 15:46:12 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// char	*file_name_non_quoted(char *name)
-// {
-	
-// }
+char	*file_name_non_quoted(char *name)
+{
+	char	*non_q;
+
+	if (name[0] == '"')
+		non_q = ft_strtrim(name, "\"");
+	else if (name[0] == '\'')
+		non_q = ft_strtrim(name, "'");
+	else
+		return (name);
+	free(name);
+	return (non_q);
+}
 
 t_cmd	*init_tokenizer(void)
 {
