@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/25 18:29:55 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/25 18:58:01 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		free_open_var = expand_super(aux, cfg);
 		free(aux);
 		fd = open(file_name_non_quoted(free_open_var), mode, 0644);
-		// if (fd == -1)
-		// TODO: Handle error
+		if (fd == -1)
+			return (NULL);
 		cmd->fd_out = fd;
 		result->skip += next_space_idx;
 	}
@@ -277,7 +277,7 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 	t_cmd			*cmd;
 	t_parsed_token	*presult;
 	bool			first_parsed;
-
+	char			*first_exp;
 	i = 0;
 	len = ft_strlen(cmd_line);
 	first_parsed = true;
@@ -289,7 +289,9 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 			i++;
 			continue ;
 		}
-		presult = handle_token(&cmd_line[i], cmd, cfg);
+		first_exp = expand_super(cmd_line, cfg);
+		presult = handle_token(&first_exp[i], cmd, cfg);
+		free(first_exp);
 		if (presult->parsed != NULL)
 		{
 			if (first_parsed)
@@ -303,6 +305,43 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 		i += presult->skip + 1;
 		free(presult);
 	}
-	// print_tokenized(cmd);
+	print_tokenized(cmd);
 	return (cmd);
 }
+
+// t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
+// {
+// 	size_t			i;
+// 	size_t			len;
+// 	t_cmd			*cmd;
+// 	t_parsed_token	*presult;
+// 	bool			first_parsed;
+
+// 	i = 0;
+// 	len = ft_strlen(cmd_line);
+// 	first_parsed = true;
+// 	cmd = init_tokenizer();
+// 	while (i < len && cmd_line && cmd_line[i])
+// 	{
+// 		if (ft_isspace(cmd_line[i]))
+// 		{
+// 			i++;
+// 			continue ;
+// 		}
+// 		presult = handle_token(&cmd_line[i], cmd, cfg);
+// 		if (presult->parsed != NULL)
+// 		{
+// 			if (first_parsed)
+// 			{
+// 				cmd->bin = presult->parsed;
+// 				first_parsed = false;
+// 			}
+// 			ft_lstadd_back(&cmd->args, ft_lstnew(presult->parsed));
+// 			cmd->arg_count++;
+// 		}
+// 		i += presult->skip + 1;
+// 		free(presult);
+// 	}
+// 	// print_tokenized(cmd);
+// 	return (cmd);
+// }
