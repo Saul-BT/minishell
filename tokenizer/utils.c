@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/25 15:46:12 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:50:06 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,17 @@ char	*file_name_non_quoted(char *name)
 	char	*non_q;
 
 	if (name[0] == '"')
+	{
+		free(name);
 		non_q = ft_strtrim(name, "\"");
+	}
 	else if (name[0] == '\'')
+	{
+		free(name);	
 		non_q = ft_strtrim(name, "'");
+	}
 	else
 		return (name);
-	free(name);
 	return (non_q);
 }
 

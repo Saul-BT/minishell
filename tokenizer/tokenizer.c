@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/25 18:58:01 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/26 19:22:51 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,13 @@ static inline bool	isquote(char c)
 
 size_t	ft_index_of_symbol(char *str)
 {
+	
 	static char	*symbols = " <>;'\"";
 	size_t		i;
-
+	
 	i = 0;
+	if (!*str)
+		return ((size_t)-1);
 	while (str[i])
 	{
 		if (ft_strchr(symbols, str[i]))
@@ -132,7 +135,9 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		aux = ft_substr(token, 0, next_space_idx);
 		free_open_var = expand_super(aux, cfg);
 		free(aux);
-		fd = open(file_name_non_quoted(free_open_var), mode, 0644);
+		aux = file_name_non_quoted(free_open_var);
+		fd = open(aux, mode, 0644);
+		free(aux);
 		if (fd == -1)
 			return (NULL);
 		cmd->fd_out = fd;
@@ -142,6 +147,94 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 }
 
 // TODO: Unify with handle_out_redirect -> handle_redirect
+// t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
+// {
+// 	size_t			next_space_idx;
+// 	t_parsed_token	*result;
+// 	char			*aux;
+// 	char			*free_open_var;
+// 	int				fd;
+
+// 	result = malloc(sizeof(t_parsed_token));
+// 	result->skip = 1;
+// 	result->parsed = NULL;
+// 	while (ft_isspace(*++token))
+// 		result->skip++;
+// 	if (*token)
+// 	{
+// 		next_space_idx = ft_index_of(token, ' ');
+// 		if (next_space_idx == (size_t) - 1)
+// 			next_space_idx = ft_strlen(token);
+// 		aux = ft_substr(token, 0, next_space_idx);
+// 		free_open_var = expand_super(aux, cfg);
+// 		fd = open(free_open_var, O_RDONLY);
+// 		free(free_open_var);
+// 		free(aux);
+// 		// if (fd == -1)
+// 		// TODO: Handle error
+// 		cmd->fd_in = fd;
+// 		result->skip += next_space_idx;
+// 	}
+// 	return (result);
+// }
+
+// t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
+// {
+// 	size_t			skip;
+// 	size_t			next_space_idx;
+// 	t_parsed_token	*result;
+// 	char			*delimiter;
+// 	char			*line;
+// 	int				pipe_fd[2];
+
+// 	skip = 2; // Skip '<<'
+// 	result = malloc(sizeof(t_parsed_token));
+// 	result->skip = 0;
+// 	result->parsed = NULL;
+// 	token += 2;
+// 	while (ft_isspace(*token))
+// 	{
+// 		token++;
+// 		skip++;
+// 	}
+// 	if (*token)
+// 	{
+// 		next_space_idx = ft_index_of(token, ' ');
+// 		if (next_space_idx == (size_t)-1)
+// 			next_space_idx = ft_strlen(token);
+// 		delimiter = ft_substr(token, 0, next_space_idx);
+// 		if (pipe(pipe_fd) == -1)
+// 			return (NULL); // TODO: Handle error
+// 		g_exit_num = 0; 
+// 		while (1)
+// 		{
+// 			sig_manage(cfg, 2);
+// 			line = readline("heredoc> ");
+// 			sig_manage(cfg, 1);
+// 			if (g_exit_num == 130 || !line || ft_strcmp(line, delimiter) == 0)
+// 			{
+// 				free(line);
+// 				break ;
+// 			}
+// 			if (!*line)
+// 			{
+// 				free (line);
+// 				continue ;
+// 			}
+// 			line = expand_super(line, cfg);
+// 			write(pipe_fd[1], line, ft_strlen(line));
+// 			write(pipe_fd[1], "\n", 1);
+// 			free(line);
+// 		}
+// 		close(pipe_fd[1]);
+// 		cmd->fd_in = pipe_fd[0];
+// 		skip += next_space_idx;
+// 		free(delimiter);
+// 	}
+// 	result->skip = skip;
+// 	return (result);
+// }
+
 t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 {
 	size_t			next_space_idx;
@@ -270,45 +363,6 @@ void	print_tokenized(t_cmd *cmd)
 	printf("=====================\033[0m\n");
 }
 
-t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
-{
-	size_t			i;
-	size_t			len;
-	t_cmd			*cmd;
-	t_parsed_token	*presult;
-	bool			first_parsed;
-	char			*first_exp;
-	i = 0;
-	len = ft_strlen(cmd_line);
-	first_parsed = true;
-	cmd = init_tokenizer();
-	while (i < len && cmd_line && cmd_line[i])
-	{
-		if (ft_isspace(cmd_line[i]))
-		{
-			i++;
-			continue ;
-		}
-		first_exp = expand_super(cmd_line, cfg);
-		presult = handle_token(&first_exp[i], cmd, cfg);
-		free(first_exp);
-		if (presult->parsed != NULL)
-		{
-			if (first_parsed)
-			{
-				cmd->bin = presult->parsed;
-				first_parsed = false;
-			}
-			ft_lstadd_back(&cmd->args, ft_lstnew(presult->parsed));
-			cmd->arg_count++;
-		}
-		i += presult->skip + 1;
-		free(presult);
-	}
-	print_tokenized(cmd);
-	return (cmd);
-}
-
 // t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 // {
 // 	size_t			i;
@@ -328,6 +382,7 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 // 			i++;
 // 			continue ;
 // 		}
+
 // 		presult = handle_token(&cmd_line[i], cmd, cfg);
 // 		if (presult->parsed != NULL)
 // 		{
@@ -345,3 +400,44 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 // 	// print_tokenized(cmd);
 // 	return (cmd);
 // }
+
+t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
+{
+	size_t			i;
+	size_t			len;
+	t_cmd			*cmd;
+	t_parsed_token	*presult;
+	bool			first_parsed;
+	char			*first_exp;
+
+	i = 0;
+	first_exp = expand_super(cmd_line, cfg);
+	len = ft_strlen(cmd_line);
+	first_parsed = true;
+	cmd = init_tokenizer();
+	while (i < len && first_exp && first_exp[i])
+	{
+		if (ft_isspace(first_exp[i]))
+		{
+			i++;
+			continue ;
+		}
+
+		presult = handle_token(&first_exp[i], cmd, cfg);
+		if (presult->parsed != NULL)
+		{
+			if (first_parsed)
+			{
+				cmd->bin = presult->parsed;
+				first_parsed = false;
+			}
+			ft_lstadd_back(&cmd->args, ft_lstnew(presult->parsed));
+			cmd->arg_count++;
+		}
+		i += presult->skip + 1;
+		free(presult);
+	}
+	free(first_exp);
+	// print_tokenized(cmd);
+	return (cmd);
+}

@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/25 18:58:13 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/26 19:40:26 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static char	*get_check_cmd(char *cmd, t_shell *cfg)
 {
+
+	//ELIMINAR ESTO
 	if (is_builtin(cmd))
 		return (cmd);
 	if (access(cmd, F_OK) != 0 || !has_char(cmd, '/'))
@@ -58,6 +60,24 @@ char	*get_bin_path(char *cmd, char **bin_paths, t_shell *cfg)
 	return (get_check_cmd(cmd, cfg));
 }
 
+t_node	*error_exit(t_shell *cfg, char **bin_paths, char **argv, t_cmd *cmd)
+{
+	// int	i;
+
+	// i = 0;
+	if (cfg->cmd_count == 1)
+		printf("bash: syntax error near unexpected token `newline'\n");
+	else if (cfg->cmd_count == 2)
+	{
+		free(cmd->args);
+		printf("bash: syntax error near unexpected token `|'\n");
+	}
+	free(cmd);
+	free_strs(bin_paths);
+	free(argv);
+	return (NULL);
+}
+
 t_node	*get_cmds(t_shell *cfg, char **argv)
 {
 	int		i;
@@ -71,12 +91,16 @@ t_node	*get_cmds(t_shell *cfg, char **argv)
 	cmds = NULL;
 	while (i < cfg->cmd_count)
 	{
+		printf("---%s---\n", argv[i]);
+		printf("cmd count---%i---\n", cfg->cmd_count);
 		// TODO: Add check for the returned value (it can be NULL)
-		// printf("-------'%s'-------\n", cmd->bin);
+		printf("-------'%s'-------\n", cmd->bin);
 		cmd = tokenize(argv[i], cfg);
+		printf("---argc: %i----\n",cmd->arg_count);
 		free(argv[i]);
-		// if (ft_strcmp(cmd->bin, "") == 0)
-		// 	printf("saaaaaaaaaaaaaaaaaaaaaaaa\n");
+		//REVISAR SI ESTO ROMPE ALGO QUE NO SEAN ARGUMENTOS VACIOS
+		if (cmd->arg_count == 0)
+			return (error_exit(cfg, bin_paths, argv, cmd));
 		cfg->exit_code = 0;
 		if (!is_builtin(cmd->bin))
 		{
