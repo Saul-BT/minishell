@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/27 17:11:23 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/27 19:15:51 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ t_node	*get_cmds(t_shell *cfg, char **argv)
 		if (!is_builtin(cmd->bin))
 		{
 			cmd->bin = get_bin_path(cmd->bin, bin_paths, cfg);
-			cmd->args->content = cmd->bin;
+			if (cmd->bin)
+				cmd->args->content = cmd->bin;
 		}
 		ft_lstadd_back(&cmds, ft_lstnew(cmd));
 		i++;

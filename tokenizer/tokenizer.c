@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/27 17:12:10 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/27 18:59:20 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,6 +370,8 @@ void	print_arg(char *arg)
 void	print_tokenized(t_cmd *cmd)
 {
 	printf("\033[0;34m=====================\n");
+	if (cmd->bin)
+		printf("hay cmd\n");
 	printf("bin: %s\n", cmd->bin);
 	printf("arg_count: %d\n", cmd->arg_count);
 	ft_lstiter(cmd->args, (void (*)(void *))print_arg);
@@ -389,8 +391,6 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 	char *first_exp;
 
 	i = 0;
-	first_exp = expand_super(cmd_line, cfg);
-	len = ft_strlen(first_exp);
 	first_exp = expand_super(cmd_line, cfg);
 	len = ft_strlen(first_exp);
 	first_parsed = true;
@@ -418,6 +418,6 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 		free(presult);
 	}
 	free(first_exp);
-	// print_tokenized(cmd);
+	print_tokenized(cmd);
 	return (cmd);
 }

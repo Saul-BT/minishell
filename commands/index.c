@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   index.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:29:32 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/21 16:43:11 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/27 19:12:55 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ bool	is_builtin(const char *cmd)
 	builtins[6] = "unset";
 	i = 0;
 	num_builtins = 7;
+	if (!cmd)
+		return (false);
 	while (i < num_builtins && ft_strcmp(cmd, builtins[i]) != 0)
 		i++;
 	return (i < num_builtins);

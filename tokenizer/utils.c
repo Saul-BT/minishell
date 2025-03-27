@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/26 14:50:06 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/27 19:04:02 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_cmd	*init_tokenizer(void)
 	t_cmd	*cmd;
 
 	cmd = malloc(sizeof(t_cmd));
+	cmd->bin = NULL;
 	cmd->args = NULL;
 	cmd->arg_count = 0;
 	cmd->fd_in = STDIN_FILENO;
