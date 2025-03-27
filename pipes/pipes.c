@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/26 20:29:19 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/27 18:02:43 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static void	execute_command(t_cmd *cmd, t_pipe_ctx *ctx)
 		print_error("fork");
 	else if (pid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		setup_child_pipes(cmd, ctx);
 		aux_pipex(cmd, ctx->shell);
 	}

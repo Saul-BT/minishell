@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:50:46 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/27 17:07:21 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/27 19:48:00 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,11 @@ void	sig_interactive(int signum)
 {
 	if (signum == SIGINT)
 	{
-		printf("> ^C\n");
+		printf("\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		g_exit_num = 130;
-	}
-	else if (signum == SIGQUIT)
-	{
-		signal(SIGQUIT, SIG_IGN);
-		rl_replace_line("", 1);
-		rl_on_new_line();
-		rl_redisplay();
-		g_exit_num = 0;
 	}
 }
 
@@ -108,3 +100,4 @@ void	sig_manage(t_shell *shell, int interactive)
 
 	}
 }
+
