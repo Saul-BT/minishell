@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/26 20:38:27 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/27 16:57:56 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	*shell;
 	char	*input;
 
+	signal(SIGQUIT, SIG_IGN);
 	shell = initshell(envp);
 	(void)argc;
 	(void)argv;

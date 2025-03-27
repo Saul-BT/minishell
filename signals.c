@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:50:46 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/26 20:36:57 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/27 17:07:21 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	sig_manage(t_shell *shell, int interactive)
 {
 	if (interactive == 1)
 	{
-		write_signals(shell, 1);
+		// write_signals(shell, 1);
 		signal(SIGINT, sig_interactive);
 		signal(SIGQUIT, sig_interactive);
 		// write_signals(shell, 0);
@@ -101,10 +101,10 @@ void	sig_manage(t_shell *shell, int interactive)
 	}
 	else
 	{
-		write_signals(shell, 0);
+		// write_signals(shell, 0);
 		signal(SIGINT, sig_non_interactive);
 		signal(SIGQUIT, sig_non_interactive);
-		write_signals(shell, 1);
+		// write_signals(shell, 1);
 
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/26 19:40:26 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/27 14:13:01 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,16 +91,14 @@ t_node	*get_cmds(t_shell *cfg, char **argv)
 	cmds = NULL;
 	while (i < cfg->cmd_count)
 	{
-		printf("---%s---\n", argv[i]);
-		printf("cmd count---%i---\n", cfg->cmd_count);
+		// printf("cmd count---%i---\n", cfg->cmd_count);
 		// TODO: Add check for the returned value (it can be NULL)
-		printf("-------'%s'-------\n", cmd->bin);
 		cmd = tokenize(argv[i], cfg);
-		printf("---argc: %i----\n",cmd->arg_count);
+		// printf("---argc: %i----\n",cmd->arg_count);
 		free(argv[i]);
 		//REVISAR SI ESTO ROMPE ALGO QUE NO SEAN ARGUMENTOS VACIOS
-		if (cmd->arg_count == 0)
-			return (error_exit(cfg, bin_paths, argv, cmd));
+		// if (cmd->arg_count == 0)
+		// 	return (error_exit(cfg, bin_paths, argv, cmd));
 		cfg->exit_code = 0;
 		if (!is_builtin(cmd->bin))
 		{

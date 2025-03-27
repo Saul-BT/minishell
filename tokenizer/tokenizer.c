@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/26 19:22:51 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/27 16:54:44 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -412,7 +412,7 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 
 	i = 0;
 	first_exp = expand_super(cmd_line, cfg);
-	len = ft_strlen(cmd_line);
+	len = ft_strlen(first_exp);
 	first_parsed = true;
 	cmd = init_tokenizer();
 	while (i < len && first_exp && first_exp[i])
@@ -422,7 +422,6 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 			i++;
 			continue ;
 		}
-
 		presult = handle_token(&first_exp[i], cmd, cfg);
 		if (presult->parsed != NULL)
 		{
