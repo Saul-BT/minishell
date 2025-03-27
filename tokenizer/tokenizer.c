@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/27 17:11:00 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/27 17:12:10 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ static inline bool	isquote(char c)
 
 size_t	ft_index_of_symbol(char *str)
 {
-	
 	static char	*symbols = " <>;'\"";
 	size_t		i;
-	
+
 	i = 0;
 	if (!*str)
 		return ((size_t)-1);
@@ -110,7 +109,7 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	int				mode;
 	int				fd;
 
-	result = malloc(sizeof(t_parsed_token));
+	result = malloc(sizeof(t_parsed_token)); // TODO: Add null-check
 	result->skip = 1;
 	result->parsed = NULL;
 	mode = O_WRONLY | O_CREAT | O_TRUNC;
@@ -118,14 +117,20 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	{
 		mode = O_RDWR | O_CREAT | O_APPEND;
 		result->skip++;
-		token ++;
+		token++;
 	}
 	while (ft_isspace(*++token))
 		result->skip++;
+	if (*token && strchr("<>", *token))
+	{
+		printf("pipex: syntax error near unexpected token `>'\n");
+		g_exit_num = 2;
+		return (result);
+	}
 	if (*token)
 	{
 		next_space_idx = ft_index_of(token, ' ');
-		if (next_space_idx == (size_t) - 1)
+		if (next_space_idx == (size_t)-1)
 			next_space_idx = ft_strlen(token);
 		// aux = ft_substr(token, 0, next_space_idx);
 		// free_open_var = expand_super(aux, cfg);
@@ -205,7 +210,7 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 // 		delimiter = ft_substr(token, 0, next_space_idx);
 // 		if (pipe(pipe_fd) == -1)
 // 			return (NULL); // TODO: Handle error
-// 		g_exit_num = 0; 
+// 		g_exit_num = 0;
 // 		while (1)
 // 		{
 // 			sig_manage(cfg, 2);
@@ -248,10 +253,16 @@ t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	result->parsed = NULL;
 	while (ft_isspace(*++token))
 		result->skip++;
+	if (*token && *token == '>')
+	{
+		printf("pipex: syntax error near unexpected token `>'\n");
+		g_exit_num = 2;
+		return (result);
+	}
 	if (*token)
 	{
 		next_space_idx = ft_index_of(token, ' ');
-		if (next_space_idx == (size_t) - 1)
+		if (next_space_idx == (size_t)-1)
 			next_space_idx = ft_strlen(token);
 		aux = ft_substr(token, 0, next_space_idx);
 		free_open_var = expand_super(aux, cfg);
@@ -275,8 +286,8 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 	char			*line;
 	int				pipe_fd[2];
 
-	skip = 2; // Skip '<<'
-	result = malloc(sizeof(t_parsed_token));
+	skip = 2;                                // Skip '<<'
+	result = malloc(sizeof(t_parsed_token)); // TODO: Add null-check
 	result->skip = 0;
 	result->parsed = NULL;
 	token += 2;
@@ -284,6 +295,12 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 	{
 		token++;
 		skip++;
+	}
+	if (*token && strchr("<>", *token))
+	{
+		printf("pipex: syntax error near unexpected token `<'\n");
+		g_exit_num = 2;
+		return (result);
 	}
 	if (*token)
 	{
@@ -293,7 +310,7 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 		delimiter = ft_substr(token, 0, next_space_idx);
 		if (pipe(pipe_fd) == -1)
 			return (NULL); // TODO: Handle error
-		g_exit_num = 0; 
+		g_exit_num = 0;
 		while (1)
 		{
 			sig_manage(cfg, 2);
@@ -306,7 +323,7 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 			}
 			if (!*line)
 			{
-				free (line);
+				free(line);
 				continue ;
 			}
 			line = expand_super(line, cfg);
@@ -345,7 +362,6 @@ t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 	return (handle_other(token, cfg));
 }
 
-
 void	print_arg(char *arg)
 {
 	printf("  -> %s\n", arg);
@@ -365,26 +381,30 @@ void	print_tokenized(t_cmd *cmd)
 
 t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 {
-	size_t			i;
-	size_t			len;
-	t_cmd			*cmd;
-	t_parsed_token	*presult;
-	bool			first_parsed;
+	size_t i;
+	size_t len;
+	t_cmd *cmd;
+	t_parsed_token *presult;
+	bool first_parsed;
+	char *first_exp;
 
 	i = 0;
 	first_exp = expand_super(cmd_line, cfg);
 	len = ft_strlen(first_exp);
+	first_exp = expand_super(cmd_line, cfg);
+	len = ft_strlen(first_exp);
 	first_parsed = true;
 	cmd = init_tokenizer();
-	while (i < len && cmd_line && cmd_line[i])
+	while (i < len && first_exp && first_exp[i])
 	{
-		if (ft_isspace(cmd_line[i]))
+		if (ft_isspace(first_exp[i]))
 		{
 			i++;
 			continue ;
 		}
+
 		presult = handle_token(&first_exp[i], cmd, cfg);
-		if (presult->parsed != NULL)
+		if (presult->parsed != NULL) // TODO: Handle error in else branch
 		{
 			if (first_parsed)
 			{
@@ -397,7 +417,7 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 		i += presult->skip + 1;
 		free(presult);
 	}
-	print_tokenized(cmd);
+	free(first_exp);
+	// print_tokenized(cmd);
 	return (cmd);
 }
-

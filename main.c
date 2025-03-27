@@ -6,13 +6,13 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/27 17:09:47 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/27 17:11:35 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_exit_num;
+int			g_exit_num;
 
 void	print_cmds(const char ***cmds, int count)
 {
@@ -33,7 +33,7 @@ void	print_cmds(const char ***cmds, int count)
 	}
 }
 
-void	check_shlvl( int n, t_shell *shell)
+void	check_shlvl(int n, t_shell *shell)
 {
 	int		lvl;
 	int		pos;
@@ -55,8 +55,8 @@ void	check_shlvl( int n, t_shell *shell)
 		env = new_env(shell->envp, n, 1, "SHLVL");
 		free_env(shell->envp);
 		shell->envp = env;
-		ft_set_env_val(shell, "SHLVL", "1",
-			ft_get_env_pos(shell->envp, "SHLVL"));
+		ft_set_env_val(shell, "SHLVL", "1", ft_get_env_pos(shell->envp,
+				"SHLVL"));
 	}
 }
 
@@ -81,9 +81,32 @@ t_shell	*initshell(char **env)
 	return (ret);
 }
 
-static bool is_valid_candiate(char *input)
+static bool	is_valid_candiate(char *input)
 {
-	
+	bool	empty_before;
+	bool	empty_after;
+
+	empty_before = true;
+	empty_after = true;
+	if (!input || !*input)
+		return (true);
+	while (*input && *input != '|')
+	{
+		empty_before = empty_before && ft_isspace(*input);
+		input++;
+	}
+	if (*input++ != '|')
+		return (true);
+	if (empty_before)
+		return (false);
+	while (*input && *input != '|')
+	{
+		empty_after = empty_after && ft_isspace(*input);
+		input++;
+	}
+	if (empty_after && *input == '|')
+		return (false);
+	return (!empty_before && !empty_after);
 }
 
 static void	mini_main(char *input, t_shell *shell)
@@ -91,8 +114,12 @@ static void	mini_main(char *input, t_shell *shell)
 	char	**splited;
 
 	add_history(input);
-	if (is_valid_candiate(input))
-			return ;
+	if (!is_valid_candiate(input))
+	{
+		g_exit_num = 2;
+		printf("pipex: syntax error near unexpected token `|'\n");
+		return ;
+	}
 	splited = pipe_split(input, &shell->cmd_count);
 	if (is_quoted('?'))
 	{
@@ -103,9 +130,9 @@ static void	mini_main(char *input, t_shell *shell)
 	else if (splited)
 	{
 		shell->cmds = get_cmds(shell, splited);
-		if (!shell->cmds)
+		if (!shell->cmds || g_exit_num != 0)
 		{
-			free (input);
+			free(input);
 			return ;
 		}
 		if (shell->cmd_count == 1
@@ -148,7 +175,7 @@ int	main(int argc, char **argv, char **envp)
 		sig_manage(shell, 1);
 		input = readline("> ");
 		sig_manage(shell, 0);
-		//REVISAR ESTA LINEA PARA SABER QUE EXIT EMPLEAR
+		// REVISAR ESTA LINEA PARA SABER QUE EXIT EMPLEAR
 		if (!input)
 			exit(1);
 		else if (is_empty_arg(input))
