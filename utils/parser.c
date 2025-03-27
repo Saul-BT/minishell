@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/27 14:13:01 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/27 17:11:23 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 static char	*get_check_cmd(char *cmd, t_shell *cfg)
 {
-
-	//ELIMINAR ESTO
+	// ELIMINAR ESTO
 	if (is_builtin(cmd))
 		return (cmd);
 	if (access(cmd, F_OK) != 0 || !has_char(cmd, '/'))
@@ -63,7 +62,6 @@ char	*get_bin_path(char *cmd, char **bin_paths, t_shell *cfg)
 t_node	*error_exit(t_shell *cfg, char **bin_paths, char **argv, t_cmd *cmd)
 {
 	// int	i;
-
 	// i = 0;
 	if (cfg->cmd_count == 1)
 		printf("bash: syntax error near unexpected token `newline'\n");

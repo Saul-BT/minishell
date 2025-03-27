@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/27 16:54:44 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/27 17:11:00 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,44 +363,6 @@ void	print_tokenized(t_cmd *cmd)
 	printf("=====================\033[0m\n");
 }
 
-// t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
-// {
-// 	size_t			i;
-// 	size_t			len;
-// 	t_cmd			*cmd;
-// 	t_parsed_token	*presult;
-// 	bool			first_parsed;
-
-// 	i = 0;
-// 	len = ft_strlen(cmd_line);
-// 	first_parsed = true;
-// 	cmd = init_tokenizer();
-// 	while (i < len && cmd_line && cmd_line[i])
-// 	{
-// 		if (ft_isspace(cmd_line[i]))
-// 		{
-// 			i++;
-// 			continue ;
-// 		}
-
-// 		presult = handle_token(&cmd_line[i], cmd, cfg);
-// 		if (presult->parsed != NULL)
-// 		{
-// 			if (first_parsed)
-// 			{
-// 				cmd->bin = presult->parsed;
-// 				first_parsed = false;
-// 			}
-// 			ft_lstadd_back(&cmd->args, ft_lstnew(presult->parsed));
-// 			cmd->arg_count++;
-// 		}
-// 		i += presult->skip + 1;
-// 		free(presult);
-// 	}
-// 	// print_tokenized(cmd);
-// 	return (cmd);
-// }
-
 t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 {
 	size_t			i;
@@ -408,16 +370,15 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 	t_cmd			*cmd;
 	t_parsed_token	*presult;
 	bool			first_parsed;
-	char			*first_exp;
 
 	i = 0;
 	first_exp = expand_super(cmd_line, cfg);
 	len = ft_strlen(first_exp);
 	first_parsed = true;
 	cmd = init_tokenizer();
-	while (i < len && first_exp && first_exp[i])
+	while (i < len && cmd_line && cmd_line[i])
 	{
-		if (ft_isspace(first_exp[i]))
+		if (ft_isspace(cmd_line[i]))
 		{
 			i++;
 			continue ;
@@ -436,7 +397,7 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 		i += presult->skip + 1;
 		free(presult);
 	}
-	free(first_exp);
-	// print_tokenized(cmd);
+	print_tokenized(cmd);
 	return (cmd);
 }
+

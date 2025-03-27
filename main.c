@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/27 16:57:56 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/27 17:09:47 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,18 @@ t_shell	*initshell(char **env)
 	return (ret);
 }
 
+static bool is_valid_candiate(char *input)
+{
+	
+}
+
 static void	mini_main(char *input, t_shell *shell)
 {
 	char	**splited;
 
 	add_history(input);
+	if (is_valid_candiate(input))
+			return ;
 	splited = pipe_split(input, &shell->cmd_count);
 	if (is_quoted('?'))
 	{
