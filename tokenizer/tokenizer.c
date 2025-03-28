@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/27 19:20:20 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/03/28 20:49:41 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,7 +305,7 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 	if (*token)
 	{
 		next_space_idx = ft_index_of(token, ' ');
-		if (next_space_idx == (size_t)-1)
+		if (next_space_idx == (size_t) - 1)
 			next_space_idx = ft_strlen(token);
 		delimiter = ft_substr(token, 0, next_space_idx);
 		if (pipe(pipe_fd) == -1)
@@ -314,6 +314,7 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 		while (1)
 		{
 			sig_manage(cfg, 2);
+			signal(SIGQUIT, SIG_IGN);
 			line = readline("heredoc> ");
 			sig_manage(cfg, 1);
 			if (g_exit_num == 130 || !line || ft_strcmp(line, delimiter) == 0)

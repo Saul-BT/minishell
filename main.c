@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/27 19:45:21 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/28 21:06:57 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ static void	mini_main(char *input, t_shell *shell)
 	else if (splited)
 	{
 		shell->cmds = get_cmds(shell, splited);
-		if (!shell->cmds || (g_exit_num > 0 && g_exit_num < 130))
+		if (!shell->cmds || (g_exit_num == 2))
 		{
 			free(input);
 			return ;
