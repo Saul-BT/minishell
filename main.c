@@ -130,7 +130,7 @@ static void	mini_main(char *input, t_shell *shell)
 	else if (splited)
 	{
 		shell->cmds = get_cmds(shell, splited);
-		if (!shell->cmds || (g_exit_num > 0 && g_exit_num < 130)
+		if (!shell->cmds || (g_exit_num > 0 && g_exit_num < 130))
 		{
 			free(input);
 			return ;
