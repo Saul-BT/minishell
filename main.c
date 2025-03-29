@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/28 23:22:51 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/03/29 21:02:17 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,8 +174,6 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, sig_interactive);
 		input = readline("> ");
-		// sig_manage(shell, 0);
-		// REVISAR ESTA LINEA PARA SABER QUE EXIT EMPLEAR
 		if (!input)
 			exit(1);
 		else if (is_empty_arg(input))

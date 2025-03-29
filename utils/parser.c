@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/27 19:15:51 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/03/29 21:13:51 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ char	*get_bin_path(char *cmd, char **bin_paths, t_shell *cfg)
 
 t_node	*error_exit(t_shell *cfg, char **bin_paths, char **argv, t_cmd *cmd)
 {
-	// int	i;
-	// i = 0;
+	//FUNCION NECESARIA?
 	if (cfg->cmd_count == 1)
 		printf("bash: syntax error near unexpected token `newline'\n");
 	else if (cfg->cmd_count == 2)
@@ -84,19 +83,12 @@ t_node	*get_cmds(t_shell *cfg, char **argv)
 	t_cmd	*cmd;
 
 	i = 0;
-	// TODO: Maybe need to check if there is a PATH before
-	bin_paths = ft_split(getenv("PATH"), ':');
+	bin_paths = ft_split(ft_get_env_val(cfg, "PATH"), ':');
 	cmds = NULL;
 	while (i < cfg->cmd_count)
 	{
-		// printf("cmd count---%i---\n", cfg->cmd_count);
-		// TODO: Add check for the returned value (it can be NULL)
 		cmd = tokenize(argv[i], cfg);
-		// printf("---argc: %i----\n",cmd->arg_count);
 		free(argv[i]);
-		//REVISAR SI ESTO ROMPE ALGO QUE NO SEAN ARGUMENTOS VACIOS
-		// if (cmd->arg_count == 0)
-		// 	return (error_exit(cfg, bin_paths, argv, cmd));
 		cfg->exit_code = 0;
 		if (!is_builtin(cmd->bin))
 		{

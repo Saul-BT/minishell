@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/20 18:15:01 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/29 21:12:18 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	ret_error(t_cmd *cmd, char *oldpath)
 	if (oldpath)
 		free(oldpath);
 	return (1);
-
 }
 
 int	ft_cd(t_cmd *cmd, t_shell *shell)

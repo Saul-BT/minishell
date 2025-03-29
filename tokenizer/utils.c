@@ -3,14 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/27 19:04:02 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/03/29 20:59:10 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+size_t	ft_index_of_symbol(char *str)
+{
+	static char	*symbols = " <>;'\"";
+	size_t		i;
+
+	i = 0;
+	if (!*str)
+		return ((size_t)-1);
+	while (str[i])
+	{
+		if (ft_strchr(symbols, str[i]))
+			return (i);
+		i++;
+	}
+	return ((size_t)-1);
+}
 
 char	*file_name_non_quoted(char *name)
 {
@@ -23,7 +40,7 @@ char	*file_name_non_quoted(char *name)
 	}
 	else if (name[0] == '\'')
 	{
-		free(name);	
+		free(name);
 		non_q = ft_strtrim(name, "'");
 	}
 	else
