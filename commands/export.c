@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/17 02:58:49 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 14:30:31 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,17 @@ char	*get_new_val(char *var)
 	return (newval);
 }
 
+// Comprueba si el caracter es valido para un nombre de variable, no llamar con el primer caracter
+bool	is_valid_var_char(char	c)
+{
+	return (ft_isalnum(c) || c == '_');
+}
+
 int	add_val(char *arg_val, t_shell *shell)
 {
 	char	*newval;
 
-	if (arg_val[0] == '=' || ft_isdigit(arg_val[0]))
+	if (!ft_isalpha(arg_val[0]) || arg_val[0] != '_')
 	{
 		printf("bash: export: %s : not a valid identifier\n", arg_val);
 		return (1);

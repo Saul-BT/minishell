@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/29 20:59:10 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 12:02:32 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ size_t	ft_index_of_symbol(char *str)
 	size_t		i;
 
 	i = 0;
-	if (!*str)
-		return ((size_t)-1);
+	//if (!*str)
+	//	return ((size_t)-1);
 	while (str[i])
 	{
 		if (ft_strchr(symbols, str[i]))

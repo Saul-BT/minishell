@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/29 21:00:45 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 13:47:35 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ bool		starts_with(const char *str, const char *prefix);
 void		free_strs(char **strs);
 void		free_cmds(t_node *cmds);
 bool		has_char(const char *str, char c);
-char		*ft_join(const char **strs);
 char		**pipe_split(const char *str, int *cmd_count);
 bool		is_quoted(char c);
 void		close_quote(void);
