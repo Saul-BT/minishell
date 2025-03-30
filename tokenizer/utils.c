@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/30 20:16:14 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/30 20:20:06 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	accesible_file(char	*filename, int access_mode)
 		return (ft_putstr_fd(": Permission denied\n", 2), false);
 	}
 	fd = open(filename, O_DIRECTORY);
-	if (open >= 0)
+	if (fd >= 0)
 	{
 		close(fd);
 		ft_putstr_fd("minishell: ", 2);
