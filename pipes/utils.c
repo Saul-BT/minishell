@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:54:57 by saul.blanco       #+#    #+#             */
-/*   Updated: 2025/03/10 17:32:20 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 17:28:09 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	setup_child_pipes(t_cmd *cmd, t_pipe_ctx *ctx)
 		dup2(ctx->pipe[WRITE_END], STDOUT_FILENO);
 		close(ctx->pipe[WRITE_END]);
 	}
+	if (is_builtin(cmd->bin))
+		return;
 	if (cmd->fd_in != STDIN_FILENO)
 	{
 		dup2(cmd->fd_in, STDIN_FILENO);

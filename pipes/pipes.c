@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/29 21:02:40 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 17:27:37 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ static void	aux_pipex(t_cmd *cmd, t_shell *shell)
 {
 	char	**args;
 
+	if (is_builtin(cmd->bin))
+	{
+		g_exit_num = handle_builtin(shell, cmd);
+		exit(g_exit_num);
+	}
 	if (cmd->fd_in != STDIN_FILENO)
 	{
 		dup2(cmd->fd_in, STDIN_FILENO);
@@ -25,11 +30,6 @@ static void	aux_pipex(t_cmd *cmd, t_shell *shell)
 	{
 		dup2(cmd->fd_out, STDOUT_FILENO);
 		close(cmd->fd_out);
-	}
-	if (is_builtin(cmd->bin))
-	{
-		g_exit_num = handle_builtin(shell, cmd);
-		exit(g_exit_num);
 	}
 	args = arg_nodes_to_arg_array(cmd);
 	g_exit_num = execve(cmd->bin, args, shell->envp);
