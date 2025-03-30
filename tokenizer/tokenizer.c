@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/30 13:54:19 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/30 15:51:23 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	}
 	while (ft_isspace(*++token))
 		result->skip++;
-	if (*token && ft_strchr("<>", *token))
+	if (!*token || (*token && ft_strchr("<>", *token) && g_exit_num != 2))
 	{
 		printf("pipex: syntax error near unexpected token `>'\n");
 		g_exit_num = 2;
@@ -129,6 +129,8 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		// free(free_open_var);
 		//aux = ft_substr(token, 0, next_symbol_idx);
 		fd = open(other->parsed, mode, 0644);
+		free(other->parsed);
+		free(other);
 		//free(aux);
 		if (fd == -1)
 			return (result);
@@ -153,7 +155,7 @@ t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	result->parsed = NULL;
 	while (ft_isspace(*++token))
 		result->skip++;
-	if (*token && *token == '>')
+	if (!*token || (*token && *token == '>' && g_exit_num != 2))
 	{
 		printf("pipex: syntax error near unexpected token `>'\n");
 		g_exit_num = 2;
@@ -196,13 +198,13 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 		token++;
 		skip++;
 	}
-	if (*token && strchr("<>", *token))
+	if (!*token || (*token && strchr("<>", *token) && g_exit_num != 2))
 	{
 		printf("pipex: syntax error near unexpected token `<'\n");
 		g_exit_num = 2;
 		return (result);
 	}
-	if (*token)
+	if (*token && g_exit_num != 2)
 	{
 		next_symbol_idx = ft_index_of_symbol(token);
 		if (next_symbol_idx == (size_t) - 1)

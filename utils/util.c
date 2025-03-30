@@ -6,23 +6,11 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:47:20 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/24 19:33:08 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 15:02:44 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	printmat(char **m)
-{
-	int	i;
-
-	i = 0;
-	while (m[i])
-	{
-		printf("%s\n", m[i]);
-		i++;
-	}
-}
 
 void	free_strs(char **strs)
 {

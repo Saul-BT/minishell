@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/30 13:47:35 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/30 15:02:35 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,6 @@ char		**pipe_split(const char *str, int *cmd_count);
 bool		is_quoted(char c);
 void		close_quote(void);
 void		print_error(char *msg);
-// a borrar
-void		printmat(char **m);
 
 // esta en export
 char		**new_env(char **env, int n, int add, char *val);

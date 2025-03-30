@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/10 17:47:24 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 15:43:41 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	ft_echo(t_cmd *cmd)
 	i = 0;
 	new_line = true;
 	arg_node = cmd->args->next;
+	dprintf(2, "-> %s\n", cmd->bin);
 	while (arg_node && check_flag((char *) arg_node->content))
 	{
 		new_line = false;
