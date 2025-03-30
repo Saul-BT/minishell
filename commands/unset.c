@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/17 04:14:09 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 21:52:53 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ft_unset(t_cmd *cmd, t_shell *shell)
 	if (cmd->args->next && cmd->args->next->content
 		&& ((char *)cmd->args->next->content)[0] == '-')
 	{
-		printf("bash: unset: %s: invalid option\n",
+		printf("minishell: unset: %s: invalid option\n",
 			(char *)cmd->args->next->content);
 		return (2);
 	}

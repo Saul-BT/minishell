@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/30 15:16:50 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 22:42:46 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static bool	is_valid_candiate(char *input)
 		return (true);
 	while (*input && *input != '|')
 	{
-		empty_before = empty_before && (ft_isspace(*input) || ft_strchr("<>", *input));
+		empty_before = empty_before && (ft_isspace(*input));
 		input++;
 	}
 	if (*input++ != '|')
@@ -101,12 +101,28 @@ static bool	is_valid_candiate(char *input)
 		return (false);
 	while (*input && *input != '|')
 	{
-		empty_after = empty_after && (ft_isspace(*input) || ft_strchr("<>", *input));
+		empty_after = empty_after && (ft_isspace(*input));
 		input++;
 	}
 	if (empty_after && *input == '|')
 		return (false);
 	return (!empty_before && !empty_after);
+}
+
+bool	are_all_bins_setted(t_shell *shell)
+{
+	t_node	*node;
+	t_cmd	*cmd;
+
+	node = shell->cmds;
+	while(node)
+	{
+		cmd = (t_cmd *) node->content;
+		if (!cmd->bin  && cmd->fd_in == STDIN_FILENO && cmd->fd_out == STDOUT_FILENO)
+			return (false);
+		node = node->next;
+	}
+	return (true);
 }
 
 static void	mini_main(char *input, t_shell *shell)
@@ -130,7 +146,7 @@ static void	mini_main(char *input, t_shell *shell)
 	else if (splited)
 	{
 		shell->cmds = get_cmds(shell, splited);
-		if (!shell->cmds)
+		if (!shell->cmds || !are_all_bins_setted(shell))//funcin quue reccorra cmds  y vea si alguno tiiene bin = null;
 		{
 			free(input);
 			return ;

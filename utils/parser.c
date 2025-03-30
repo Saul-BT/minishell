@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/29 21:13:51 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 22:35:40 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static char	*get_check_cmd(char *cmd, t_shell *cfg)
 {
 	// ELIMINAR ESTO
-	if (is_builtin(cmd))
+	if (!cmd || is_builtin(cmd))
 		return (cmd);
 	if (access(cmd, F_OK) != 0 || !has_char(cmd, '/'))
 	{
@@ -57,22 +57,6 @@ char	*get_bin_path(char *cmd, char **bin_paths, t_shell *cfg)
 		bin_paths++;
 	}
 	return (get_check_cmd(cmd, cfg));
-}
-
-t_node	*error_exit(t_shell *cfg, char **bin_paths, char **argv, t_cmd *cmd)
-{
-	//FUNCION NECESARIA?
-	if (cfg->cmd_count == 1)
-		printf("bash: syntax error near unexpected token `newline'\n");
-	else if (cfg->cmd_count == 2)
-	{
-		free(cmd->args);
-		printf("bash: syntax error near unexpected token `|'\n");
-	}
-	free(cmd);
-	free_strs(bin_paths);
-	free(argv);
-	return (NULL);
 }
 
 t_node	*get_cmds(t_shell *cfg, char **argv)

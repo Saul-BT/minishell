@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/29 21:12:18 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 22:21:04 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	if_non_next(t_cmd *cmd, char *oldpath)
 
 int	ret_error(t_cmd *cmd, char *oldpath)
 {
-	printf("bash: cd: %s: No such file or directory\n",
+	printf("minishell: cd: %s: No such file or directory\n",
 		(char *)cmd->args->next->content);
 	if (oldpath)
 		free(oldpath);
@@ -62,22 +62,26 @@ int	ft_cd(t_cmd *cmd, t_shell *shell)
 {
 	int		ret;
 	char	*oldpath;
-	char	*nd_arg;
+	t_node	*nd_arg;
 
 	oldpath = getcwd(NULL, 0);
 	if (!oldpath)
 		oldpath = ft_strdup(ft_get_env_val(shell, "PWD"));
-	if (if_non_next(cmd, oldpath))
-		return (2);
-	nd_arg = (char *) cmd->args->next->content;
+	nd_arg = cmd->args->next;
 	if (!nd_arg)
+	{
 		ret = chdir(ft_get_env_val(shell, "HOME"));
-	else if (nd_arg[0] == '-')
+		if (ret)
+			return (ret_error(cmd, oldpath));
+		free(oldpath);
+		return (0);
+	}
+	else if (((char *)nd_arg->content)[0] == '-')
 		ret = ft_cd_oldpwd(shell);
 	else
-		ret = chdir(nd_arg);
+		ret = chdir((char *)nd_arg->content);
 	if (!ret)
-		return (nonerror_cd(oldpath, nd_arg, shell));
+		return (nonerror_cd(oldpath, (char *)nd_arg->content, shell));
 	else
 		return (ret_error(cmd, oldpath));
 }

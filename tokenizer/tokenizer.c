@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/30 18:55:07 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/30 22:45:16 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 	if (isquote(token[next_q_idx + 1]))
 	{
 		other = handle_quote(token + next_q_idx + 2, token[next_q_idx + 1], cfg);
-		result->parsed = ft_strjoin(result->parsed, other->parsed);
+		aux = result->parsed;
+		result->parsed = ft_strjoin(aux, other->parsed);
+		free(aux);
 		result->skip += other->skip + 1;
 		free(other->parsed);
 		free(other);
@@ -47,7 +49,9 @@ t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 	else if (token[next_q_idx + 1] && !isspace(token[next_q_idx + 1]))
 	{
 		other = handle_other(token + next_q_idx + 1, cfg);
-		result->parsed = ft_strjoin(result->parsed, other->parsed);
+		aux = result->parsed;
+		result->parsed = ft_strjoin(aux, other->parsed);
+		free(aux);
 		result->skip += other->skip + 1;
 		free(other->parsed);
 		free(other);
@@ -106,7 +110,7 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		result->skip++;
 	if (!*token || (*token && ft_strchr("<>", *token) && g_exit_num != 2))
 	{
-		printf("pipex: syntax error near unexpected token `>'\n");
+		printf("minishell: syntax error near unexpected token `>'\n");
 		g_exit_num = 2;
 		return (result);
 	}
@@ -292,6 +296,7 @@ char	*expand_first(char *cmd_line, t_shell *cfg)
 	else
 		parsed = handle_other(cmd_line, cfg);
 	result = ft_strjoin(parsed->parsed, cmd_line + i + parsed->skip + 1);
+	free(parsed->parsed);
 	free(parsed);
 	return (result);
 }

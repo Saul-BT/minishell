@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:37:07 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/17 01:46:59 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 21:51:45 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ int	ft_exit(t_shell *shell, t_cmd *cmd)
 	printf("exit\n");
 	if (error == 1)
 	{
-		printf("bash: exit: too many arguments\n");
+		printf("minishell: exit: too many arguments\n");
 		return (1);
 	}
 	shell->exit_code = -1;
 	if (error == 2)
 	{
-		printf("bash: exit: %s: numeric argument required\n", cmd->bin);
+		printf("minishell: exit: %s: numeric argument required\n", cmd->bin);
 		return (2);
 	}
 	else if (cmd->args && cmd->args->next)

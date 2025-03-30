@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/30 20:10:05 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/30 21:52:48 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	ft_export(t_cmd *cmd, t_shell *shell)
 	arg_node = cmd->args->next;
 	if (arg_node && arg_node->content && ((char *)arg_node->content)[0] == '-')
 	{
-		printf("bash: export: %s: invalid option\n", (char *)arg_node->content);
+		printf("minishell: export: %s: invalid option\n", (char *)arg_node->content);
 		return (2);
 	}
 	while (shell->envp[n])
