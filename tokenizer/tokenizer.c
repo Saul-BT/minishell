@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/30 15:51:23 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 18:55:07 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 {
 	size_t			next_q_idx;
 	t_parsed_token	*result;
-	t_parsed_token	*othe;
+	t_parsed_token	*other;
 	char			*aux;
 
 	next_q_idx = ft_index_of(token, quote);
@@ -38,17 +38,19 @@ t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg)
 	result->skip = next_q_idx + 1;
 	if (isquote(token[next_q_idx + 1]))
 	{
-		othe = handle_quote(token + next_q_idx + 2, token[next_q_idx + 1], cfg);
-		result->parsed = ft_strjoin(result->parsed, othe->parsed);
-		result->skip += othe->skip + 1;
-		free(othe);
+		other = handle_quote(token + next_q_idx + 2, token[next_q_idx + 1], cfg);
+		result->parsed = ft_strjoin(result->parsed, other->parsed);
+		result->skip += other->skip + 1;
+		free(other->parsed);
+		free(other);
 	}
 	else if (token[next_q_idx + 1] && !isspace(token[next_q_idx + 1]))
 	{
-		othe = handle_other(token + next_q_idx + 1, cfg);
-		result->parsed = ft_strjoin(result->parsed, othe->parsed);
-		result->skip += othe->skip + 1;
-		free(othe);
+		other = handle_other(token + next_q_idx + 1, cfg);
+		result->parsed = ft_strjoin(result->parsed, other->parsed);
+		result->skip += other->skip + 1;
+		free(other->parsed);
+		free(other);
 	}
 	return (result);
 }
@@ -85,7 +87,6 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg)
 
 t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 {
-	size_t			next_symbol_idx;
 	t_parsed_token	*result;
 	t_parsed_token	*other;
 	int				mode;
@@ -109,45 +110,33 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		g_exit_num = 2;
 		return (result);
 	}
-	if (ft_strchr("'\"", token[0]))
-	{
-		other = handle_quote(token + 1, token[0], cfg);
-	} else
-	{
-		other = handle_other(token, cfg);
-	}
-	result->skip += other->skip + 1;
 	if (*token)
 	{
-		next_symbol_idx = ft_index_of_symbol(token + 1);
-		if (next_symbol_idx == (size_t)-1)
-			next_symbol_idx = ft_strlen(token);
-		// aux = ft_substr(token, 0, next_space_idx);
-		// free_open_var = expand_super(aux, cfg);
-		// fd = open(free_open_var, mode, 0644);
-		// free(aux);
-		// free(free_open_var);
-		//aux = ft_substr(token, 0, next_symbol_idx);
+		if (ft_strchr("'\"", token[0]))
+		{
+			other = handle_quote(token + 1, token[0], cfg);
+		}
+		else
+		{
+			other = handle_other(token, cfg);
+		}
+		result->skip += other->skip + 1;
 		fd = open(other->parsed, mode, 0644);
 		free(other->parsed);
 		free(other);
-		//free(aux);
 		if (fd == -1)
 			return (result);
 		if (cmd->fd_out != 1)
 			close(cmd->fd_out);
 		cmd->fd_out = fd;
-		result->skip += next_symbol_idx;
 	}
 	return (result);
 }
 
 t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 {
-	size_t			next_symbol_idx;
 	t_parsed_token	*result;
-	char			*aux;
-	char			*free_open_var;
+	t_parsed_token	*other;
 	int				fd;
 
 	result = malloc(sizeof(t_parsed_token));
@@ -163,18 +152,21 @@ t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	}
 	if (*token)
 	{
-		next_symbol_idx = ft_index_of_symbol(token + 1);
-		if (next_symbol_idx == (size_t)-1)
-			next_symbol_idx = ft_strlen(token);
-		aux = ft_substr(token, 0, next_symbol_idx);
-		free_open_var = expand_super(aux, cfg);
-		fd = open(free_open_var, O_RDONLY);
-		free(free_open_var);
-		free(aux);
+		if (ft_strchr("'\"", token[0]))
+		{
+			other = handle_quote(token + 1, token[0], cfg);
+		}
+		else
+		{
+			other = handle_other(token, cfg);
+		}
+		result->skip += other->skip + 1;
+		fd = open(other->parsed, O_RDONLY);
+		free(other->parsed);
+		free(other);
 		// if (fd == -1)
 		// TODO: Handle error
 		cmd->fd_in = fd;
-		result->skip += next_symbol_idx;
 	}
 	return (result);
 }
@@ -207,7 +199,7 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 	if (*token && g_exit_num != 2)
 	{
 		next_symbol_idx = ft_index_of_symbol(token);
-		if (next_symbol_idx == (size_t) - 1)
+		if (next_symbol_idx == (size_t)-1)
 			next_symbol_idx = ft_strlen(token);
 		delimiter = ft_substr(token, 0, next_symbol_idx);
 		if (pipe(pipe_fd) == -1)
@@ -226,7 +218,7 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 				break ;
 			}
 			// TODO: Check to remove
-			//if (!*line)
+			// if (!*line)
 			//{
 			//	free(line);
 			//	continue ;
@@ -286,17 +278,35 @@ void	print_tokenized(t_cmd *cmd)
 	printf("=====================\033[0m\n");
 }
 
-t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
+char	*expand_first(char *cmd_line, t_shell *cfg)
 {
-	size_t i;
-	size_t len;
-	t_cmd *cmd;
-	t_parsed_token *presult;
-	bool first_parsed;
-	char *expanded;
+	size_t			i;
+	char			*result;
+	t_parsed_token	*parsed;
 
 	i = 0;
-	expanded = expand_super(cmd_line, cfg);
+	while (ft_isspace(cmd_line[i]))
+		i++;
+	if (ft_strchr("'\"", cmd_line[i]))
+		parsed = handle_quote(cmd_line + i + 1, cmd_line[i], cfg);
+	else
+		parsed = handle_other(cmd_line, cfg);
+	result = ft_strjoin(parsed->parsed, cmd_line + i + parsed->skip + 1);
+	free(parsed);
+	return (result);
+}
+
+t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
+{
+	size_t			i;
+	size_t			len;
+	t_cmd			*cmd;
+	t_parsed_token	*presult;
+	char			*expanded;
+	bool			first_parsed;
+
+	i = 0;
+	expanded = expand_first(cmd_line, cfg);
 	len = ft_strlen(expanded);
 	first_parsed = true;
 	cmd = init_tokenizer();
@@ -307,7 +317,6 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 			i++;
 			continue ;
 		}
-
 		presult = handle_token(&expanded[i], cmd, cfg);
 		if (presult->parsed != NULL) // TODO: Handle error in else branch
 		{

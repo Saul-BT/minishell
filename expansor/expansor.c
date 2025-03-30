@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/29 21:09:32 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/30 20:08:30 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static char	*str_exange(t_shell *shell, char *args)
 {
 	if (args[1] == '?')
 		return (ft_itoa(g_exit_num));
+	else if (!is_valid_var_start_char(args[1]))
+		return (ft_strdup(args));
 	else
 	{
 		if (ft_get_env_pos(shell->envp, args + 1) < 0)
@@ -23,26 +25,6 @@ static char	*str_exange(t_shell *shell, char *args)
 		return (ft_strdup(ft_get_env_val(shell, args + 1)));
 	}
 	free(args);
-}
-
-size_t	expand_reach(char *str, size_t dollar_idx)
-{
-	size_t	to_dollar;
-	size_t	to_space;
-
-	to_dollar = ft_index_of(str + dollar_idx + 1, '$');
-	to_space = ft_index_of(str + dollar_idx + 1, ' ');
-	if (to_dollar == (size_t)-1 && to_space == (size_t)-1)
-		return (-1);
-	else if (to_dollar == (size_t)-1)
-		return (to_space);
-	else if (to_space == (size_t)-1)
-		return (to_dollar);
-	else if (to_dollar > to_space)
-		return (to_space);
-	else if (to_dollar < to_space)
-		return (to_dollar);
-	return (0);
 }
 
 char	*expand_concat(size_t dollar_idx, size_t after_var_idx,
@@ -67,6 +49,18 @@ char	*expand_concat(size_t dollar_idx, size_t after_var_idx,
 	return (result);
 }
 
+size_t	get_var_boundary(char *str)
+{
+	int i = 0;
+
+	if (str[i++] != '?' && !is_valid_var_start_char(str[i]))
+		return (1); // TODO: Caso especial, no expande
+	while (str[i] && str[i] != '=' && is_valid_var_char(str[i]))
+		i++;
+	return (i);
+}
+
+
 char	*expand_super(char *str, t_shell *cfg)
 {
 	size_t	dollar_idx;
@@ -75,9 +69,9 @@ char	*expand_super(char *str, t_shell *cfg)
 	dollar_idx = ft_index_of(str, '$');
 	if (dollar_idx == (size_t) - 1 || dollar_idx == ft_strlen(str) - 1)
 		return (ft_strdup(str));
-	after_var_idx = expand_reach(str, dollar_idx);
-	if (after_var_idx == (size_t)-1)
-		after_var_idx = ft_strlen(str);
+	after_var_idx = get_var_boundary(str + dollar_idx + 1);
+	if (after_var_idx == 0)
+		return (expand_concat(dollar_idx, after_var_idx + 1, str, cfg));
 	else
 		after_var_idx += dollar_idx + 1;
 	return (expand_concat(dollar_idx, after_var_idx, str, cfg));

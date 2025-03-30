@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/30 14:30:31 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/30 20:10:05 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,31 @@ char	*get_new_val(char *var)
 	return (newval);
 }
 
-// Comprueba si el caracter es valido para un nombre de variable, no llamar con el primer caracter
-bool	is_valid_var_char(char	c)
+bool	is_valid_export_var(char *str)
 {
-	return (ft_isalnum(c) || c == '_');
+	if (!str || !*str)
+		return (false);
+	if (!is_valid_var_start_char(*str++))
+		return (false);
+	while (*str && *str != '=' && is_valid_var_char(*str))
+		str++;
+	return (*str == '=');
 }
 
 int	add_val(char *arg_val, t_shell *shell)
 {
 	char	*newval;
 
-	if (!ft_isalpha(arg_val[0]) || arg_val[0] != '_')
+	if (!is_valid_export_var(arg_val))
 	{
-		printf("bash: export: %s : not a valid identifier\n", arg_val);
+		printf("minishell: export: %s : not a valid identifier\n", arg_val);
 		return (1);
 	}
 	else if (ft_get_env_pos(shell->envp, arg_val) >= 0)
 	{
 		newval = get_new_val(arg_val);
-		ft_set_env_val(shell, arg_val, newval,
-			ft_get_env_pos(shell->envp, arg_val));
+		ft_set_env_val(shell, arg_val, newval, ft_get_env_pos(shell->envp,
+				arg_val));
 		if (newval)
 			free(newval);
 		return (-1);
@@ -75,7 +80,7 @@ int	modifyenv(t_shell *shell, t_node *arg, int n)
 	ret = 0;
 	while (arg_node)
 	{
-		arg_val = (char *) arg_node->content;
+		arg_val = (char *)arg_node->content;
 		ret = add_val(arg_val, shell);
 		if (ret)
 		{
