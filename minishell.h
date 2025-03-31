@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/30 19:14:40 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/31 14:03:41 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,5 +139,13 @@ t_cmd		*tokenize(char *cmd_line, t_shell *cfg);
 t_cmd		*init_tokenizer(void);
 char		*file_name_non_quoted(char *name);
 size_t		ft_index_of_symbol(char *str);
+
+//REDIRS
+t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg);
+t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg);
+t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg);
+t_parsed_token	*handle_other(char *token, t_shell *cfg);
+t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg);
+
 
 #endif

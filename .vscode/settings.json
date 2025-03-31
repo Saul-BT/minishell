@@ -4,6 +4,7 @@
 		"stdio.h": "c",
 		"termios.h": "c",
 		"errno.h": "c",
-		"typeinfo": "c"
+		"typeinfo": "c",
+		"libft.h": "c"
 	}
 }
