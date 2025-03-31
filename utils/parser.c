@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 18:09:56 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:36:38 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,15 @@ t_node	*get_cmds(t_shell *cfg, char **argv)
 	char	**bin_paths;
 	t_node	*cmds;
 	t_cmd	*cmd;
+	bool	first_parsed;
 
+	first_parsed = true;
 	i = 0;
 	bin_paths = ft_split(ft_get_env_val(cfg, "PATH"), ':');
 	cmds = NULL;
 	while (i < cfg->cmd_count)
 	{
-		cmd = tokenize(argv[i], cfg);
+		cmd = tokenize(argv[i], cfg, first_parsed);
 		free(argv[i]);
 		cfg->exit_code = 0;
 		if (!is_builtin(cmd->bin))

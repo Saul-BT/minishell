@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 18:12:33 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:36:54 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,8 +137,8 @@ void		sig_interactive(int signum);
 void		sig_ignore(void);
 
 // TOKENIZER
-t_cmd		*tokenize(char *cmd_line, t_shell *cfg);
-t_cmd		*init_tokenizer(void);
+t_cmd		*tokenize(char *cmd_line, t_shell *cfg, bool first_parsed);
+t_cmd		*init_tokenizer(size_t *len, char *expanded);
 char		*file_name_non_quoted(char *name);
 size_t		ft_index_of_symbol(char *str);
 

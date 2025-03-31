@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/31 18:12:38 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:34:46 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,11 @@ char	*file_name_non_quoted(char *name)
 	return (non_q);
 }
 
-t_cmd	*init_tokenizer(void)
+t_cmd	*init_tokenizer(size_t *len, char *expanded)
 {
 	t_cmd	*cmd;
 
+	*len = ft_strlen(expanded);
 	cmd = malloc(sizeof(t_cmd));
 	cmd->bin = NULL;
 	cmd->args = NULL;

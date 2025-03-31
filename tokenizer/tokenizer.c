@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 18:39:39 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:40:50 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,28 @@ char	*expand_first(char *cmd_line, t_shell *cfg)
 	return (result);
 }
 
-t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
+void	tokenize_loop_content(bool *first_parsed, t_cmd *cmd, t_parsed_token *presult)
+{
+	if (*first_parsed)
+	{
+		cmd->bin = presult->parsed;
+		*first_parsed = false;
+	}
+	ft_lstadd_back(&cmd->args, ft_lstnew(presult->parsed));
+	cmd->arg_count++;
+}
+
+t_cmd	*tokenize(char *cmd_line, t_shell *cfg, bool first_parsed)
 {
 	size_t			i;
 	size_t			len;
 	t_cmd			*cmd;
 	t_parsed_token	*presult;
 	char			*expanded;
-	bool			first_parsed;
 
 	i = 0;
 	expanded = expand_first(cmd_line, cfg);
-	len = ft_strlen(expanded);
-	first_parsed = true;
-	cmd = init_tokenizer();
+	cmd = init_tokenizer(&len, expanded);
 	while (i < len && expanded && expanded[i])
 	{
 		if (ft_isspace(expanded[i]))
@@ -93,15 +101,7 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 		}
 		presult = handle_token(&expanded[i], cmd, cfg);
 		if (presult->parsed != NULL) // TODO: Handle error in else branch
-		{
-			if (first_parsed)
-			{
-				cmd->bin = presult->parsed;
-				first_parsed = false;
-			}
-			ft_lstadd_back(&cmd->args, ft_lstnew(presult->parsed));
-			cmd->arg_count++;
-		}
+			tokenize_loop_content(&first_parsed, cmd, presult);
 		i += presult->skip + 1;
 		free(presult);
 	}
@@ -109,3 +109,40 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg)
 	print_tokenized(cmd);
 	return (cmd);
 }
+
+// t_cmd	*tokenize(char *cmd_line, t_shell *cfg, bool first_parsed)
+// {
+// 	size_t			i;
+// 	size_t			len;
+// 	t_cmd			*cmd;
+// 	t_parsed_token	*presult;
+// 	char			*expanded;
+
+// 	i = 0;
+// 	expanded = expand_first(cmd_line, cfg);
+// 	cmd = init_tokenizer(&len, expanded);
+// 	while (i < len && expanded && expanded[i])
+// 	{
+// 		if (ft_isspace(expanded[i]))
+// 		{
+// 			i++;
+// 			continue ;
+// 		}
+// 		presult = handle_token(&expanded[i], cmd, cfg);
+// 		if (presult->parsed != NULL) // TODO: Handle error in else branch
+// 		{
+// 			if (first_parsed)
+// 			{
+// 				cmd->bin = presult->parsed;
+// 				first_parsed = false;
+// 			}
+// 			ft_lstadd_back(&cmd->args, ft_lstnew(presult->parsed));
+// 			cmd->arg_count++;
+// 		}
+// 		i += presult->skip + 1;
+// 		free(presult);
+// 	}
+// 	free(expanded);
+// 	print_tokenized(cmd);
+// 	return (cmd);
+// }

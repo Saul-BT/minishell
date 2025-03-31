@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 18:37:57 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:42:02 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ static bool	is_valid_candiate(char *input)
 		return (true);
 	while (*input && *input != '|')
 	{
-		empty_before = empty_before && (ft_isspace(*input) || ft_strchr("<>", *input));
+		empty_before = empty_before && (ft_isspace(*input)
+				|| ft_strchr("<>", *input));
 		input++;
 	}
 	if (*input++ != '|')
@@ -101,7 +102,8 @@ static bool	is_valid_candiate(char *input)
 		return (false);
 	while (*input && *input != '|')
 	{
-		empty_after = empty_after && (ft_isspace(*input) || ft_strchr("<>", *input));
+		empty_after = empty_after && (ft_isspace(*input)
+				|| ft_strchr("<>", *input));
 		input++;
 	}
 	if (empty_after && *input == '|')
