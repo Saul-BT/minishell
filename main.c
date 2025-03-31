@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/30 15:16:50 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 18:37:57 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,13 @@ static void	mini_main(char *input, t_shell *shell)
 	if (!is_valid_candiate(input))
 	{
 		g_exit_num = 2;
-		printf("pipex: syntax error near unexpected token `|'\n");
+		printf("minishell: syntax error near unexpected token `|'\n");
 		return ;
 	}
 	splited = pipe_split(input, &shell->cmd_count);
 	if (is_quoted('?'))
 	{
-		printf("pipex: unclosed quote\n");
+		printf("minishell: unclosed quote\n");
 		close_quote();
 		free_strs(splited);
 	}

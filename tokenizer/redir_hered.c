@@ -6,13 +6,13 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:00:40 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/31 14:56:41 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 18:09:36 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	manage_heredoc_pipes(int pipe_fd[2], t_cmd *cmd)
+static void	manage_heredoc_pipes(int pipe_fd[2], t_cmd *cmd)
 {
 	close(pipe_fd[1]);
 	if (cmd->fd_in > 1)
@@ -20,10 +20,21 @@ void	manage_heredoc_pipes(int pipe_fd[2], t_cmd *cmd)
 	cmd->fd_in = pipe_fd[0];
 }
 
+static void	write_in_heredoc(char *line, t_shell *cfg, int *pipe_fd)
+{
+	char	*aux;
+
+	aux = line;
+	line = expand_super(aux, cfg);
+	free(aux);
+	write(pipe_fd[1], line, ft_strlen(line));
+	write(pipe_fd[1], "\n", 1);
+	free(line);
+}
+
 int	heredoc_loop(t_shell *cfg, char *delimiter, t_cmd *cmd)
 {
 	char	*line;
-	char	*aux;
 	int		pipe_fd[2];
 
 	if (pipe(pipe_fd) == -1)
@@ -35,28 +46,22 @@ int	heredoc_loop(t_shell *cfg, char *delimiter, t_cmd *cmd)
 		signal(SIGQUIT, SIG_IGN);
 		line = readline("heredoc> ");
 		sig_manage(cfg, 1);
-		// FIXME: !line???
 		if (g_exit_num == 130 || !line || ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
 			break ;
 		}
-		aux = line;
-		line = expand_super(aux, cfg);
-		free(aux);
-		write(pipe_fd[1], line, ft_strlen(line));
-		write(pipe_fd[1], "\n", 1);
-		free(line);
+		write_in_heredoc(line, cfg, pipe_fd);
 	}
 	manage_heredoc_pipes(pipe_fd, cmd);
 	return (1);
 }
 
-t_parsed_token	*init_heredoc(size_t *skip, char **token)
+static t_parsed_token	*init_heredoc(size_t *skip, char **token)
 {
 	t_parsed_token	*result;
 
-	*skip = 1; // Skip '<<'
+	*skip = 1;
 	result = malloc(sizeof(t_parsed_token));
 	if (!result)
 		return (NULL);
@@ -71,7 +76,7 @@ t_parsed_token	*init_heredoc(size_t *skip, char **token)
 	return (result);
 }
 
-char	*get_heredoc_delimiter(char *token, size_t *next_symbol_idx)
+static char	*get_heredoc_delimiter(char *token, size_t *next_symbol_idx)
 {
 	*next_symbol_idx = ft_index_of_symbol(token);
 	if (*next_symbol_idx == (size_t)-1)
@@ -91,7 +96,7 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 		return (NULL);
 	if (!*token || (*token && strchr("<>", *token) && g_exit_num != 2))
 	{
-		printf("pipex: syntax error near unexpected token `<'\n");
+		printf("minishell: syntax error near unexpected token `<'\n");
 		g_exit_num = 2;
 		return (result);
 	}

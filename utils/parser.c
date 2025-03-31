@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/29 21:13:51 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 18:09:56 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*get_check_cmd(char *cmd, t_shell *cfg)
 		return (cmd);
 	if (access(cmd, F_OK) != 0 || !has_char(cmd, '/'))
 	{
-		printf("pipex: %s: command not found\n", cmd);
+		printf("minishell: %s: command not found\n", cmd);
 		cfg->exit_code = 127;
 	}
 	else if (access(cmd, X_OK) != 0)

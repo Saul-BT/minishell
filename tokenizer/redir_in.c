@@ -6,13 +6,13 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:52:32 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/31 15:03:22 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 18:09:43 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	get_fd_in_redir(t_parsed_token *result, t_shell *cfg, char *token)
+static int	get_fd_in_redir(t_parsed_token *result, t_shell *cfg, char *token)
 {
 	int				fd;
 	t_parsed_token	*other;
@@ -42,7 +42,7 @@ t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 		result->skip++;
 	if (!*token || (*token && *token == '>' && g_exit_num != 2))
 	{
-		printf("pipex: syntax error near unexpected token `>'\n");
+		printf("minishell: syntax error near unexpected token `>'\n");
 		g_exit_num = 2;
 		return (result);
 	}

@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 14:22:29 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 18:39:39 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*expand_first(char *cmd_line, t_shell *cfg)
 	if (ft_strchr("'\"", cmd_line[i]))
 		parsed = handle_quote(cmd_line + i + 1, cmd_line[i], cfg);
 	else
-		parsed = handle_other(cmd_line, cfg);
+		parsed = handle_other(cmd_line + i, cfg);
 	result = ft_strjoin(parsed->parsed, cmd_line + i + parsed->skip + 1);
 	free(parsed->parsed);
 	free(parsed);
