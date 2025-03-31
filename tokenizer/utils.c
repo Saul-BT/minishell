@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/31 19:34:46 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:16:08 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,31 @@ bool	accesible_file(char	*filename, int access_mode)
 	int	fd;
 
 	g_exit_num = 1;
-	if (access(filename, F_OK) < 0)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(filename, 2);
-		return (ft_putstr_fd(": No such file or directory\n", 2), false);
+	if (access_mode != O_RDONLY) {
+		fd = open(filename, O_DIRECTORY);
+		if (fd >= 0)
+		{
+			close(fd);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(filename, 2);
+			return (ft_putstr_fd(": Is a directory\n", 2), false);
+		}
 	}
-	else if (access(filename, access_mode) < 0)
+	fd = open(filename, access_mode, 0644);
+	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
 		return (ft_putstr_fd(": Permission denied\n", 2), false);
 	}
-	fd = open(filename, O_DIRECTORY);
-	if (fd >= 0)
+	else if (access(filename, F_OK) < 0)
 	{
 		close(fd);
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
-		return (ft_putstr_fd(": Is a directory\n", 2), false);
+		return (ft_putstr_fd(": No such file or directory\n", 2), false);
 	}
+	close(fd);
 	g_exit_num = 0;
 	return (true);
 }

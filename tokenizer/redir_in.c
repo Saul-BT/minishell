@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:52:32 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/31 18:09:43 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:44:11 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ static int	get_fd_in_redir(t_parsed_token *result, t_shell *cfg, char *token)
 	else
 		other = handle_other(token, cfg);
 	result->skip += other->skip + 1;
+	if (!accesible_file(other->parsed, O_RDONLY))
+	{
+		free(other->parsed);
+		free(other);
+		return (STDIN_FILENO);
+	}
 	fd = open(other->parsed, O_RDONLY);
 	free(other->parsed);
 	free(other);
@@ -40,10 +46,13 @@ t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	result->parsed = NULL;
 	while (ft_isspace(*++token))
 		result->skip++;
-	if (!*token || (*token && *token == '>' && g_exit_num != 2))
+	if (!*token || (*token && *token == '>'))
 	{
-		printf("minishell: syntax error near unexpected token `>'\n");
+		while (*token && *token++ == '>')
+			result->skip++;
+		printf("minishell: syntax error near unexpected token `<'\n");
 		g_exit_num = 2;
+		result->skip += ft_strlen(token) + 1;
 		return (result);
 	}
 	if (*token)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 19:36:38 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:16:12 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 static char	*get_check_cmd(char *cmd, t_shell *cfg)
 {
-	// ELIMINAR ESTO
-	if (is_builtin(cmd))
+	if (is_builtin(cmd) || !cmd)
 		return (cmd);
 	if (access(cmd, F_OK) != 0 || !has_char(cmd, '/'))
 	{
@@ -24,7 +23,7 @@ static char	*get_check_cmd(char *cmd, t_shell *cfg)
 	}
 	else if (access(cmd, X_OK) != 0)
 	{
-		printf("pipex: %s: %s\n", cmd, strerror(errno));
+		printf("minishell: %s: %s\n", cmd, strerror(errno));
 		cfg->exit_code = 126;
 	}
 	return (cmd);

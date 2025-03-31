@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 19:36:54 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:15:10 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void		close_quote(void);
 void		print_error(char *msg);
 bool		is_valid_var_start_char(char c);
 bool		is_valid_var_char(char c);
+bool		accesible_file(char	*filename, int access_mode);
 
 // esta en export
 char		**new_env(char **env, int n, int add, char *val);

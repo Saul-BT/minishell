@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 19:40:50 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:15:57 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg, bool first_parsed)
 			continue ;
 		}
 		presult = handle_token(&expanded[i], cmd, cfg);
-		if (presult->parsed != NULL) // TODO: Handle error in else branch
+		if (presult->parsed != NULL)
 			tokenize_loop_content(&first_parsed, cmd, presult);
 		i += presult->skip + 1;
 		free(presult);

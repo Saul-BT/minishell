@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_hered.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:00:40 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/31 18:09:36 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 19:44:28 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,13 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 	result = init_heredoc(&skip, &token);
 	if (!result)
 		return (NULL);
-	if (!*token || (*token && strchr("<>", *token) && g_exit_num != 2))
+	if (!*token || (*token && strchr("<>", *token)))
 	{
-		printf("minishell: syntax error near unexpected token `<'\n");
+		while (*token && ft_strchr("<>", *token++))
+			result->skip++;
+		printf("minishell: syntax error near unexpected token `<<'\n");
 		g_exit_num = 2;
+		result->skip += ft_strlen(token) + 2;
 		return (result);
 	}
 	if (*token && g_exit_num != 2)

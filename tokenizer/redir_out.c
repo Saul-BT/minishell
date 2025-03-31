@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_out.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:59:56 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/31 18:09:50 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:09:56 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ static int	get_fd_in_redir_out(t_shell *cfg, char *token,
 		other = handle_quote(token + 1, token[0], cfg);
 	else
 		other = handle_other(token, cfg);
+	if (!accesible_file(other->parsed, mode))
+	{
+		result->skip += ft_strlen(token) + 1;
+		free(other->parsed);
+		free(other);
+		return (STDOUT_FILENO);
+	}
 	result->skip += other->skip + 1;
 	fd = open(other->parsed, mode, 0644);
 	free(other->parsed);
@@ -57,10 +64,16 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	result = init_handle_out(&mode, &token);
 	while (ft_isspace(*++token))
 		result->skip++;
-	if (!*token || (*token && ft_strchr("<>", *token) && g_exit_num != 2))
+	if (!*token || (*token && ft_strchr("<>", *token)))
 	{
-		printf("minishell: syntax error near unexpected token `>'\n");
+		while(*token && ft_strchr("<>", *token++))
+			result->skip++;
+		if (mode & O_APPEND)
+			printf("minishell: syntax error near unexpected token `>>'\n");
+		else
+			printf("minishell: syntax error near unexpected token `>'\n");
 		g_exit_num = 2;
+		result->skip += ft_strlen(token) + 1;
 		return (result);
 	}
 	if (*token)
