@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 17:47:20 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/30 15:02:44 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 22:14:10 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ void	free_strs(char **strs)
 
 void	free_args(t_cmd *cmd)
 {
-	if (cmd && cmd->fd_in > 2)
+	if (!cmd)
+		return ;
+	if (cmd->fd_in > 2)
 		close(cmd->fd_in);
-	if (cmd && cmd->fd_out > 2)
+	if (cmd->fd_out > 2)
 		close(cmd->fd_out);
 	ft_lstclear(&(cmd->args), free);
 }
