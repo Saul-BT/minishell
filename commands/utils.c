@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:10:29 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/19 20:04:12 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/01 22:06:37 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	ft_get_env_pos(char **env, char *var)
 {
 	int		i;
+	size_t	n;
 	char	*name;
 	char	*aux;
 
@@ -23,7 +24,10 @@ int	ft_get_env_pos(char **env, char *var)
 	while (env[i])
 	{
 		aux = ft_get_env_name(env[i]);
-		if (!ft_strncmp(name, env[i], ft_strlen(name)))
+		n = ft_strlen(aux);
+		if (ft_strlen(name) > n)
+			n = ft_strlen(name);
+		if (!ft_strncmp(name, env[i], n))
 		{
 			free(aux);
 			free(name);
@@ -43,7 +47,7 @@ void	free_env(char **env)
 	i = -1;
 	while (env[++i])
 		free(env[i]);
-	free (env);
+	free(env);
 }
 
 char	*ft_get_env_name(char *arg)
@@ -64,15 +68,25 @@ char	*ft_get_env_name(char *arg)
 
 char	*ft_get_env_val(t_shell *shell, char *var)
 {
-	char	**env;
 	int		i;
+	size_t	n;
+	char	*aux;
+	char	**env;
 
 	i = 0;
 	env = shell->envp;
 	while (env[i])
 	{
-		if (!ft_strncmp(var, env[i], ft_strlen(var)))
+		aux = ft_get_env_name(env[i]);
+		n = ft_strlen(aux);
+		if (ft_strlen(var) > n)
+			n = ft_strlen(var);
+		if (!ft_strncmp(var, env[i], n))
+		{
+			free(aux);
 			return (env[i] + ft_strlen(var) + 1);
+		}
+		free(aux);
 		i++;
 	}
 	return (NULL);
