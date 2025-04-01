@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 19:42:02 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 22:16:54 by saul.blanco      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,8 @@ static void	mini_main(char *input, t_shell *shell)
 			g_exit_num = handle_builtin(shell, (t_cmd *)shell->cmds->content);
 		else
 			ft_piped_exec(shell);
+		free_cmds(shell->cmds);
 	}
-	free_cmds(shell->cmds);
 	free(input);
 }
 
