@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:00:40 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/31 19:44:28 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/02 23:23:49 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ int	heredoc_loop(t_shell *cfg, char *delimiter, t_cmd *cmd)
 	if (pipe(pipe_fd) == -1)
 		return (0); // TODO: Handle error
 	g_exit_num = 0;
+	if (cmd->fd_out != STDOUT_FILENO)
+	{
+		dup2(cmd->fd_out, pipe_fd[0]);
+		close(cmd->fd_out);
+	}
 	while (1)
 	{
 		sig_manage(cfg, 2);
