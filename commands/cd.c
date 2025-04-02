@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/29 21:12:18 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/02 23:36:49 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,22 +62,23 @@ int	ft_cd(t_cmd *cmd, t_shell *shell)
 {
 	int		ret;
 	char	*oldpath;
-	char	*nd_arg;
+	t_node	*nd_arg;
 
 	oldpath = getcwd(NULL, 0);
 	if (!oldpath)
 		oldpath = ft_strdup(ft_get_env_val(shell, "PWD"));
+	// TODO: este if de abajo impide que se gestione "cd" sin args correctamente
 	if (if_non_next(cmd, oldpath))
 		return (2);
-	nd_arg = (char *) cmd->args->next->content;
+	nd_arg = cmd->args->next;
 	if (!nd_arg)
 		ret = chdir(ft_get_env_val(shell, "HOME"));
-	else if (nd_arg[0] == '-')
+	else if (nd_arg->content && ((char *) nd_arg->content)[0] == '-')
 		ret = ft_cd_oldpwd(shell);
 	else
-		ret = chdir(nd_arg);
+		ret = chdir((char *) nd_arg->content);
 	if (!ret)
-		return (nonerror_cd(oldpath, nd_arg, shell));
+		return (nonerror_cd(oldpath, (char *) nd_arg->content, shell));
 	else
 		return (ret_error(cmd, oldpath));
 }
