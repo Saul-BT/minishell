@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_hered.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:00:40 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/31 19:44:28 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/03/31 21:01:22 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,65 +114,3 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 	result->skip = skip;
 	return (result);
 }
-
-// t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
-// {
-// 	size_t			skip;
-// 	size_t			next_symbol_idx;
-// 	t_parsed_token	*result;
-// 	// char			*delimiter;
-// 	char			*line;
-// 	// int				pipe_fd[2];
-
-// 	skip = 1;                                // Skip '<<'
-// 	result = malloc(sizeof(t_parsed_token)); // TODO: Add null-check
-// 	result->skip = 0;
-// 	result->parsed = NULL;
-// 	token += 2;
-// 	while (ft_isspace(*token))
-// 	{
-// 		token++;
-// 		skip++;
-// 	}
-// 	if (!*token || (*token && strchr("<>", *token) && g_exit_num != 2))
-// 	{
-// 		printf("pipex: syntax error near unexpected token `<'\n");
-// 		g_exit_num = 2;
-// 		return (result);
-// 	}
-// 	if (*token && g_exit_num != 2)
-// 	{
-// 		next_symbol_idx = ft_index_of_symbol(token);
-// 		if (next_symbol_idx == (size_t)-1)
-// 			next_symbol_idx = ft_strlen(token);
-// 		delimiter = ft_substr(token, 0, next_symbol_idx);
-// 		if (pipe(pipe_fd) == -1)
-// 			return (NULL); // TODO: Handle error
-// 		g_exit_num = 0;
-// 		while (1)
-// 		{
-// 			sig_manage(cfg, 2);
-// 			signal(SIGQUIT, SIG_IGN);
-// 			line = readline("heredoc> ");
-// 			sig_manage(cfg, 1);
-// 			// FIXME: !line???
-// 			if (g_exit_num == 130 || !line || ft_strcmp(line, delimiter) == 0)
-// 			{
-// 				free(line);
-// 				break ;
-// 			}
-// 			line = expand_super(line, cfg);
-// 			write(pipe_fd[1], line, ft_strlen(line));
-// 			write(pipe_fd[1], "\n", 1);
-// 			free(line);
-// 		}
-// 		close(pipe_fd[1]);
-// 		if (cmd->fd_in > 1)
-// 			close(cmd->fd_in);
-// 		cmd->fd_in = pipe_fd[0];
-// 		skip += next_symbol_idx;
-// 		free(delimiter);
-// 	}
-// 	result->skip = skip;
-// 	return (result);
-// }

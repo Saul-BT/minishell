@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:54:57 by saul.blanco       #+#    #+#             */
-/*   Updated: 2025/03/30 17:28:09 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:55:16 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,16 @@ void	exit_status_transmisor(void)
 {
 	int	status;
 
+
+	//REVISAR G_EXIT_NUM URGENTEMENTE Y LA FUNCION CON X_OK
 	while (waitpid(-1, &status, 0) > 0)
 	{
-		if (WIFEXITED(status))
+		if (WIFEXITED(status) && g_exit_num >= 0)
 			g_exit_num = WEXITSTATUS(status);
+		// else if (g_exit_num == -1)
+		// 	g_exit_num = 127;
+		// else if (g_exit_num == -2)
+			// g_exit_num = 126;
 	}
 }
 
