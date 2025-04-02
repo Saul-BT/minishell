@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/17 04:14:09 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/02 23:49:06 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,21 @@ char	**ft_delete_env_var(t_shell *shell, char **env, char *var)
 	return (new_env);
 }
 
-int	ft_unset(t_cmd *cmd, t_shell *shell)
+void	ft_unset_arg_var(t_node *arg, t_shell *shell)
 {
 	char	**env;
+
+	env = ft_delete_env_var(shell, shell->envp, (char *)arg->content);
+	if (env)
+	{
+		free(shell->envp);
+		shell->envp = env;
+	}
+}
+
+int	ft_unset(t_cmd *cmd, t_shell *shell)
+{
+	t_node	*arg;
 
 	if (cmd->args->next && cmd->args->next->content
 		&& ((char *)cmd->args->next->content)[0] == '-')
@@ -50,13 +62,11 @@ int	ft_unset(t_cmd *cmd, t_shell *shell)
 			(char *)cmd->args->next->content);
 		return (2);
 	}
-	env = ft_delete_env_var(shell, shell->envp,
-			(char *)cmd->args->next->content);
-	if (env)
+	arg = cmd->args->next;
+	while (arg)
 	{
-		free(shell->envp);
-		shell->envp = env;
-		return (0);
+		ft_unset_arg_var(arg, shell);
+		arg = arg->next;
 	}
-	return (1);
+	return (0);
 }
