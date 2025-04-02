@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/02 15:54:41 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 18:14:30 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static void	execute_command(t_cmd *cmd, t_pipe_ctx *ctx)
 {
 	pid_t	pid;
 
+	if (!cmd->bin)
+		return;
 	if (ctx->cmd_index < ctx->shell->cmd_count - 1 && pipe(ctx->pipe) == -1)
 		print_error("pipe");
 	pid = fork();
@@ -76,7 +78,5 @@ void	ft_piped_exec(t_shell *shell)
 	}
 	if (ctx.pipe_read > 2)
 		close(ctx.pipe_read);
-	// dprintf(2 ,"STATUS: %d\n", g_exit_num);
 	exit_status_transmisor();
-	// printf("ERROR:: %i\n", g_exit_num);
 }

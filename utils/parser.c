@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/02 15:54:30 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:16:12 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,17 @@
 
 static char	*get_check_cmd(char *cmd, t_shell *cfg)
 {
-	(void)cfg;
 	if (is_builtin(cmd) || !cmd)
 		return (cmd);
 	if (access(cmd, F_OK) != 0 || !has_char(cmd, '/'))
 	{
 		printf("minishell: %s: command not found\n", cmd);
-		// g_exit_num = -1;
+		cfg->exit_code = 127;
 	}
 	else if (access(cmd, X_OK) != 0)
 	{
 		printf("minishell: %s: %s\n", cmd, strerror(errno));
-		// g_exit_num = -2;
+		cfg->exit_code = 126;
 	}
 	return (cmd);
 }
