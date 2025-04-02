@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 23:07:20 by sblanco-          #+#    #+#             */
-/*   Updated: 2024/09/14 23:08:34 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/02 19:44:13 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+//el execve devuelve -1 en caso de error asii que lo sustituimos por 127.
+
 void	print_error(char *msg)
 {
 	perror(msg);
-	exit(1);
+	exit(g_exit_num);
 }

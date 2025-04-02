@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 20:15:10 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/02 20:09:59 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ void		handle_parent_pipes(t_cmd *cmd, t_pipe_ctx *ctx);
 void		sig_manage(t_shell *shell, int interactive);
 void		sig_interactive(int signum);
 void		sig_ignore(void);
+void		sig_non_interactive(int signum);
 
 // TOKENIZER
 t_cmd		*tokenize(char *cmd_line, t_shell *cfg, bool first_parsed);

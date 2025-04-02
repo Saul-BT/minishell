@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/31 20:16:08 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/02 19:00:16 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ bool	accesible_file(char	*filename, int access_mode)
 	int	fd;
 
 	g_exit_num = 1;
-	if (access_mode != O_RDONLY) {
+	if (access_mode != O_RDONLY)
+	{
 		fd = open(filename, O_DIRECTORY);
 		if (fd >= 0)
 		{

@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:50:46 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/29 21:01:22 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/02 20:28:03 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,12 @@ void	sig_interactive(int signum)
 
 void	sig_non_interactive(int signum)
 {
-	if (signum == SIGINT)
-	{
-		write(2, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-		g_exit_num = 130;
-	}
-	else if (signum == SIGQUIT)
-	{
-		signal(SIGQUIT, SIG_DFL);
-		write(2, "\n", 1);
-		g_exit_num = 131;
-	}
+	(void)signum;
+	write(2, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	g_exit_num = 130;
 }
 
 void	sig_here_doc(int signum)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 18:14:30 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/02 20:38:30 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ static void	aux_pipex(t_cmd *cmd, t_shell *shell)
 		close(cmd->fd_out);
 	}
 	args = arg_nodes_to_arg_array(cmd);
-	g_exit_num = execve(cmd->bin, args, shell->envp);
-	print_error("execve");
+	if (execve(cmd->bin, args, shell->envp) == -1)
+		g_exit_num = 127;
+	exit(g_exit_num);
+	// print_error("execve"); // revisar esto
 }
 
 static void	execute_command(t_cmd *cmd, t_pipe_ctx *ctx)
@@ -50,6 +52,7 @@ static void	execute_command(t_cmd *cmd, t_pipe_ctx *ctx)
 	else if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, sig_non_interactive);
 		setup_child_pipes(cmd, ctx);
 		aux_pipex(cmd, ctx->shell);
 	}
@@ -79,4 +82,6 @@ void	ft_piped_exec(t_shell *shell)
 	if (ctx.pipe_read > 2)
 		close(ctx.pipe_read);
 	exit_status_transmisor();
+	// if (g_exit_num == -1)
+	// 	g_exit_num = 127;
 }
