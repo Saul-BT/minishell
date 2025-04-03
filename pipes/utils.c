@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:54:57 by saul.blanco       #+#    #+#             */
-/*   Updated: 2025/04/02 20:38:40 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:29:46 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,22 @@ char	**arg_nodes_to_arg_array(t_cmd *cmd)
 	return (result);
 }
 
-void	exit_status_transmisor(void)
+void	exit_status_transmisor(int argnum, pid_t last)
 {
-	int	status;
+	int		status;
+	pid_t	curr;
 
-	while (waitpid(-1, &status, 0) > 0)
+	while (1)
 	{
-		if (WIFEXITED(status))
+		curr = (waitpid(-1, &status, 0));
+		if (WIFEXITED(status) && (curr == last || argnum == 1))
 		{
 			g_exit_num = WEXITSTATUS(status);
-			// if (g_exit_num == -1)
-			// 	g_exit_num = 127;
 		}
-		if (WIFSIGNALED(status))
-		{
+		else if (WIFSIGNALED(status))
 			g_exit_num = 128 + WTERMSIG(status);
-		}
+		if (curr <= 0)
+			break ;
 	}
 }
 
@@ -63,7 +63,7 @@ void	setup_child_pipes(t_cmd *cmd, t_pipe_ctx *ctx)
 		close(ctx->pipe[WRITE_END]);
 	}
 	if (is_builtin(cmd->bin))
-		return;
+		return ;
 	if (cmd->fd_in != STDIN_FILENO)
 	{
 		dup2(cmd->fd_in, STDIN_FILENO);

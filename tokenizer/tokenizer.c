@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 20:15:57 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:54:42 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,22 @@ t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 	return (handle_other(token, cfg));
 }
 
-void	print_arg(char *arg)
-{
-	printf("  -> %s\n", arg);
-}
+// void	print_arg(char *arg)
+// {
+// 	printf("  -> %s\n", arg);
+// }
 
-void	print_tokenized(t_cmd *cmd)
-{
-	printf("\033[0;34m=====================\n");
-	printf("bin: %s\n", cmd->bin);
-	printf("arg_count: %d\n", cmd->arg_count);
-	ft_lstiter(cmd->args, (void (*)(void *))print_arg);
-	printf("redirections:\n");
-	printf("  -> fd_in: %d\n", cmd->fd_in);
-	printf("  -> fd_out: %d\n", cmd->fd_out);
-	printf("=====================\033[0m\n");
-}
+// void	print_tokenized(t_cmd *cmd)
+// {
+// 	printf("\033[0;34m=====================\n");
+// 	printf("bin: %s\n", cmd->bin);
+// 	printf("arg_count: %d\n", cmd->arg_count);
+// 	ft_lstiter(cmd->args, (void (*)(void *))print_arg);
+// 	printf("redirections:\n");
+// 	printf("  -> fd_in: %d\n", cmd->fd_in);
+// 	printf("  -> fd_out: %d\n", cmd->fd_out);
+// 	printf("=====================\033[0m\n");
+// }
 
 char	*expand_first(char *cmd_line, t_shell *cfg)
 {
@@ -70,7 +70,8 @@ char	*expand_first(char *cmd_line, t_shell *cfg)
 	return (result);
 }
 
-void	tokenize_loop_content(bool *first_parsed, t_cmd *cmd, t_parsed_token *presult)
+void	tokenize_loop_content(bool *first_parsed, t_cmd *cmd,
+	t_parsed_token *presult)
 {
 	if (*first_parsed)
 	{
@@ -106,7 +107,7 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg, bool first_parsed)
 		free(presult);
 	}
 	free(expanded);
-	print_tokenized(cmd);
+	// print_tokenized(cmd);
 	return (cmd);
 }
 

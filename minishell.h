@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/02 20:09:59 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 18:31:28 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void		ft_piped_exec(t_shell *shell);
 
 // PIPES UTILS
 char		**arg_nodes_to_arg_array(t_cmd *cmd);
-void		exit_status_transmisor(void);
+void		exit_status_transmisor(int arg_num, pid_t last);
 void		setup_child_pipes(t_cmd *cmd, t_pipe_ctx *ctx);
 void		handle_parent_pipes(t_cmd *cmd, t_pipe_ctx *ctx);
 

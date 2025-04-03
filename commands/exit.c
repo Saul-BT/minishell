@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:37:07 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/02 18:25:17 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 19:52:19 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ static int	get_error_var_val(bool *jump, t_cmd *cmd)
 		return (valid_exit(cmd->args, cmd->arg_count));
 }
 
+int	error_non_numeric_exit(bool jump, t_cmd *cmd)
+{
+	if (jump)
+		printf("minishell: exit: %s: numeric argument "
+			"required\n", (char *)cmd->args->next->next->content);
+	else
+		printf("minishell: exit: %s: numeric argument "
+			"required\n", (char *)cmd->args->next->content);
+	return (2);
+}
+
 int	ft_exit(t_shell *shell, t_cmd *cmd)
 {
 	int		error;
@@ -61,10 +72,7 @@ int	ft_exit(t_shell *shell, t_cmd *cmd)
 	}
 	shell->exit_code = -1;
 	if (error == 2)
-	{
-		printf("minishell: exit: %s: numeric argument required\n", cmd->bin);
-		return (2);
-	}
+		return (error_non_numeric_exit(jump, cmd));
 	else if (cmd->args && cmd->args->next)
 	{
 		if (jump && cmd->args->next->next)
