@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 23:07:20 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/02 19:44:13 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:54:13 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 //el execve devuelve -1 en caso de error asii que lo sustituimos por 127.
 
-void	print_error(char *msg)
+void	print_error(char *msg, t_shell *shell)
 {
 	perror(msg);
-	exit(g_exit_num);
+	exit(shell->exit_code);
 }

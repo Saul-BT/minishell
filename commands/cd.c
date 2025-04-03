@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 21:19:44 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:06:08 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ int	ft_cd(t_cmd *cmd, t_shell *shell)
 	nd_arg = cmd->args->next;
 	if (!nd_arg)
 	{
-		chdir(ft_get_env_val(shell, "HOME"));
+		ret = chdir(ft_get_env_val(shell, "HOME"));
+		if (ret)
+			return (free(oldpath), printf("bash: cd: HOME not set\n"), 1);
 		return (nonerror_cd(oldpath, ft_get_env_val(shell, "HOME"), shell));
 	}
 	else if (nd_arg->content && ((char *) nd_arg->content)[0] == '-')

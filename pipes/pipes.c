@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 21:46:32 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:55:36 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,17 @@ static void	aux_pipex(t_cmd *cmd, t_shell *shell)
 	exit(shell->exit_code);
 }
 
-static pid_t	execute_command(t_cmd *cmd, t_pipe_ctx *ctx)
+static pid_t	execute_command(t_cmd *cmd, t_pipe_ctx *ctx, t_shell *shell)
 {
 	pid_t	pid;
 
 	if (!cmd->bin)
 		return (-1);
 	if (ctx->cmd_index < ctx->shell->cmd_count - 1 && pipe(ctx->pipe) == -1)
-		print_error("pipe");
+		print_error("pipe", shell);
 	pid = fork();
 	if (pid == -1)
-		print_error("fork");
+		print_error("fork", shell);
 	else if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
@@ -77,7 +77,7 @@ void	ft_piped_exec(t_shell *shell)
 	cmd_node = shell->cmds;
 	while (ctx.cmd_index < shell->cmd_count && cmd_node)
 	{
-		last = execute_command((t_cmd *)cmd_node->content, &ctx);
+		last = execute_command((t_cmd *)cmd_node->content, &ctx, shell);
 		cmd_node = cmd_node->next;
 		ctx.cmd_index++;
 	}

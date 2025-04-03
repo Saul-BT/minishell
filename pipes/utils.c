@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:54:57 by saul.blanco       #+#    #+#             */
-/*   Updated: 2025/04/03 21:46:05 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:11:38 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	exit_status_transmisor(int argnum, pid_t last)
 		}
 		else if (WIFSIGNALED(status))
 			g_exit_num = 128 + WTERMSIG(status);
-
 		if (curr <= 0)
 			break ;
 	}

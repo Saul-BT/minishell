@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2025/04/03 21:21:57 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:51:35 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static char	*str_exange(t_shell *shell, char *args)
 {
 	if (args[1] == '?')
-		return (ft_itoa(g_exit_num));
+		return (ft_itoa(shell->exit_code));
 	else if (!is_valid_var_start_char(args[1]))
 		return (ft_strdup(args));
 	else

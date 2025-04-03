@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 21:49:46 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:54:51 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ bool			has_char(const char *str, char c);
 char			**pipe_split(const char *str, int *cmd_count);
 bool			is_quoted(char c);
 void			close_quote(void);
-void			print_error(char *msg);
+void			print_error(char *msg, t_shell *shell);
 bool			is_valid_var_start_char(char c);
 bool			is_valid_var_char(char c);
 bool			accesible_file(char	*filename, int access_mode, t_shell *shell);

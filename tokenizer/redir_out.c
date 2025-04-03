@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   redir_out.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:59:56 by mmartine          #+#    #+#             */
-/*   Updated: 2025/04/03 21:49:20 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:17:19 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static void	redir_out_error(int mode)
+{
+	if (mode & O_APPEND)
+		printf("minishell: syntax error near unexpected token `>>'\n");
+	else
+		printf("minishell: syntax error near unexpected token `>'\n");
+}
 
 static t_parsed_token	*init_handle_out(int *mode, char **token)
 {
@@ -28,8 +36,6 @@ static t_parsed_token	*init_handle_out(int *mode, char **token)
 		result->skip++;
 		(*token)++;
 	}
-	while (ft_isspace(**++token))
-		result->skip++;
 	return (result);
 }
 
@@ -59,29 +65,28 @@ static int	get_fd_in_redir_out(t_shell *cfg, char *token,
 
 t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 {
-	t_parsed_token	*result;
+	t_parsed_token	*ret;
 	int				mode;
 	int				fd;
 
-	result = init_handle_out(&mode, &token);
+	ret = init_handle_out(&mode, &token);
+	while (ft_isspace(*++token))
+		ret->skip++;
 	if (!*token || (*token && ft_strchr("<>", *token)))
 	{
 		while (*token && ft_strchr("<>", *token++))
-			result->skip++;
-		if (mode & O_APPEND)
-			printf("minishell: syntax error near unexpected token `>>'\n");
-		else
-			printf("minishell: syntax error near unexpected token `>'\n");
-		return (cfg->exit_code = 2, result->skip += ft_strlen(token) + 1, result);
+			ret->skip++;
+		redir_out_error(mode);
+		return (cfg->exit_code = 2, ret->skip += ft_strlen(token) + 1, ret);
 	}
 	if (*token)
 	{
-		fd = get_fd_in_redir_out(cfg, token, result, mode);
+		fd = get_fd_in_redir_out(cfg, token, ret, mode);
 		if (fd == -1)
-			return (result);
+			return (ret);
 		if (cmd->fd_out != 1)
 			close(cmd->fd_out);
 		cmd->fd_out = fd;
 	}
-	return (result);
+	return (ret);
 }
