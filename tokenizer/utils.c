@@ -3,31 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/04/03 19:55:36 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:52:27 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-bool	accesible_file(char	*filename, int access_mode)
+bool	check_is_dir(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_DIRECTORY);
+	if (fd < 0)
+		return (false);
+	close(fd);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(filename, 2);
+	ft_putstr_fd(": Is a directory\n", 2);
+	return (true);
+}
+
+bool	accesible_file(char *filename, int access_mode)
 {
 	int	fd;
 
 	g_exit_num = 1;
-	if (access_mode != O_RDONLY)
-	{
-		fd = open(filename, O_DIRECTORY);
-		if (fd >= 0)
-		{
-			close(fd);
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(filename, 2);
-			return (ft_putstr_fd(": Is a directory\n", 2), false);
-		}
-	}
+	if (access_mode != O_RDONLY && check_is_dir(filename))
+		return (false);
 	fd = open(filename, access_mode, 0644);
 	if (fd < 0)
 	{

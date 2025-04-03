@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 08:44:25 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 15:42:26 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:23:03 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,6 @@ char	*get_bin_path(char *cmd, char **bin_paths, t_shell *cfg)
 	return (get_check_cmd(cmd, cfg));
 }
 
-t_node	*error_exit(t_shell *cfg, char **bin_paths, char **argv, t_cmd *cmd)
-{
-	//FUNCION NECESARIA?
-	if (cfg->cmd_count == 1)
-		printf("bash: syntax error near unexpected token `newline'\n");
-	else if (cfg->cmd_count == 2)
-	{
-		free(cmd->args);
-		printf("bash: syntax error near unexpected token `|'\n");
-	}
-	free(cmd);
-	free_strs(bin_paths);
-	free(argv);
-	return (NULL);
-}
-
 t_node	*get_cmds(t_shell *cfg, char **argv)
 {
 	int		i;
@@ -100,7 +84,5 @@ t_node	*get_cmds(t_shell *cfg, char **argv)
 		ft_lstadd_back(&cmds, ft_lstnew(cmd));
 		i++;
 	}
-	free_strs(bin_paths);
-	free(argv);
-	return (cmds);
+	return (free_strs(bin_paths), free(argv), cmds);
 }

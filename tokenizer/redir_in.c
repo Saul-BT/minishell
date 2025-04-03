@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:52:32 by mmartine          #+#    #+#             */
-/*   Updated: 2025/04/01 22:19:33 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/04/03 20:27:55 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,12 @@ static int	get_fd_in_redir(t_parsed_token *result, t_shell *cfg, char *token)
 		result->skip = ft_strlen(token) + 1;
 		free(other->parsed);
 		free(other);
-		// TODO: Maybe there is a better way to handle this
-		// by using the emptyness of `/dev/null` we can
-		// prevent the read from stdin (and stuck)
 		fd = open("/dev/null", O_RDONLY);
 		return (fd);
 	}
 	fd = open(other->parsed, O_RDONLY);
 	free(other->parsed);
 	free(other);
-	// if (fd == -1)
-	// TODO: Handle error
 	return (fd);
 }
 
@@ -63,8 +58,6 @@ t_parsed_token	*handle_in_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	if (*token)
 	{
 		fd = get_fd_in_redir(result, cfg, token);
-		// if (fd == -1)
-		// TODO: Handle error
 		cmd->fd_in = fd;
 	}
 	return (result);

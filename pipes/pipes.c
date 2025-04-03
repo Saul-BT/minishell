@@ -3,40 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 19:32:49 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:20:59 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// static void	aux_pipex(t_cmd *cmd, t_shell *shell)
-// {
-// 	char	**args;
-
-// 	if (is_builtin(cmd->bin))
-// 	{
-// 		g_exit_num = handle_builtin(shell, cmd);
-// 		exit(g_exit_num);
-// 	}
-// 	if (cmd->fd_in != STDIN_FILENO)
-// 	{
-// 		dup2(cmd->fd_in, STDIN_FILENO);
-// 		close(cmd->fd_in);
-// 	}
-// 	if (cmd->fd_out != STDOUT_FILENO)
-// 	{
-// 		dup2(cmd->fd_out, STDOUT_FILENO);
-// 		close(cmd->fd_out);
-// 	}
-// 	args = arg_nodes_to_arg_array(cmd);
-// 	if (execve(cmd->bin, args, shell->envp) == -1)
-// 		g_exit_num = 127;
-// 	exit(g_exit_num);
-// 	// print_error("execve"); // revisar esto
-// }
 
 static void	aux_pipex(t_cmd *cmd, t_shell *shell)
 {
@@ -61,8 +35,7 @@ static void	aux_pipex(t_cmd *cmd, t_shell *shell)
 	g_exit_num = execve(cmd->bin, args, shell->envp);
 	if (g_exit_num == -1)
 		g_exit_num = 127;
-	// exit(g_exit_num);
-	print_error("execve"); // revisar esto
+	print_error("execve");
 }
 
 static pid_t	execute_command(t_cmd *cmd, t_pipe_ctx *ctx)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 21:02:01 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:26:19 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,5 +152,7 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg);
 t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg);
 t_parsed_token	*handle_other(char *token, t_shell *cfg);
 t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg);
+void			write_in_heredoc(char *line, t_shell *cfg, int *pipe_fd);
+void			manage_heredoc_pipes(int pipe_fd[2], t_cmd *cmd);
 
 #endif

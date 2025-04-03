@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 13:43:12 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 19:54:42 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 20:42:32 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,6 @@ t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 	}
 	return (handle_other(token, cfg));
 }
-
-// void	print_arg(char *arg)
-// {
-// 	printf("  -> %s\n", arg);
-// }
-
-// void	print_tokenized(t_cmd *cmd)
-// {
-// 	printf("\033[0;34m=====================\n");
-// 	printf("bin: %s\n", cmd->bin);
-// 	printf("arg_count: %d\n", cmd->arg_count);
-// 	ft_lstiter(cmd->args, (void (*)(void *))print_arg);
-// 	printf("redirections:\n");
-// 	printf("  -> fd_in: %d\n", cmd->fd_in);
-// 	printf("  -> fd_out: %d\n", cmd->fd_out);
-// 	printf("=====================\033[0m\n");
-// }
 
 char	*expand_first(char *cmd_line, t_shell *cfg)
 {
@@ -107,43 +90,5 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg, bool first_parsed)
 		free(presult);
 	}
 	free(expanded);
-	// print_tokenized(cmd);
 	return (cmd);
 }
-
-// t_cmd	*tokenize(char *cmd_line, t_shell *cfg, bool first_parsed)
-// {
-// 	size_t			i;
-// 	size_t			len;
-// 	t_cmd			*cmd;
-// 	t_parsed_token	*presult;
-// 	char			*expanded;
-
-// 	i = 0;
-// 	expanded = expand_first(cmd_line, cfg);
-// 	cmd = init_tokenizer(&len, expanded);
-// 	while (i < len && expanded && expanded[i])
-// 	{
-// 		if (ft_isspace(expanded[i]))
-// 		{
-// 			i++;
-// 			continue ;
-// 		}
-// 		presult = handle_token(&expanded[i], cmd, cfg);
-// 		if (presult->parsed != NULL) // TODO: Handle error in else branch
-// 		{
-// 			if (first_parsed)
-// 			{
-// 				cmd->bin = presult->parsed;
-// 				first_parsed = false;
-// 			}
-// 			ft_lstadd_back(&cmd->args, ft_lstnew(presult->parsed));
-// 			cmd->arg_count++;
-// 		}
-// 		i += presult->skip + 1;
-// 		free(presult);
-// 	}
-// 	free(expanded);
-// 	print_tokenized(cmd);
-// 	return (cmd);
-// }
