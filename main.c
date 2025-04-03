@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saul.blanco <saul.blanco@student.42.fr>    +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/31 22:16:54 by saul.blanco      ###   ########.fr       */
+/*   Updated: 2025/04/03 20:13:05 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,32 +83,17 @@ t_shell	*initshell(char **env)
 
 static bool	is_valid_candiate(char *input)
 {
-	bool	empty_before;
-	bool	empty_after;
-
-	empty_before = true;
-	empty_after = true;
 	if (!input || !*input)
-		return (true);
-	while (*input && *input != '|')
-	{
-		empty_before = empty_before && (ft_isspace(*input)
-				|| ft_strchr("<>", *input));
+		return (false);
+	while (*input && ft_strchr(" <>", *input))
 		input++;
-	}
-	if (*input++ != '|')
-		return (true);
-	if (empty_before)
+	if (!*input || *input == '|')
 		return (false);
 	while (*input && *input != '|')
-	{
-		empty_after = empty_after && (ft_isspace(*input)
-				|| ft_strchr("<>", *input));
 		input++;
-	}
-	if (empty_after && *input == '|')
-		return (false);
-	return (!empty_before && !empty_after);
+	if (*input == '|')
+		return (is_valid_candiate(input + 1));
+	return (true);
 }
 
 static void	mini_main(char *input, t_shell *shell)
@@ -116,8 +101,9 @@ static void	mini_main(char *input, t_shell *shell)
 	char	**splited;
 
 	add_history(input);
-	if (!is_valid_candiate(input))
+	if (*input && !is_valid_candiate(input))
 	{
+		free(input);
 		g_exit_num = 2;
 		printf("minishell: syntax error near unexpected token `|'\n");
 		return ;
