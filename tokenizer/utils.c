@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/04/03 21:50:31 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 23:03:51 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,18 @@ bool	accesible_file(char *filename, int access_mode, t_shell *shell)
 	if (access_mode != O_RDONLY && check_is_dir(filename))
 		return (false);
 	fd = open(filename, access_mode, 0644);
-	if (fd < 0)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(filename, 2);
-		return (ft_putstr_fd(": Permission denied\n", 2), false);
-	}
-	else if (access(filename, F_OK) < 0)
+	if (access(filename, F_OK) < 0)
 	{
 		close(fd);
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
 		return (ft_putstr_fd(": No such file or directory\n", 2), false);
+	}
+	else if (fd < 0)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(filename, 2);
+		return (ft_putstr_fd(": Permission denied\n", 2), false);
 	}
 	close(fd);
 	shell->exit_code = 0;

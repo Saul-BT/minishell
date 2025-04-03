@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:00:40 by mmartine          #+#    #+#             */
-/*   Updated: 2025/04/03 22:16:49 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:54:38 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 	{
 		while (*token && ft_strchr("<>", *token++))
 			ret->skip++;
-		printf("minishell: syntax error near unexpected token `<<'\n");
-		return (cfg->exit_code = 2, ret->skip += ft_strlen(token) + 2, ret);
+		clean_heredoc_error(cmd, cfg);
+		return (ret->skip += ft_strlen(token) + 2, ret);
 	}
 	if (*token && cfg->exit_code != 2)
 	{

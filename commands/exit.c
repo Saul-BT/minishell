@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:37:07 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 19:52:19 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:41:31 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	ft_exit(t_shell *shell, t_cmd *cmd)
 		printf("minishell: exit: too many arguments\n");
 		return (1);
 	}
-	shell->exit_code = -1;
+	shell->exit_loop = -1;
 	if (error == 2)
 		return (error_non_numeric_exit(jump, cmd));
 	else if (cmd->args && cmd->args->next)

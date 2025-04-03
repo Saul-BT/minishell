@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/01/10 18:10:39 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:27:09 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@ int	ft_env(t_cmd *cmd, t_shell *shell)
 		return (1);
 	while (env[j])
 	{
-		ft_putstr_fd(env[j], cmd->fd_out);
-		ft_putchar_fd('\n', cmd->fd_out);
+		if (ft_strchr(env[j], '='))
+		{
+			ft_putstr_fd(env[j], cmd->fd_out);
+			ft_putchar_fd('\n', cmd->fd_out);
+		}
 		j++;
 	}
 	return (0);

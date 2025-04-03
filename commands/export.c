@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/03/30 20:10:05 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:23:35 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ bool	is_valid_export_var(char *str)
 		return (false);
 	while (*str && *str != '=' && is_valid_var_char(*str))
 		str++;
-	return (*str == '=');
+	return (*str == '=' || *str == '\0');
 }
 
 int	add_val(char *arg_val, t_shell *shell)

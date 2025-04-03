@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*    main_utils.c                                      :+:      :+:    :+:   */
+/*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 20:34:08 by mmartine          #+#    #+#             */
-/*   Updated: 2025/04/03 20:39:53 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:41:14 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_shell	*initshell(char **env)
 		n = 2;
 	check_shlvl(n, ret);
 	ret->cmds = NULL;
+	ret->exit_loop = 0;
 	ret->exit_code = 0;
 	g_exit_num = 0;
 	return (ret);

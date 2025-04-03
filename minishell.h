@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 21:54:51 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:55:00 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_shell
 	t_node	*cmds;
 	int		cmd_count;
 	int		exit_code;
+	int		exit_loop;
 }			t_shell;
 
 typedef struct s_pipe_ctx
@@ -154,5 +155,6 @@ t_parsed_token	*handle_other(char *token, t_shell *cfg);
 t_parsed_token	*handle_quote(char *token, char quote, t_shell *cfg);
 void			write_in_heredoc(char *line, t_shell *cfg, int *pipe_fd);
 void			manage_heredoc_pipes(int pipe_fd[2], t_cmd *cmd);
+void			clean_heredoc_error(t_cmd *cmd, t_shell *shell);
 
 #endif

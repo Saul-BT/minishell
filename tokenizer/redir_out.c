@@ -6,18 +6,20 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:59:56 by mmartine          #+#    #+#             */
-/*   Updated: 2025/04/03 22:17:19 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 23:02:12 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	redir_out_error(int mode)
+static void	redir_out_error(int mode, t_shell *shell, t_cmd *cmd)
 {
 	if (mode & O_APPEND)
 		printf("minishell: syntax error near unexpected token `>>'\n");
 	else
 		printf("minishell: syntax error near unexpected token `>'\n");
+	shell->exit_code = 2;
+	cmd->bin = NULL;
 }
 
 static t_parsed_token	*init_handle_out(int *mode, char **token)
@@ -54,7 +56,7 @@ static int	get_fd_in_redir_out(t_shell *cfg, char *token,
 		result->skip += ft_strlen(token) + 1;
 		free(other->parsed);
 		free(other);
-		return (STDOUT_FILENO);
+		return (-1);
 	}
 	result->skip += other->skip + 1;
 	fd = open(other->parsed, mode, 0644);
@@ -76,14 +78,14 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 	{
 		while (*token && ft_strchr("<>", *token++))
 			ret->skip++;
-		redir_out_error(mode);
-		return (cfg->exit_code = 2, ret->skip += ft_strlen(token) + 1, ret);
+		redir_out_error(mode, cfg, cmd);
+		return (ret->skip += ft_strlen(token) + 1, ret);
 	}
 	if (*token)
 	{
 		fd = get_fd_in_redir_out(cfg, token, ret, mode);
 		if (fd == -1)
-			return (ret);
+			return (cmd->bin = NULL, ret);
 		if (cmd->fd_out != 1)
 			close(cmd->fd_out);
 		cmd->fd_out = fd;

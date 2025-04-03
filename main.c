@@ -6,7 +6,7 @@
 /*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 21:53:17 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:40:10 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	main(int argc, char **argv, char **envp)
 	shell = initshell(envp);
 	(void)argc;
 	(void)argv;
-	while (shell->exit_code > -1)
+	while (shell->exit_loop > -1)
 	{
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, sig_interactive);
