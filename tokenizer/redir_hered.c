@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:00:40 by mmartine          #+#    #+#             */
-/*   Updated: 2025/04/03 20:39:36 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:48:17 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	heredoc_loop(t_shell *cfg, char *delimiter, t_cmd *cmd)
 		sig_manage(cfg, 1);
 		if (g_exit_num == 130 || !line || ft_strcmp(line, delimiter) == 0)
 		{
+			cfg->exit_code = g_exit_num;
 			free(line);
 			break ;
 		}
@@ -83,7 +84,7 @@ t_parsed_token	*handle_heredoc(char *token, t_cmd *cmd, t_shell *cfg)
 		while (*token && ft_strchr("<>", *token++))
 			result->skip++;
 		printf("minishell: syntax error near unexpected token `<<'\n");
-		return (g_exit_num = 2, result->skip += ft_strlen(token) + 2, result);
+		return (cfg->exit_code = 2, result->skip += ft_strlen(token) + 2, result);
 	}
 	if (*token && g_exit_num != 2)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:22:26 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 20:44:21 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:46:51 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	enter_execution(char *input, t_shell *shell, char **splited)
 	}
 	if (shell->cmd_count == 1
 		&& is_builtin(((t_cmd *)shell->cmds->content)->bin))
-		g_exit_num = handle_builtin(shell, (t_cmd *)shell->cmds->content);
+		shell->exit_code = handle_builtin(shell, (t_cmd *)shell->cmds->content);
 	else
 		ft_piped_exec(shell);
 	free_cmds(shell->cmds);
@@ -54,7 +54,7 @@ static void	mini_main(char *input, t_shell *shell)
 	if (*input && !is_valid_candiate(input))
 	{
 		free(input);
-		g_exit_num = 2;
+		shell->exit_code = 2;
 		printf("minishell: syntax error near unexpected token `|'\n");
 		return ;
 	}

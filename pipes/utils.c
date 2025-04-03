@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 00:54:57 by saul.blanco       #+#    #+#             */
-/*   Updated: 2025/04/03 19:29:46 by mmartine         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:46:05 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**arg_nodes_to_arg_array(t_cmd *cmd)
 	return (result);
 }
 
-void	exit_status_transmisor(int argnum, pid_t last)
+int	exit_status_transmisor(int argnum, pid_t last)
 {
 	int		status;
 	pid_t	curr;
@@ -44,9 +44,11 @@ void	exit_status_transmisor(int argnum, pid_t last)
 		}
 		else if (WIFSIGNALED(status))
 			g_exit_num = 128 + WTERMSIG(status);
+
 		if (curr <= 0)
 			break ;
 	}
+	return (g_exit_num);
 }
 
 void	setup_child_pipes(t_cmd *cmd, t_pipe_ctx *ctx)

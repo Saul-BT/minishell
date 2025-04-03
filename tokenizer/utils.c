@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:00:43 by mmartine          #+#    #+#             */
-/*   Updated: 2025/04/03 20:52:27 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:50:31 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ bool	check_is_dir(char *filename)
 	return (true);
 }
 
-bool	accesible_file(char *filename, int access_mode)
+bool	accesible_file(char *filename, int access_mode, t_shell *shell)
 {
 	int	fd;
 
-	g_exit_num = 1;
+	shell->exit_code = 1;
 	if (access_mode != O_RDONLY && check_is_dir(filename))
 		return (false);
 	fd = open(filename, access_mode, 0644);
@@ -48,7 +48,7 @@ bool	accesible_file(char *filename, int access_mode)
 		return (ft_putstr_fd(": No such file or directory\n", 2), false);
 	}
 	close(fd);
-	g_exit_num = 0;
+	shell->exit_code = 0;
 	return (true);
 }
 

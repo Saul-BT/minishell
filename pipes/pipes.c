@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 18:47:30 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 20:20:59 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:46:32 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static void	aux_pipex(t_cmd *cmd, t_shell *shell)
 
 	if (is_builtin(cmd->bin))
 	{
-		g_exit_num = handle_builtin(shell, cmd);
-		exit(g_exit_num);
+		shell->exit_code = handle_builtin(shell, cmd);
+		exit(shell->exit_code);
 	}
 	if (cmd->fd_in != STDIN_FILENO)
 	{
@@ -32,10 +32,10 @@ static void	aux_pipex(t_cmd *cmd, t_shell *shell)
 		close(cmd->fd_out);
 	}
 	args = arg_nodes_to_arg_array(cmd);
-	g_exit_num = execve(cmd->bin, args, shell->envp);
-	if (g_exit_num == -1)
-		g_exit_num = 127;
-	print_error("execve");
+	shell->exit_code = execve(cmd->bin, args, shell->envp);
+	if (shell->exit_code == -1)
+		shell->exit_code = 127;
+	exit(shell->exit_code);
 }
 
 static pid_t	execute_command(t_cmd *cmd, t_pipe_ctx *ctx)
@@ -83,5 +83,5 @@ void	ft_piped_exec(t_shell *shell)
 	}
 	if (ctx.pipe_read > 2)
 		close(ctx.pipe_read);
-	exit_status_transmisor(shell->cmd_count, last);
+	shell->exit_code = exit_status_transmisor(shell->cmd_count, last);
 }

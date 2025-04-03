@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:59:56 by mmartine          #+#    #+#             */
-/*   Updated: 2025/04/03 20:35:00 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:49:20 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_parsed_token	*init_handle_out(int *mode, char **token)
 		result->skip++;
 		(*token)++;
 	}
-	while (ft_isspace(*++token))
+	while (ft_isspace(**++token))
 		result->skip++;
 	return (result);
 }
@@ -43,7 +43,7 @@ static int	get_fd_in_redir_out(t_shell *cfg, char *token,
 		other = handle_quote(token + 1, token[0], cfg);
 	else
 		other = handle_other(token, cfg);
-	if (!accesible_file(other->parsed, mode))
+	if (!accesible_file(other->parsed, mode, cfg))
 	{
 		result->skip += ft_strlen(token) + 1;
 		free(other->parsed);
@@ -72,7 +72,7 @@ t_parsed_token	*handle_out_redirect(char *token, t_cmd *cmd, t_shell *cfg)
 			printf("minishell: syntax error near unexpected token `>>'\n");
 		else
 			printf("minishell: syntax error near unexpected token `>'\n");
-		return (g_exit_num = 2, result->skip += ft_strlen(token) + 1, result);
+		return (cfg->exit_code = 2, result->skip += ft_strlen(token) + 1, result);
 	}
 	if (*token)
 	{

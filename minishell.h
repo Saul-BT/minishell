@@ -6,7 +6,7 @@
 /*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 18:28:00 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/03 21:26:19 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:49:46 by sblanco-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void			close_quote(void);
 void			print_error(char *msg);
 bool			is_valid_var_start_char(char c);
 bool			is_valid_var_char(char c);
-bool			accesible_file(char	*filename, int access_mode);
+bool			accesible_file(char	*filename, int access_mode, t_shell *shell);
 
 // esta en export
 char			**new_env(char **env, int n, int add, char *val);
@@ -130,7 +130,7 @@ void			ft_piped_exec(t_shell *shell);
 
 // PIPES UTILS
 char			**arg_nodes_to_arg_array(t_cmd *cmd);
-void			exit_status_transmisor(int arg_num, pid_t last);
+int				exit_status_transmisor(int arg_num, pid_t last);
 void			setup_child_pipes(t_cmd *cmd, t_pipe_ctx *ctx);
 void			handle_parent_pipes(t_cmd *cmd, t_pipe_ctx *ctx);
 
