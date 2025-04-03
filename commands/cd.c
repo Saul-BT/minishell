@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 22:26:29 by sblanco-          #+#    #+#             */
-/*   Updated: 2025/04/02 23:36:49 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:19:44 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,6 @@ int	nonerror_cd(char *oldpath, char *nd_arg, t_shell *shell)
 	return (0);
 }
 
-int	if_non_next(t_cmd *cmd, char *oldpath)
-{
-	if (cmd->args->next)
-		return (0);
-	free(oldpath);
-	return (1);
-}
-
 int	ret_error(t_cmd *cmd, char *oldpath)
 {
 	printf("bash: cd: %s: No such file or directory\n",
@@ -67,12 +59,12 @@ int	ft_cd(t_cmd *cmd, t_shell *shell)
 	oldpath = getcwd(NULL, 0);
 	if (!oldpath)
 		oldpath = ft_strdup(ft_get_env_val(shell, "PWD"));
-	// TODO: este if de abajo impide que se gestione "cd" sin args correctamente
-	if (if_non_next(cmd, oldpath))
-		return (2);
 	nd_arg = cmd->args->next;
 	if (!nd_arg)
-		ret = chdir(ft_get_env_val(shell, "HOME"));
+	{
+		chdir(ft_get_env_val(shell, "HOME"));
+		return (nonerror_cd(oldpath, ft_get_env_val(shell, "HOME"), shell));
+	}
 	else if (nd_arg->content && ((char *) nd_arg->content)[0] == '-')
 		ret = ft_cd_oldpwd(shell);
 	else

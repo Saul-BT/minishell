@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sblanco- <sblanco-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: mmartine <mmartine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 16:10:37 by mmartine          #+#    #+#             */
-/*   Updated: 2025/03/30 20:08:30 by sblanco-         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:21:57 by mmartine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ char	*expand_concat(size_t dollar_idx, size_t after_var_idx,
 
 size_t	get_var_boundary(char *str)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	if (str[i++] != '?' && !is_valid_var_start_char(str[i]))
-		return (1); // TODO: Caso especial, no expande
+		return (1);
 	while (str[i] && str[i] != '=' && is_valid_var_char(str[i]))
 		i++;
 	return (i);
 }
-
 
 char	*expand_super(char *str, t_shell *cfg)
 {
