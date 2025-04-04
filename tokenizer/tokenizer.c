@@ -12,6 +12,23 @@
 
 #include "../minishell.h"
 
+void	print_arg(char *arg)
+{
+	printf("  -> %s\n", arg);
+}
+
+void	print_tokenized(t_cmd *cmd)
+{
+	printf("\033[0;34m=====================\n");
+	printf("bin: %s\n", cmd->bin);
+	printf("arg_count: %d\n", cmd->arg_count);
+	ft_lstiter(cmd->args, (void (*)(void *))print_arg);
+	printf("redirections:\n");
+	printf("  -> fd_in: %d\n", cmd->fd_in);
+	printf("  -> fd_out: %d\n", cmd->fd_out);
+	printf("=====================\033[0m\n");
+}
+
 t_parsed_token	*handle_token(char *token, t_cmd *cmd, t_shell *cfg)
 {
 	(void)cmd;
@@ -90,5 +107,6 @@ t_cmd	*tokenize(char *cmd_line, t_shell *cfg, bool first_parsed)
 		free(presult);
 	}
 	free(expanded);
+	print_tokenized(cmd);
 	return (cmd);
 }

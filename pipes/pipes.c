@@ -19,6 +19,7 @@ static void	aux_pipex(t_cmd *cmd, t_shell *shell)
 	if (is_builtin(cmd->bin))
 	{
 		shell->exit_code = handle_builtin(shell, cmd);
+		printf("aqui vale :: %i\n", shell->exit_code);
 		exit(shell->exit_code);
 	}
 	if (cmd->fd_in != STDIN_FILENO)

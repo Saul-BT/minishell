@@ -100,9 +100,11 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	while (shell->exit_loop > -1)
 	{
+		g_exit_num = shell->exit_code;
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, sig_interactive);
 		input = readline("> ");
+		shell->exit_code = g_exit_num;
 		if (!input)
 			exit(1);
 		else if (is_empty_arg(input))

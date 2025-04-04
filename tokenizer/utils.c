@@ -54,7 +54,7 @@ bool	accesible_file(char *filename, int access_mode, t_shell *shell)
 
 size_t	ft_index_of_symbol(char *str)
 {
-	static char	*symbols = " <>;'\"";
+	static char	*symbols = "\t\v\r <>;'\"";
 	size_t		i;
 
 	i = 0;
