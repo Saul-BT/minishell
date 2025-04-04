@@ -10,7 +10,7 @@ LIBFT = ./libft
 LIBFT_NAME = libft.a
 
 # Compiler stuff
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 INCLUDES = -I $(LIBFT) #-I $(READLINE_PATH)/include
 LNK = -L $(LIBFT) -lft -lreadline #-L $(READLINE_PATH)/lib  -lreadline

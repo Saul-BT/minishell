@@ -51,7 +51,7 @@ static void	mini_main(char *input, t_shell *shell)
 	char	**splited;
 
 	add_history(input);
-	if (*input && !is_valid_candiate(input))
+	if (*input && ft_strchr(input, '|') && !is_valid_candiate(input))
 	{
 		free(input);
 		shell->exit_code = 2;

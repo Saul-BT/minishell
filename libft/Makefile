@@ -18,7 +18,7 @@ O_FILES_MANDATORY=$(C_FILES_MANDATORY:.c=.o)
 O_FILES_BONUS=$(C_FILES_BONUS:.c=.o)
 
 # Compiler stuff
-CC = gcc
+CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 

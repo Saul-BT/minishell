@@ -14,6 +14,11 @@
 
 int	ft_cd_oldpwd(t_shell *shell)
 {
+	if (ft_get_env_pos(shell->envp, "OLDPWD") == -1)
+	{
+		printf("minishell: cd: OLDPWD not set\n");
+		return (1);
+	}
 	return (chdir(ft_get_env_val(shell, "OLDPWD")));
 }
 
@@ -41,10 +46,13 @@ int	nonerror_cd(char *oldpath, char *nd_arg, t_shell *shell)
 	return (0);
 }
 
-int	ret_error(t_cmd *cmd, char *oldpath)
+int	ret_error(t_cmd *cmd, char *oldpath, t_node *nd_arg)
 {
-	printf("bash: cd: %s: No such file or directory\n",
-		(char *)cmd->args->next->content);
+	if (((char *)nd_arg->content)[0] != '-')
+	{
+		printf("minishell: cd: %s: No such file or directory\n",
+			(char *)cmd->args->next->content);
+	}
 	if (oldpath)
 		free(oldpath);
 	return (1);
@@ -64,7 +72,7 @@ int	ft_cd(t_cmd *cmd, t_shell *shell)
 	{
 		ret = chdir(ft_get_env_val(shell, "HOME"));
 		if (ret)
-			return (free(oldpath), printf("bash: cd: HOME not set\n"), 1);
+			return (free(oldpath), printf("minishell: cd: HOME not set\n"), 1);
 		return (nonerror_cd(oldpath, ft_get_env_val(shell, "HOME"), shell));
 	}
 	else if (nd_arg->content && ((char *) nd_arg->content)[0] == '-')
@@ -74,5 +82,5 @@ int	ft_cd(t_cmd *cmd, t_shell *shell)
 	if (!ret)
 		return (nonerror_cd(oldpath, (char *) nd_arg->content, shell));
 	else
-		return (ret_error(cmd, oldpath));
+		return (ret_error(cmd, oldpath, nd_arg));
 }

@@ -97,7 +97,7 @@ void	ft_set_env_val(t_shell *shell, char *var, char *mod, int pos)
 	char	*new;
 	char	*name;
 
-	if (mod == NULL)
+	if (mod == NULL || pos == -1)
 		return ;
 	name = ft_get_env_name(var);
 	new = ft_strjoin(name, "=");

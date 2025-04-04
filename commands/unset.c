@@ -58,7 +58,7 @@ int	ft_unset(t_cmd *cmd, t_shell *shell)
 	if (cmd->args->next && cmd->args->next->content
 		&& ((char *)cmd->args->next->content)[0] == '-')
 	{
-		printf("bash: unset: %s: invalid option\n",
+		printf("minishell: unset: %s: invalid option\n",
 			(char *)cmd->args->next->content);
 		return (2);
 	}

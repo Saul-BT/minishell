@@ -101,26 +101,26 @@ int	ft_export(t_cmd *cmd, t_shell *shell)
 {
 	char	**env_cpy;
 	int		n;
-	t_node	*arg_node;
+	t_node	*arg;
 
 	n = 0;
 	if (!shell->envp)
 		return (1);
-	arg_node = cmd->args->next;
-	if (arg_node && arg_node->content && ((char *)arg_node->content)[0] == '-')
+	arg = cmd->args->next;
+	if (arg && arg->content && ((char *)arg->content)[0] == '-')
 	{
-		printf("bash: export: %s: invalid option\n", (char *)arg_node->content);
+		printf("minishell: export: %s: invalid option\n", (char *)arg->content);
 		return (2);
 	}
 	while (shell->envp[n])
 		n++;
-	if (arg_node == NULL)
+	if (arg == NULL)
 	{
 		env_cpy = new_env(shell->envp, n, 0, NULL);
 		print_sorted_env(shell, env_cpy, n, cmd);
 		free_env(env_cpy);
 	}
 	else
-		return (modifyenv(shell, arg_node, n));
+		return (modifyenv(shell, arg, n));
 	return (0);
 }
